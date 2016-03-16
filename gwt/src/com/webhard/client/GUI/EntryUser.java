@@ -1,17 +1,17 @@
 package com.webhard.client.GUI;
 
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.webhard.client.service.EntryServiceClientImpl;
 
 public class EntryUser extends Composite{
@@ -21,13 +21,16 @@ public class EntryUser extends Composite{
 	private TextBox textBox;
 	
 	public EntryUser(final EntryServiceClientImpl serviceImp) {
+		
 		dialogBox.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		initWidget(this.dialogBox);
 		this.serviceImpl = serviceImp;
+		
 		dialogBox.setSize("474px", "615px");
 		
 		LayoutPanel layoutPanel = new LayoutPanel();
+		
 		this.dialogBox.add(layoutPanel);
 		layoutPanel.setSize("572px", "616px");
 		

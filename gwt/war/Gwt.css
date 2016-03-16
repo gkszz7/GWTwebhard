@@ -43,5 +43,8 @@ h1 {
 
 }
 login {
-
+	border-top: 1px inset;
+	border-right: 1px inset;
+	border-bottom: 1px inset;
+	border-left: 1px;
 }
