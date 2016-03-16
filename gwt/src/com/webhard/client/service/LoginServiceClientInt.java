@@ -1,6 +1,7 @@
 package com.webhard.client.service;
 
-public interface LoginServiceClientInt {
+import com.webhard.client.dto.UserDto;
 
-	int logincheck(String id, String pwd);
+public interface LoginServiceClientInt {
+	int login(String id, String pwd);
 }

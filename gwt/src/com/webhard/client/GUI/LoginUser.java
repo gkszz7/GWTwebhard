@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -14,6 +15,7 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.webhard.client.HistryHandler;
 import com.webhard.client.service.EntryServiceClientImpl;
 import com.webhard.client.service.LoginSerivceClientImpl;
 
@@ -25,6 +27,10 @@ public class LoginUser extends Composite{
 	private TextBox textBox;
 	private PasswordTextBox passwordTextBox;
 	public LoginUser(final LoginSerivceClientImpl loginSerivceClientImpl) {
+		
+		History.addValueChangeHandler(new HistryHandler());
+		History.fireCurrentHistoryState();
+		
 		dialogBox.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		initWidget(this.dialogBox);
@@ -68,7 +74,7 @@ public class LoginUser extends Composite{
 				if(textBox.getText().length()>0 && passwordTextBox.getText().length()>0){
 				String id = textBox.getText();
 				String pwd = passwordTextBox.getText();
-				serviceImpl.logincheck(id, pwd);
+				serviceImpl.login(id, pwd);
 				}
 				else{
 					Window.alert("아이디 비밀번호를 입력해주세요");	

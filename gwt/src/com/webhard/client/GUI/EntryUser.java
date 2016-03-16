@@ -3,9 +3,9 @@ package com.webhard.client.GUI;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
@@ -22,6 +22,7 @@ public class EntryUser extends Composite{
 	
 	public EntryUser(final EntryServiceClientImpl serviceImp) {
 		
+			
 		dialogBox.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		initWidget(this.dialogBox);
@@ -121,6 +122,11 @@ public class EntryUser extends Composite{
 		});
 		
 		Button btnNewButton_1 = new Button("New button");
+		btnNewButton_1.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				Window.Location.reload();
+			}
+		});
 		btnNewButton_1.setText("\uCDE8 \uC18C");
 		layoutPanel.add(btnNewButton_1);
 		layoutPanel.setWidgetLeftWidth(btnNewButton_1, 230.0, Unit.PX, 89.0, Unit.PX);
@@ -151,5 +157,4 @@ public class EntryUser extends Composite{
 	public void editID(String edit){
 		this.textBox.setText(edit);
 	}
-	
 }
