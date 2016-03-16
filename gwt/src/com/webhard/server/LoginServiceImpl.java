@@ -3,7 +3,7 @@ package com.webhard.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.webhard.client.service.EntryService;
 import com.webhard.client.service.LoginService;
-import com.webhard.dao.UserDao;
+import com.webhard.server.dao.UserDao;
 
 /**
  * The server-side implementation of the RPC service.
