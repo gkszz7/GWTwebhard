@@ -5,5 +5,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("login")
 public interface LoginService extends RemoteService{
-	void getData();
+	int logincheck(String id,String pwd);
 }

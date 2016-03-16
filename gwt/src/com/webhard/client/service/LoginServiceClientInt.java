@@ -1,5 +1,6 @@
 package com.webhard.client.service;
 
 public interface LoginServiceClientInt {
-	void getData();
+
+	int logincheck(String id, String pwd);
 }

@@ -12,7 +12,7 @@ public class EntryServiceClientImpl implements EntryServiceClientInt {
 	private EntryUser entryUser;
 	
 	public EntryServiceClientImpl(String url) {
-		System.out.println(url);
+		
 		this.entryAsync = GWT.create(EntryService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.entryAsync;
 		endPoint.setServiceEntryPoint(url);

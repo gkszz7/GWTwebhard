@@ -4,6 +4,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface LoginServiceAsync {
 
-	void getData(AsyncCallback<Void> callback);
+	void logincheck(String id, String pwd, AsyncCallback<Integer> callback);
 
 }
