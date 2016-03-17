@@ -6,7 +6,16 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
- 
+ <servlet>
+    <servlet-name>MainServlet</servlet-name>
+    <servlet-class>com.webhard.server.MainServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>MainServlet</servlet-name>
+  	<url-pattern>/gwt/MainPage</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
     <servlet-name>loginServlet</servlet-name>
     <servlet-class>com.webhard.server.LoginServiceImpl</servlet-class>

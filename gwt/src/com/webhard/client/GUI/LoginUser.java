@@ -14,8 +14,10 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.webhard.client.Gwt;
 import com.webhard.client.service.EntryServiceClientImpl;
 import com.webhard.client.service.LoginSerivceClientImpl;
+import com.webhard.client.service.MainSerivceClientImpl;
 
 public class LoginUser extends Composite{
 	
@@ -24,6 +26,7 @@ public class LoginUser extends Composite{
 	private final LoginSerivceClientImpl serviceImpl;
 	private TextBox textBox;
 	private PasswordTextBox passwordTextBox;
+	
 	public LoginUser(final LoginSerivceClientImpl loginSerivceClientImpl) {
 				
 		
@@ -71,9 +74,7 @@ public class LoginUser extends Composite{
 				String id = textBox.getText();
 				String pwd = passwordTextBox.getText();
 				serviceImpl.login(id, pwd);
-				}
-				else{
-					Window.alert("아이디 비밀번호를 입력해주세요");	
+				
 				}
 			}
 		});

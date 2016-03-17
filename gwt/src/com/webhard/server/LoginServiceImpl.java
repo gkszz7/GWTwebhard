@@ -36,8 +36,6 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		    
 			return chack;
 			
-		}else if(chack == 0){
-			return chack;
 		}else{
 			return chack;
 		}

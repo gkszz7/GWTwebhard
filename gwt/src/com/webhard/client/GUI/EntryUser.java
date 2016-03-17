@@ -38,7 +38,6 @@ public class EntryUser extends Composite{
 	public EntryUser(final EntryServiceClientImpl serviceImp) {
 		
 			
-		
 		dialogBox.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		initWidget(this.dialogBox);

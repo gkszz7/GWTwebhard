@@ -4,16 +4,16 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.webhard.client.GUI.LoginUser;
 
 public class LoginSerivceClientImpl implements LoginServiceClientInt{
 	
 	private LoginServiceAsync loginAsync;
 	private LoginUser loginuser;
-
+	private int check = 0;
 	
 	public LoginSerivceClientImpl(String url) {
-		
 		
 		this.loginAsync = GWT.create(LoginService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.loginAsync;
@@ -24,15 +24,24 @@ public class LoginSerivceClientImpl implements LoginServiceClientInt{
 
 	@Override
 	public int login(final String id, String pwd) {
-		
-		this.loginAsync.login(id, pwd, new AsyncCallback<Integer>() {
 			
+		this.loginAsync.login(id, pwd, new AsyncCallback<Integer>() {	
 			@Override
 			public void onSuccess(Integer result) {
+				check = result;
 				if(result == 1){
+					
 					Window.alert("로그인 성공");
+					
+					RootPanel.get().clear();
+					
+					MainSerivceClientImpl main = new MainSerivceClientImpl(GWT.getModuleBaseURL()+"Main");
+					
+					RootPanel.get().add(main.getMainPage());
+					
 				}else if(result == 0){
 					Window.alert("비밀번호 실패");
+					
 				}else{
 					Window.alert("존재하지않은 아이디");
 				}
@@ -44,9 +53,8 @@ public class LoginSerivceClientImpl implements LoginServiceClientInt{
 				
 			}
 		});
-		
-		return 0;	
-		
+		return check;
+				
 	}
 	public LoginUser getEntryUser(){
 		return this.loginuser;
