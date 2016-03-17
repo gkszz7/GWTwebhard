@@ -1,19 +1,26 @@
 package com.webhard.client.service;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.webhard.client.GUI.LoginUser;
+import com.webhard.client.model.CompanyDto;
 
 public class LoginSerivceClientImpl implements LoginServiceClientInt{
 	
 	private LoginServiceAsync loginAsync;
 	private LoginUser loginuser;
 	private int check = 0;
+	private List<CompanyDto> list;
+
 	
 	public LoginSerivceClientImpl(String url) {
+		
+		
 		
 		this.loginAsync = GWT.create(LoginService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.loginAsync;
@@ -55,6 +62,20 @@ public class LoginSerivceClientImpl implements LoginServiceClientInt{
 		});
 		return check;
 				
+	}
+	@Override
+	public void comboList() {
+		this.loginAsync.comboList(new AsyncCallback<List<CompanyDto>>() {
+			
+			@Override
+			public void onSuccess(List<CompanyDto> result) {
+				loginuser.setComList(result);
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+		});
+		
 	}
 	public LoginUser getEntryUser(){
 		return this.loginuser;

@@ -1,5 +1,7 @@
 package com.webhard.client.GUI;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -14,10 +16,9 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.webhard.client.Gwt;
+import com.webhard.client.model.CompanyDto;
 import com.webhard.client.service.EntryServiceClientImpl;
 import com.webhard.client.service.LoginSerivceClientImpl;
-import com.webhard.client.service.MainSerivceClientImpl;
 
 public class LoginUser extends Composite{
 	
@@ -27,6 +28,8 @@ public class LoginUser extends Composite{
 	private TextBox textBox;
 	private PasswordTextBox passwordTextBox;
 	
+	private List<CompanyDto> list;
+	
 	public LoginUser(final LoginSerivceClientImpl loginSerivceClientImpl) {
 				
 		
@@ -34,6 +37,7 @@ public class LoginUser extends Composite{
 		
 		initWidget(this.dialogBox);
 		this.serviceImpl = loginSerivceClientImpl;
+		this.serviceImpl.comboList();
 		dialogBox.setSize("470px", "403px");
 		
 		LayoutPanel layoutPanel = new LayoutPanel();
@@ -74,7 +78,9 @@ public class LoginUser extends Composite{
 				String id = textBox.getText();
 				String pwd = passwordTextBox.getText();
 				serviceImpl.login(id, pwd);
-				
+				}
+				else{
+					Window.alert("아이디 비밀번호를 입력해주세요");	
 				}
 			}
 		});
@@ -89,11 +95,8 @@ public class LoginUser extends Composite{
 			@Override
 			public void onClick(ClickEvent event) { 
 				// TODO Auto-generated method stub
-				RootPanel.get().clear();
+				entry();
 				
-				EntryServiceClientImpl entry = new EntryServiceClientImpl(GWT.getModuleBaseURL()+"entry");
-				
-				RootPanel.get().add(entry.getEntryUser());
 			}
 		});
 		userInsertBtn.setText("\uD68C\uC6D0 \uAC00\uC785");
@@ -106,5 +109,16 @@ public class LoginUser extends Composite{
 		layoutPanel.setWidgetLeftWidth(passwordTextBox, 125.0, Unit.PX, 257.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(passwordTextBox, 149.0, Unit.PX, 34.0, Unit.PX);
 		
+	}
+	public void setComList(List<CompanyDto> list1){
+		list = list1;
+	}
+	
+	public void entry(){
+		RootPanel.get().clear();
+		
+		EntryServiceClientImpl entry = new EntryServiceClientImpl(GWT.getModuleBaseURL()+"entry");
+		EntryUser user = new EntryUser(entry, list);
+		RootPanel.get().add(user);
 	}
 }

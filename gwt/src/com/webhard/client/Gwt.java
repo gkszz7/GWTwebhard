@@ -17,5 +17,7 @@ public class Gwt implements EntryPoint {
 		
 		RootPanel.get().add(login.getEntryUser());
 		
+
 	}
+
 }

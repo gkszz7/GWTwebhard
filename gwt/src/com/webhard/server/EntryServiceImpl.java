@@ -44,13 +44,4 @@ public class EntryServiceImpl extends RemoteServiceServlet implements EntryServi
 		uDao.entryNewUser(id, pw, name, phone, addr, comNum);
 	}
 	
-	@Override
-	public List<CompanyDto> comboList() {
-		
-		List<CompanyDto> comList = new ArrayList<CompanyDto>();
-		CompanyDao dao = new CompanyDao();
-		comList = dao.selectCompany();
-		
-		return comList;
-	}
 }

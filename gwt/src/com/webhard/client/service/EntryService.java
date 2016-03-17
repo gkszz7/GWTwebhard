@@ -14,5 +14,4 @@ import com.webhard.client.model.CompanyDto;
 public interface EntryService extends RemoteService {
 	boolean IdCheck(String id);
 	void entryUser(String id, String pw, String name, String phone, String addr, String company);
-	List<CompanyDto> comboList();
 }

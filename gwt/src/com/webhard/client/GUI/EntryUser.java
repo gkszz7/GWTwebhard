@@ -2,6 +2,7 @@ package com.webhard.client.GUI;
 
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -12,14 +13,16 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.service.EntryServiceClientImpl;
+import com.webhard.client.service.LoginSerivceClientImpl;
 
 public class EntryUser extends Composite{
 	
-	private VerticalPanel dialogBox = new VerticalPanel();
+	private VerticalPanel vPanel = new VerticalPanel();
 	private final EntryServiceClientImpl serviceImpl;
 	private TextBox textBoxId;
 	private TextBox textBoxPw;
@@ -29,27 +32,22 @@ public class EntryUser extends Composite{
 	private TextBox textBoxAddr;
 	private ListBox comboBox;
 	private boolean idCheck;
-	private List<CompanyDto> cDto;
-//	
-//	public void getList(List<CompanyDto> list){
-//		
-//	}
+
 	
-	public EntryUser(final EntryServiceClientImpl serviceImp) {
+	public EntryUser(final EntryServiceClientImpl serviceImp, List<CompanyDto> cDto) {
 		
 			
-		dialogBox.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		
-		initWidget(this.dialogBox);
+		initWidget(this.vPanel);
 		this.serviceImpl = serviceImp;
 		
-		dialogBox.setSize("474px", "615px");
+		vPanel.setSize("474px", "615px");
 		LayoutPanel layoutPanel = new LayoutPanel();
-		
-		this.dialogBox.add(layoutPanel);
-		layoutPanel.setSize("469px", "616px");
 
-		serviceImpl.comboList();
+		this.vPanel.add(layoutPanel);
+		layoutPanel.setSize("469px", "616px");
+		
 
 		Label lblNewLabel = new Label("ID");
 		lblNewLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -134,6 +132,16 @@ public class EntryUser extends Composite{
 		layoutPanel.add(cancelBtn);
 		layoutPanel.setWidgetLeftWidth(cancelBtn, 230.0, Unit.PX, 89.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(cancelBtn, 468.0, Unit.PX, 40.0, Unit.PX);
+		cancelBtn.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				RootPanel.get().clear();
+				LoginSerivceClientImpl login = new LoginSerivceClientImpl(GWT.getModuleBaseURL()+"login");
+				
+				RootPanel.get().add(login.getEntryUser());
+			}
+		});
 		
 		Button checkBtn = new Button("New button");
 		checkBtn.setText("\uC911\uBCF5\uD655\uC778");
@@ -156,6 +164,7 @@ public class EntryUser extends Composite{
 		
 		
 		comboBox = new ListBox();
+		comboBox.addItem("선택해주세요");
 		if(cDto !=null){
 			for(CompanyDto company : cDto){
 				comboBox.addItem(company.getCompanyName());
@@ -201,13 +210,14 @@ public class EntryUser extends Composite{
 					Window.alert("회사를 선택해 주세요.");
 				}else{
 					serviceImpl.entryUser(textBoxId.getText(), textBoxPw.getText(), textBoxName.getText(), 
-							textBoxPhone.getText(), textBoxAddr.getText(), comboBox.getValue(comboBox.getSelectedIndex()));
+							textBoxPhone.getText(), textBoxAddr.getText(), comboBox.getValue(comboBox.getSelectedIndex()));				
 				}
 				
 				
 				
 			}
 		});
+		
 		
 	}
 

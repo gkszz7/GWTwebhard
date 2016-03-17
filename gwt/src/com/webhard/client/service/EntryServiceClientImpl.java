@@ -7,6 +7,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.webhard.client.GUI.EntryUser;
 import com.webhard.client.model.CompanyDto;
 
@@ -14,6 +15,7 @@ public class EntryServiceClientImpl implements EntryServiceClientInt {
 	
 	private EntryServiceAsync entryAsync;
 	private EntryUser entryUser;
+	private List<CompanyDto> list;
 	
 	public EntryServiceClientImpl(String url) {
 		
@@ -21,7 +23,7 @@ public class EntryServiceClientImpl implements EntryServiceClientInt {
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.entryAsync;
 		endPoint.setServiceEntryPoint(url);
 		
-		this.entryUser = new EntryUser(this);
+		this.entryUser = new EntryUser(this, list);
 	}
 	
 	@Override
@@ -45,7 +47,6 @@ public class EntryServiceClientImpl implements EntryServiceClientInt {
 			}
 		});
 	}
-	
 	@Override
 	public void entryUser(String id, String pw, String name, String phone,
 			String addr, String company) {
@@ -58,28 +59,16 @@ public class EntryServiceClientImpl implements EntryServiceClientInt {
 			@Override
 			public void onSuccess(Object result) {
 				Window.alert("회원가입이 되셨습니다.");
-			}
-		});
-	}
-	
-	@Override
-	public void comboList() {
-		this.entryAsync.comboList(new AsyncCallback<List<CompanyDto>>() {
-			
-			@Override
-			public void onSuccess(List<CompanyDto> result) {
-			
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert("error");
+				RootPanel.get().clear();
+				LoginSerivceClientImpl login = new LoginSerivceClientImpl(GWT.getModuleBaseURL()+"login");
 				
+				RootPanel.get().add(login.getEntryUser());
 			}
 		});
 	}
 
-	public EntryUser getEntryUser(){
+	public EntryUser getEntryUser(List<CompanyDto> result){
+		list = result;
 		return this.entryUser;
 	}
 	
