@@ -1,13 +1,13 @@
 package com.webhard.server;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.webhard.client.model.CompanyDto;
-import com.webhard.client.service.EntryService;
+import com.webhard.client.model.UserDto;
 import com.webhard.client.service.LoginService;
-import com.webhard.server.dao.CompanyDao;
 import com.webhard.server.dao.UserDao;
 
 /**
@@ -18,14 +18,29 @@ import com.webhard.server.dao.UserDao;
 public class LoginServiceImpl extends RemoteServiceServlet implements LoginService {
 
 	@Override
-	public int logincheck(String id,String pwd) {
+	public int login(String id,String pwd) {
+	
 		// TODO Auto-generated method stub
-		UserDao dao = new UserDao();
+		UserDao userDao = new UserDao();
+		UserDto userDto = new UserDto();
+		int chack = userDao.loginUser(id, pwd);
 		
-		int check = dao.loginUser(id, pwd);
-		
-		return check;
+		if(chack == 1){
+			userDto = userDao.getData(id);
+			
+			HttpServletRequest httpServletRequest = this.getThreadLocalRequest();
+		    HttpSession session = httpServletRequest.getSession(true);
+		    session.setAttribute("user", userDto);
+		    
+		    System.out.println(((UserDto)session.getAttribute("user")).getUserId());
+		    
+			return chack;
+			
+		}else if(chack == 0){
+			return chack;
+		}else{
+			return chack;
+		}
 	}
-
 
 }

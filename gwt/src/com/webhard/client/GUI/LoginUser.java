@@ -10,13 +10,12 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.sun.java.swing.plaf.windows.resources.windows;
 import com.webhard.client.service.EntryServiceClientImpl;
 import com.webhard.client.service.LoginSerivceClientImpl;
-import com.google.gwt.user.client.ui.PasswordTextBox;
 
 public class LoginUser extends Composite{
 	
@@ -26,6 +25,8 @@ public class LoginUser extends Composite{
 	private TextBox textBox;
 	private PasswordTextBox passwordTextBox;
 	public LoginUser(final LoginSerivceClientImpl loginSerivceClientImpl) {
+				
+		
 		dialogBox.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		initWidget(this.dialogBox);
@@ -69,7 +70,7 @@ public class LoginUser extends Composite{
 				if(textBox.getText().length()>0 && passwordTextBox.getText().length()>0){
 				String id = textBox.getText();
 				String pwd = passwordTextBox.getText();
-				serviceImpl.logincheck(id, pwd);
+				serviceImpl.login(id, pwd);
 				}
 				else{
 					Window.alert("아이디 비밀번호를 입력해주세요");	
@@ -90,7 +91,7 @@ public class LoginUser extends Composite{
 				RootPanel.get().clear();
 				
 				EntryServiceClientImpl entry = new EntryServiceClientImpl(GWT.getModuleBaseURL()+"entry");
-
+				
 				RootPanel.get().add(entry.getEntryUser());
 			}
 		});

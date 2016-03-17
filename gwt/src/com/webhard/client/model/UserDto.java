@@ -1,6 +1,8 @@
 package com.webhard.client.model;
 
-public class UserDto {
+import java.io.Serializable;
+
+public class UserDto implements Serializable{
 	private String userId;
 	private String passwd;
 	private String userName;

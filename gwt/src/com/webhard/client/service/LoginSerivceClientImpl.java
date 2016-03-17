@@ -10,9 +10,11 @@ public class LoginSerivceClientImpl implements LoginServiceClientInt{
 	
 	private LoginServiceAsync loginAsync;
 	private LoginUser loginuser;
+
 	
 	public LoginSerivceClientImpl(String url) {
-				
+		
+		
 		this.loginAsync = GWT.create(LoginService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.loginAsync;
 		endPoint.setServiceEntryPoint(url);
@@ -21,33 +23,29 @@ public class LoginSerivceClientImpl implements LoginServiceClientInt{
 	}
 
 	@Override
-	public int logincheck(String id, String pwd) {
-		this.loginAsync.logincheck(id, pwd,new AsyncCallback<Integer>() {
+	public int login(final String id, String pwd) {
+		
+		this.loginAsync.login(id, pwd, new AsyncCallback<Integer>() {
 			
 			@Override
 			public void onSuccess(Integer result) {
-				//서버에서 성공
-				// TODO Auto-generated method stub
-				//로그인 성공
 				if(result == 1){
 					Window.alert("로그인 성공");
-				//로그인 실패
 				}else if(result == 0){
-					Window.alert("비밀번호가 틀립니다."); 
+					Window.alert("비밀번호 실패");
 				}else{
-					Window.alert("아이디가 틀립니다.");
+					Window.alert("존재하지않은 아이디");
 				}
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				//서버에서 실패
 				// TODO Auto-generated method stub
-				Window.alert("Error");
+				
 			}
 		});
-		return 0;
-		// TODO Auto-generated method stub
+		
+		return 0;	
 		
 	}
 	public LoginUser getEntryUser(){
