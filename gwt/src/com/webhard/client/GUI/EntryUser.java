@@ -31,15 +31,17 @@ public class EntryUser extends Composite{
 	private ListBox comboBox;
 	private boolean idCheck;
 	private List<CompanyDto> cDto;
-
 	
-	public EntryUser(final EntryServiceClientImpl serviceImp, List<CompanyDto> dto) {
+	public void getList(List<CompanyDto> list){
+		
+	}
+	
+	public EntryUser(final EntryServiceClientImpl serviceImp) {
 		
 		dialogBox.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		initWidget(this.dialogBox);
 		this.serviceImpl = serviceImp;
-		this.cDto = dto;
 		dialogBox.setSize("474px", "615px");
 		LayoutPanel layoutPanel = new LayoutPanel();
 		layoutPanel.setStyleName("entry");

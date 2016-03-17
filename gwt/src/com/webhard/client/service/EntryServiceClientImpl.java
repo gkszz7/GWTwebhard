@@ -14,7 +14,6 @@ public class EntryServiceClientImpl implements EntryServiceClientInt {
 	
 	private EntryServiceAsync entryAsync;
 	private EntryUser entryUser;
-	private List<CompanyDto> list;
 	
 	public EntryServiceClientImpl(String url) {
 		
@@ -22,7 +21,7 @@ public class EntryServiceClientImpl implements EntryServiceClientInt {
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.entryAsync;
 		endPoint.setServiceEntryPoint(url);
 		
-		this.entryUser = new EntryUser(this, list);
+		this.entryUser = new EntryUser(this);
 	}
 	
 	@Override
@@ -69,8 +68,7 @@ public class EntryServiceClientImpl implements EntryServiceClientInt {
 			
 			@Override
 			public void onSuccess(List<CompanyDto> result) {
-				
-				list = result;
+			
 			}
 			
 			@Override
