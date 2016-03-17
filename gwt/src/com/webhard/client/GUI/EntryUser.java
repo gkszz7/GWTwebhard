@@ -3,6 +3,7 @@ package com.webhard.client.GUI;
 import java.util.List;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -38,7 +39,7 @@ public class EntryUser extends Composite{
 		this.serviceImpl = serviceImp;
 		vPanel.setSize("474px", "615px");
 		LayoutPanel layoutPanel = new LayoutPanel();
-		layoutPanel.setStyleName("entry");
+		
 		this.vPanel.add(layoutPanel);
 		layoutPanel.setSize("469px", "616px");
 		this.serviceImpl.comboList();
@@ -216,5 +217,4 @@ public class EntryUser extends Composite{
 		
 		return idCheck;
 	}
-	
 }
