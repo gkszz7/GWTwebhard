@@ -1,10 +1,8 @@
 package com.webhard.client.GUI;
 
 import java.util.List;
-
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -19,7 +17,7 @@ import com.webhard.client.model.CompanyDto;
 import com.webhard.client.service.EntryServiceClientImpl;
 public class EntryUser extends Composite{
 	
-	private VerticalPanel dialogBox = new VerticalPanel();
+	private VerticalPanel vPanel = new VerticalPanel();
 	private final EntryServiceClientImpl serviceImpl;
 	private TextBox textBoxId;
 	private TextBox textBoxPw;
@@ -30,22 +28,20 @@ public class EntryUser extends Composite{
 	private ListBox comboBox;
 	private boolean idCheck;
 	private List<CompanyDto> cDto;
-//	
-//	public void getList(List<CompanyDto> list){
-//		
-//	}
+
 	
 	public EntryUser(final EntryServiceClientImpl serviceImp) {
 		
-		dialogBox.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		
-		initWidget(this.dialogBox);
+		initWidget(this.vPanel);
 		this.serviceImpl = serviceImp;
-		dialogBox.setSize("474px", "615px");
+		vPanel.setSize("474px", "615px");
 		LayoutPanel layoutPanel = new LayoutPanel();
 		layoutPanel.setStyleName("entry");
-		this.dialogBox.add(layoutPanel);
+		this.vPanel.add(layoutPanel);
 		layoutPanel.setSize("469px", "616px");
+		this.serviceImpl.comboList();
 
 		serviceImpl.comboList();
 
@@ -204,6 +200,12 @@ public class EntryUser extends Composite{
 				
 			}
 		});
+		
+	}
+	
+	public void getList(List<CompanyDto> list){
+		this.cDto = list;
+		this.vPanel.clear();
 		
 	}
 
