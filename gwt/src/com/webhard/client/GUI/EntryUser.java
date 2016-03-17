@@ -30,10 +30,10 @@ public class EntryUser extends Composite{
 	private ListBox comboBox;
 	private boolean idCheck;
 	private List<CompanyDto> cDto;
-	
-	public void getList(List<CompanyDto> list){
-		
-	}
+//	
+//	public void getList(List<CompanyDto> list){
+//		
+//	}
 	
 	public EntryUser(final EntryServiceClientImpl serviceImp) {
 		
