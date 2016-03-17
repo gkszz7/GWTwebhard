@@ -28,10 +28,9 @@ public class EntryUser extends Composite{
 	private TextBox textBoxAddr;
 	private ListBox comboBox;
 	private boolean idCheck;
-	private List<CompanyDto> cDto;
 
 	
-	public EntryUser(final EntryServiceClientImpl serviceImp) {
+	public EntryUser(final EntryServiceClientImpl serviceImp, List<CompanyDto> cDto) {
 		
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		
@@ -39,12 +38,9 @@ public class EntryUser extends Composite{
 		this.serviceImpl = serviceImp;
 		vPanel.setSize("474px", "615px");
 		LayoutPanel layoutPanel = new LayoutPanel();
-		
 		this.vPanel.add(layoutPanel);
 		layoutPanel.setSize("469px", "616px");
-		this.serviceImpl.comboList();
-
-		serviceImpl.comboList();
+		
 
 		Label lblNewLabel = new Label("ID");
 		lblNewLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -149,6 +145,7 @@ public class EntryUser extends Composite{
 			}
 		});
 		comboBox = new ListBox();
+		comboBox.addItem("선택해주세요");
 		if(cDto !=null){
 			for(CompanyDto company : cDto){
 				comboBox.addItem(company.getCompanyName());
@@ -194,7 +191,7 @@ public class EntryUser extends Composite{
 					Window.alert("회사를 선택해 주세요.");
 				}else{
 					serviceImpl.entryUser(textBoxId.getText(), textBoxPw.getText(), textBoxName.getText(), 
-							textBoxPhone.getText(), textBoxAddr.getText(), comboBox.getValue(comboBox.getSelectedIndex()));
+							textBoxPhone.getText(), textBoxAddr.getText(), comboBox.getValue(comboBox.getSelectedIndex()));				
 				}
 				
 				
@@ -202,11 +199,6 @@ public class EntryUser extends Composite{
 			}
 		});
 		
-	}
-	
-	public void getList(List<CompanyDto> list){
-		this.cDto = list;
-		this.vPanel.clear();
 		
 	}
 

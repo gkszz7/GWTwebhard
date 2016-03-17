@@ -1,5 +1,8 @@
 package com.webhard.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -8,6 +11,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.LoginService;
+import com.webhard.server.dao.CompanyDao;
 import com.webhard.server.dao.UserDao;
 
 /**
@@ -41,6 +45,14 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		}else{
 			return chack;
 		}
+	}
+	@Override
+	public List<CompanyDto> comboList() {
+		List<CompanyDto> comList = new ArrayList<CompanyDto>();
+		CompanyDao dao = new CompanyDao();
+		comList = dao.selectCompany();
+		
+		return comList;
 	}
 
 }
