@@ -17,7 +17,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ListBox;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.service.EntryServiceClientImpl;
-import com.webhard.server.EntryServiceImpl;
 public class EntryUser extends Composite{
 	
 	private VerticalPanel dialogBox = new VerticalPanel();
