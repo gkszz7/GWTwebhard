@@ -6,17 +6,7 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
-  <servlet>
-    <servlet-name>entryServlet</servlet-name>
-    <servlet-class>com.webhard.server.EntryServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>entryServlet</servlet-name>
-    <url-pattern>/gwt/entry</url-pattern>
-  </servlet-mapping>
-  
-  
+ 
   <servlet>
     <servlet-name>loginServlet</servlet-name>
     <servlet-class>com.webhard.server.LoginServiceImpl</servlet-class>
@@ -25,6 +15,16 @@
   <servlet-mapping>
   	<servlet-name>loginServlet</servlet-name>
   	<url-pattern>/gwt/login</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>entryServlet</servlet-name>
+    <servlet-class>com.webhard.server.EntryServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>entryServlet</servlet-name>
+    <url-pattern>/gwt/entry</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

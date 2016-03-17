@@ -1,14 +1,16 @@
+
 package com.webhard.server.dao;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.webhard.client.dto.CompanyDto;
+import com.webhard.client.model.CompanyDto;
 
-public class CompanyDao {
+public class CompanyDao implements Serializable {
 	
 	
 	/**

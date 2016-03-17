@@ -48,3 +48,6 @@ login {
 	border-bottom: 1px inset;
 	border-left: 1px;
 }
+entry {
+	border:1px solid black;
+}

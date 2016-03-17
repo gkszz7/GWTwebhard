@@ -1,14 +1,10 @@
 package com.webhard.client.service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.webhard.client.GUI.LoginUser;
-import com.webhard.client.dto.UserDto;
 
 public class LoginSerivceClientImpl implements LoginServiceClientInt{
 	

@@ -5,7 +5,8 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.webhard.client.dto.UserDto;
+import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.UserDto;
 import com.webhard.client.service.LoginService;
 import com.webhard.server.dao.UserDao;
 

@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.webhard.client.dto.UserDto;
+import com.webhard.client.model.UserDto;
+
 
 public class UserDao {
 	

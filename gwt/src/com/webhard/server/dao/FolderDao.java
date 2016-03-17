@@ -6,9 +6,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.webhard.client.dto.FileDto;
-import com.webhard.client.dto.FolderDto;
-import com.webhard.client.dto.ItemDto;
+import com.webhard.client.model.FileDto;
+import com.webhard.client.model.FolderDto;
+import com.webhard.client.model.ItemDto;
+
 
 public class FolderDao {
 	

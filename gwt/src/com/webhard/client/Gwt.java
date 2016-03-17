@@ -20,5 +20,4 @@ public class Gwt implements EntryPoint {
 		
 		
 	}
-	
 }

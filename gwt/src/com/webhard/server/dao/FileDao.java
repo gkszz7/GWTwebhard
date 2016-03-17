@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.webhard.client.dto.FileDto;
+import com.webhard.client.model.FileDto;
+
 
 public class FileDao {
 
