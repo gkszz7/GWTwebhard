@@ -1,8 +1,13 @@
 package com.webhard.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.webhard.client.model.CompanyDto;
 import com.webhard.client.service.EntryService;
 import com.webhard.client.service.LoginService;
+import com.webhard.server.dao.CompanyDao;
 import com.webhard.server.dao.UserDao;
 
 /**
@@ -21,5 +26,6 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		
 		return check;
 	}
+
 
 }
