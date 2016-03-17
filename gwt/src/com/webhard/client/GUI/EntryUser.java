@@ -1,14 +1,16 @@
 package com.webhard.client.GUI;
 
 import java.util.List;
+
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -16,6 +18,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ListBox;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.service.EntryServiceClientImpl;
+import com.webhard.client.service.LoginSerivceClientImpl;
 public class EntryUser extends Composite{
 	
 	private VerticalPanel vPanel = new VerticalPanel();
@@ -125,6 +128,16 @@ public class EntryUser extends Composite{
 		layoutPanel.add(cancelBtn);
 		layoutPanel.setWidgetLeftWidth(cancelBtn, 230.0, Unit.PX, 89.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(cancelBtn, 468.0, Unit.PX, 40.0, Unit.PX);
+		cancelBtn.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				RootPanel.get().clear();
+				LoginSerivceClientImpl login = new LoginSerivceClientImpl(GWT.getModuleBaseURL()+"login");
+				
+				RootPanel.get().add(login.getEntryUser());
+			}
+		});
 		
 		Button checkBtn = new Button("New button");
 		checkBtn.setText("\uC911\uBCF5\uD655\uC778");
