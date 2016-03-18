@@ -50,7 +50,7 @@ public class CompanyList extends Composite{
 		absolutePanel.add(listBox, 251, 65);
 		listBox.setSize("78px", "45px");
 		
-		CellTable<Object> cellTable = new CellTable<Object>();
+		CellTable<CompanyDto> cellTable = new CellTable<CompanyDto>();
 		cellTable.setSkipRowHoverCheck(true);
 		absolutePanel.add(cellTable, 0, 159);
 		cellTable.setSize("661px", "221px");
