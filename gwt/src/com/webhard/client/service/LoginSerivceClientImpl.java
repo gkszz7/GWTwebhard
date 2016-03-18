@@ -42,7 +42,7 @@ public class LoginSerivceClientImpl implements LoginServiceClientInt{
 					
 					RootPanel.get().clear();
 					
-					MainSerivceClientImpl main = new MainSerivceClientImpl(GWT.getModuleBaseURL()+"Main");
+					MainServiceClientImpl main = new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main");
 					
 					RootPanel.get().add(main.getMainPage());
 					
@@ -77,7 +77,7 @@ public class LoginSerivceClientImpl implements LoginServiceClientInt{
 		});
 		
 	}
-	public LoginUser getEntryUser(){
+	public LoginUser getLoginUser(){
 		return this.loginuser;
 	}
 

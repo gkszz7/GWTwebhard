@@ -139,7 +139,7 @@ public class EntryUser extends Composite{
 				RootPanel.get().clear();
 				LoginSerivceClientImpl login = new LoginSerivceClientImpl(GWT.getModuleBaseURL()+"login");
 				
-				RootPanel.get().add(login.getEntryUser());
+				RootPanel.get().add(login.getLoginUser());
 			}
 		});
 		
@@ -167,6 +167,7 @@ public class EntryUser extends Composite{
 		comboBox.addItem("선택해주세요");
 		if(cDto !=null){
 			for(CompanyDto company : cDto){
+				
 				comboBox.addItem(company.getCompanyName());
 			}
 		}else{

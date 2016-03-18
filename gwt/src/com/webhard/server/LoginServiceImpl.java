@@ -35,8 +35,6 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		    HttpSession session = httpServletRequest.getSession(true);
 		    session.setAttribute("user", userDto);
 		    
-		    System.out.println(((UserDto)session.getAttribute("user")).getUserId());
-		    
 			return chack;
 			
 		}else if(chack == 0){

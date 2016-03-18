@@ -7,6 +7,7 @@ h1 {
   font-weight: bold;
   color: #777777;
   margin: 40px 0px 70px;
+  
 }
 
 .sendButton {
@@ -16,7 +17,7 @@ h1 {
 
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {
-  width: 400px;
+	background-color: lightgrey;
 }
 
 .dialogVPanel {
@@ -52,4 +53,29 @@ login {
 }
 entry {
 	border:1px solid black;
+}
+editFolder {
+	font-size: 30px;
+	
+}
+.gwt-MenuItem {
+	font-size: 14px;
+	font-weight: bold;
+	cursor:pointer;
+}
+.gwt-MenuBar {
+	border: 1px solid black;
+	background-color: lightcyan;
+}
+.gwt-label {
+	font-size: 15px;
+	font-style: italic;
+	font-weight: bolder;
+	
+}
+.gwt-TextBox {
+	border : 1px solid black;
+}
+.gwt-absolutePanel {
+	background-color: lightgray;
 }

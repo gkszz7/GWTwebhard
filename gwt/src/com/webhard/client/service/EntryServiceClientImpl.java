@@ -62,14 +62,14 @@ public class EntryServiceClientImpl implements EntryServiceClientInt {
 				RootPanel.get().clear();
 				LoginSerivceClientImpl login = new LoginSerivceClientImpl(GWT.getModuleBaseURL()+"login");
 				
-				RootPanel.get().add(login.getEntryUser());
+				RootPanel.get().add(login.getLoginUser());
 			}
 		});
 	}
 
-	public EntryUser getEntryUser(List<CompanyDto> result){
-		list = result;
-		return this.entryUser;
-	}
+//	public EntryUser getEntryUser(List<CompanyDto> result){
+//		list = result;
+//		return this.entryUser;
+//	}
 	
 }

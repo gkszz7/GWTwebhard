@@ -1,6 +1,7 @@
 package com.webhard.client.GUI;
 
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -15,14 +16,15 @@ public class UserList extends Composite{
 	
 	
 	public UserList(){
-		
-		RootPanel rootPanel = RootPanel.get();
-		rootPanel.add(null);
+
+		DialogBox dialog = new DialogBox();
+		dialog.setSize("674px", "503px");
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		absolutePanel.setStyleName("login");
-		rootPanel.add(absolutePanel, 0, 0);
-		absolutePanel.setSize("661px", "157px");
+		absolutePanel.setSize("1318px", "503px");
+		
+		dialog.add(absolutePanel);
 		
 		Label lblNewLabel = new Label("사용자 검색");
 		lblNewLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -54,17 +56,17 @@ public class UserList extends Composite{
 		
 		CellTable<Object> cellTable = new CellTable<Object>();
 		cellTable.setSkipRowHoverCheck(true);
-		rootPanel.add(cellTable, 0, 159);
+		absolutePanel.add(cellTable, 0, 159);
 		cellTable.setSize("661px", "221px");
 		
 		Button btnNewButton_1 = new Button("New button");
 		btnNewButton_1.setText("수정");
-		rootPanel.add(btnNewButton_1, 403, 391);
+		absolutePanel.add(btnNewButton_1, 403, 391);
 		btnNewButton_1.setSize("85px", "29px");
 		
 		Button btnNewButton_2 = new Button("New button");
 		btnNewButton_2.setText("삭제");
-		rootPanel.add(btnNewButton_2, 513, 391);
+		absolutePanel.add(btnNewButton_2, 513, 391);
 		btnNewButton_2.setSize("85px", "29px");
 		
 	}

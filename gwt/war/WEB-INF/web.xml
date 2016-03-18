@@ -13,7 +13,17 @@
   
   <servlet-mapping>
   	<servlet-name>MainServlet</servlet-name>
-  	<url-pattern>/gwt/MainPage</url-pattern>
+  	<url-pattern>/gwt/Main</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>CompanyServlet</servlet-name>
+    <servlet-class>com.webhard.server.CompanyServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>MainServlet</servlet-name>
+  	<url-pattern>/gwt/company</url-pattern>
   </servlet-mapping>
   
   <servlet>

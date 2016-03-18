@@ -15,7 +15,7 @@ public class Gwt implements EntryPoint {
 			
 		LoginSerivceClientImpl login = new LoginSerivceClientImpl(GWT.getModuleBaseURL()+"login");
 		
-		RootPanel.get().add(login.getEntryUser());
+		RootPanel.get().add(login.getLoginUser());
 		
 
 	}
