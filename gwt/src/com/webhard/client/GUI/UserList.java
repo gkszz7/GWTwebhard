@@ -16,7 +16,7 @@ public class UserList extends Composite{
 	
 	public UserList(){
 		
-		RootPanel rootPanel = RootPanel.get();
+		AbsolutePanel rootPanel = RootPanel.get();
 		rootPanel.add(null);
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();

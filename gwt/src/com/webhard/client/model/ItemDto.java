@@ -1,6 +1,8 @@
 package com.webhard.client.model;
 
-public class ItemDto {
+import java.io.Serializable;
+
+public class ItemDto implements Serializable{
 	private int itemNum;
 	private String name;
 	private String date;

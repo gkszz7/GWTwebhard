@@ -1,42 +1,51 @@
 package com.webhard.client.GUI;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.user.client.ui.SplitLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.webhard.client.service.MainSerivceClientImpl;
-import com.google.gwt.user.client.ui.HorizontalSplitPanel;
-import com.google.gwt.user.cellview.client.CellTree;
-import com.google.gwt.view.client.TreeViewModel;
 import com.google.gwt.view.client.AbstractDataProvider;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.SelectionModel.AbstractSelectionModel;
 import com.google.gwt.view.client.NoSelectionModel;
-import com.google.gwt.view.client.TreeViewModel.NodeInfo;
-import com.google.gwt.view.client.TreeViewModel.DefaultNodeInfo;
-import com.google.gwt.cell.client.TextCell;
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.client.Command;
+import com.google.gwt.view.client.SelectionModel.AbstractSelectionModel;
+import com.google.gwt.view.client.TreeViewModel;
+import com.webhard.client.model.FolderDto;
+import com.webhard.client.service.MainSerivceClientImpl;
 
 public class MainPage extends Composite{
 	
 	private final MainSerivceClientImpl serviceImpl;
 	AbsolutePanel absolutePanel;
-	public MainPage(MainSerivceClientImpl mainServiceClientImpl) {
+	
+	//파일 리스트. 폴더 리스트
+	public MainPage(MainSerivceClientImpl mainServiceClientImpl,List<FolderDto> folderList,FolderDto homefolder) {
 		
 		this.serviceImpl = mainServiceClientImpl;
 		
 		absolutePanel = new AbsolutePanel();
 		initWidget(this.absolutePanel);
-		
+		absolutePanel.setSize("857px", "514px"); 
+
 		HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
-		absolutePanel.add(horizontalSplitPanel, 0, 46);
-		horizontalSplitPanel.setSize("669px", "364px");
+		this.absolutePanel.add(horizontalSplitPanel, 0, 46);
+		horizontalSplitPanel.setSize("857px", "427px");
 		
 		CellTree cellTree = new CellTree(
 			new TreeViewModel() {
@@ -51,16 +60,17 @@ public class MainPage extends Composite{
 					return true;
 				}
 			}, null);
+		
 		horizontalSplitPanel.setLeftWidget(cellTree);
-		cellTree.setSize("100%", "100%");
+		cellTree.setSize("416px", "100%");
 		
 		CellTable<Object> cellTable = new CellTable<Object>();
 		horizontalSplitPanel.setRightWidget(cellTable);
-		cellTable.setSize("100%", "100%");
+		cellTable.setSize("420px", "100%");
 		
 		MenuBar menuBar = new MenuBar(false);
 		absolutePanel.add(menuBar, 0, 0);
-		menuBar.setSize("669px", "40px");
+		menuBar.setSize("857px", "40px");
 		MenuBar menuBar_1 = new MenuBar(true);
 		
 		MenuItem mntmNewMenu = new MenuItem("New menu", false, menuBar_1);
@@ -83,22 +93,36 @@ public class MainPage extends Composite{
 		menuBar.addItem(mntmNewMenu_4);
 		
 		Button btnNewButton = new Button("New button");
-		absolutePanel.add(btnNewButton, 552, 416);
-		btnNewButton.setSize("85px", "25px");
+		btnNewButton.setText("로그아웃");
+		absolutePanel.add(btnNewButton, 762, 479);
+		btnNewButton.setSize("85px", "25px");				
 		
 		Label lblNewLabel = new Label("회사 명 : 제네지");
 		lblNewLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		absolutePanel.add(lblNewLabel, 414, 423);
+		absolutePanel.add(lblNewLabel, 609, 486);
 		lblNewLabel.setSize("111px", "18px");
 		
 		Label lblNewLabel_1 = new Label("아이디 : test1");
 		lblNewLabel_1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		absolutePanel.add(lblNewLabel_1, 287, 423);
+		absolutePanel.add(lblNewLabel_1, 463, 486);
 		lblNewLabel_1.setSize("116px", "18px");
 		
 		MenuBar menuBar_2 = new MenuBar(true);
 		
-		MenuItem mntmNewMenu_1 = new MenuItem("파일", false, menuBar_2);
-
+		MenuItem mntmNewMenu_1 = new MenuItem("파일", false, menuBar_2);		
+		Window.addWindowClosingHandler(new ClosingHandler() {
+            @Override
+             public void onWindowClosing(ClosingEvent event) {
+            
+             }
+      });
+      Window.addCloseHandler(new CloseHandler<Window>() {
+		
+		@Override
+		public void onClose(CloseEvent<Window> event) {
+			// TODO Auto-generated method stub
+			
+		}
+	});		
 	}
 }

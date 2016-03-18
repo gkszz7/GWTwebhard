@@ -13,7 +13,7 @@
   
   <servlet-mapping>
   	<servlet-name>MainServlet</servlet-name>
-  	<url-pattern>/gwt/MainPage</url-pattern>
+  	<url-pattern>/gwt/Main</url-pattern>
   </servlet-mapping>
   
   <servlet>
