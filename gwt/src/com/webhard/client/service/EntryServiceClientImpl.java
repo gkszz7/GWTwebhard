@@ -58,9 +58,10 @@ public class EntryServiceClientImpl implements EntryServiceClientInt {
 			}
 			@Override
 			public void onSuccess(Object result) {
+				
 				Window.alert("회원가입이 되셨습니다.");
 				RootPanel.get().clear();
-				LoginSerivceClientImpl login = new LoginSerivceClientImpl(GWT.getModuleBaseURL()+"login");
+				LoginServiceClientImpl login = new LoginServiceClientImpl(GWT.getModuleBaseURL()+"login");
 				
 				RootPanel.get().add(login.getLoginUser());
 			}

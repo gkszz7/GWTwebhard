@@ -1,6 +1,8 @@
 package com.webhard.client.model;
 
-public class FileDto extends ItemDto{
+import java.io.Serializable;
+
+public class FileDto extends ItemDto implements Serializable{
 	
 	private String fileURL;
 	private String fileSize;

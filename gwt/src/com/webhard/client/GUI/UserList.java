@@ -19,7 +19,7 @@ public class UserList extends Composite{
 
 		DialogBox dialog = new DialogBox();
 		dialog.setSize("674px", "503px");
-		
+
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		absolutePanel.setStyleName("login");
 		absolutePanel.setSize("1318px", "503px");

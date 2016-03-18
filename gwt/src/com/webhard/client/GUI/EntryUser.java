@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.service.EntryServiceClientImpl;
-import com.webhard.client.service.LoginSerivceClientImpl;
+import com.webhard.client.service.LoginServiceClientImpl;
 
 public class EntryUser extends Composite{
 	
@@ -137,7 +137,7 @@ public class EntryUser extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 				RootPanel.get().clear();
-				LoginSerivceClientImpl login = new LoginSerivceClientImpl(GWT.getModuleBaseURL()+"login");
+				LoginServiceClientImpl login = new LoginServiceClientImpl(GWT.getModuleBaseURL()+"login");
 				
 				RootPanel.get().add(login.getLoginUser());
 			}

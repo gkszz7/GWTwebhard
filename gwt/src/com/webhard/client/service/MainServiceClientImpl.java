@@ -20,7 +20,7 @@ public class MainServiceClientImpl implements MainServiceClientInt{
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.mainAsync;
 		endPoint.setServiceEntryPoint(url);
 		
-		this.main = new MainPage(this);
+		this.main = new MainPage(this, null, null);
 	}
 	
 	@Override

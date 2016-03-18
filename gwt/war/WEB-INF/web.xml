@@ -22,7 +22,7 @@
   </servlet>
   
   <servlet-mapping>
-  	<servlet-name>MainServlet</servlet-name>
+  	<servlet-name>CompanyServlet</servlet-name>
   	<url-pattern>/gwt/company</url-pattern>
   </servlet-mapping>
   

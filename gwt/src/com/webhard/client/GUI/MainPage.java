@@ -9,7 +9,6 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.CellTree;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
@@ -28,8 +27,8 @@ import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.SelectionModel.AbstractSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.FolderDto;
 import com.webhard.client.service.CompanyServiceClientImpl;
-import com.webhard.client.service.EntryServiceClientImpl;
 import com.webhard.client.service.MainServiceClientImpl;
 
 public class MainPage extends Composite {
@@ -38,8 +37,9 @@ public class MainPage extends Composite {
 	AbsolutePanel absolutePanel;
 	private List<CompanyDto> companys;
 
-	public MainPage(MainServiceClientImpl mainServiceClientImpl) {
-
+	//파일 리스트. 폴더 리스트
+	public MainPage(MainServiceClientImpl mainServiceClientImpl,List<FolderDto> folderList,FolderDto homefolder) {
+		
 		this.serviceImpl = mainServiceClientImpl;
 		this.serviceImpl.compList();
 		absolutePanel = new AbsolutePanel();

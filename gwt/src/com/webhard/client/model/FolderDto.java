@@ -1,6 +1,8 @@
 package com.webhard.client.model;
 
-public class FolderDto extends ItemDto{
+import java.io.Serializable;
+
+public class FolderDto extends ItemDto implements Serializable{
 	private int step;
 	private int folderType;
 	
