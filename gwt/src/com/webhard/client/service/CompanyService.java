@@ -13,5 +13,9 @@ import com.webhard.client.model.CompanyDto;
 @RemoteServiceRelativePath("company")
 public interface CompanyService extends RemoteService {
 	boolean compNameCheck(String name);
-	void updateCompany(String basicName, String name, String phone, String addr);
+	List<CompanyDto> updateCompany(String basicName, String name, String phone, String addr);
+	List<CompanyDto> deleteCompany(String name);
+	List<CompanyDto> searchCompByName(String name);
+	List<CompanyDto> searchCompByAddr(String addr);
+	List<CompanyDto> searchCompByPhone(String phone);
 }

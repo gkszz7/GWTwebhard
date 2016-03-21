@@ -206,7 +206,7 @@ public class FolderDao implements Serializable{
         try {
 			con = connection.conn();
 			String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum "
-					+ "from folder f, item i where i.itemNum = f.itemNum and i.itemNum = 140";
+					+ "from folder f, item i where i.itemNum = f.itemNum and i.itemNum = 78";
 			ps = con.prepareStatement(sql);
 			rs=ps.executeQuery();
 			
@@ -464,7 +464,7 @@ public class FolderDao implements Serializable{
 	/**
 	 * ȸ��ѹ��� ����� ������ ��������
 	 */
-	public ItemDto printFolderbyCompanyNum(int comNum) {
+	public ItemDto printCompFolderbyCompanyNum(int comNum) {
 		Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -472,7 +472,7 @@ public class FolderDao implements Serializable{
         
         try {
 			con = connection.conn();
-			String sql="select * from item where companyNum= ? and parentNum = 140";
+			String sql="select * from item where companyNum= ? and parentNum = 78";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, comNum);
 			rs=ps.executeQuery();
@@ -585,7 +585,7 @@ public class FolderDao implements Serializable{
         try {
 			con = connection.conn();
 			String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum"
-					+ " from folder f, item i where i.parentNum= 140 and f.foldertype = 1 and i.itemNum=f.itemNum";
+					+ " from folder f, item i where i.parentNum= 78 and f.foldertype = 1 and i.itemNum=f.itemNum";
 			ps = con.prepareStatement(sql);
 			rs=ps.executeQuery();
 			

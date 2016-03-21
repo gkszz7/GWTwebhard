@@ -27,6 +27,8 @@ public class CompanyList extends Composite {
 	private TextBox nameText;
 	private TextBox phoneText;
 	private TextBox addrText;
+	private ListBox listBox;
+	private TextBox searchText;
 	private DialogBox editDialog;
 	private AbsolutePanel absolutePanel;
 	private CellTable<CompanyDto> cellTable;
@@ -37,7 +39,7 @@ public class CompanyList extends Composite {
 
 		absolutePanel = new AbsolutePanel();
 		initWidget(this.absolutePanel);
-		absolutePanel.setStyleName("login");
+		absolutePanel.setStyleName("gwt-absolutePanel");
 		this.serviceImpl = compImpl;
 		
 		createTable(companys);
@@ -46,25 +48,50 @@ public class CompanyList extends Composite {
 		Label label = new Label("회사 목록");
 		label.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		absolutePanel.add(label, 243, 10);
-		label.setSize("173px", "20px");
+		label.setSize("173px", "29px");
 
 		Button button = new Button("New button");
 		button.setText("검색");
 		absolutePanel.add(button, 511, 99);
 		button.setSize("85px", "31px");
+		button.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(searchText.getText() != null){
+					if(listBox.getSelectedIndex() == 1){
+						System.out.println(listBox.getSelectedIndex());
+						System.out.println(searchText.getText());
+						serviceImpl.searchCompByName(searchText.getText());
+					}else if(listBox.getSelectedIndex() == 2){
+						serviceImpl.searchCompByPhone(searchText.getText());
+					}else if(listBox.getSelectedIndex() == 3){
+						serviceImpl.searchCompByAddr(searchText.getText());
+					}else{
+						Window.alert("검색 조건을 선택해 주세요.");
+					}
+				}
+				
+			}
+		});
 
-		TextBox textBox = new TextBox();
-		absolutePanel.add(textBox, 335, 65);
-		textBox.setSize("257px", "14px");
+		searchText = new TextBox();
+		absolutePanel.add(searchText, 335, 65);
+		searchText.setSize("257px", "14px");
 
-		ListBox listBox = new ListBox();
+		listBox = new ListBox();
+		listBox.addItem("선택");
+		listBox.addItem("이름");
+		listBox.addItem("전화번호");
+		listBox.addItem("주소");
 		listBox.setDirectionEstimator(true);
 		absolutePanel.add(listBox, 251, 65);
-		listBox.setSize("78px", "45px");
+		listBox.setSize("78px", "31px");
+		
 
 		final Button button_1 = new Button("New button");
 		button_1.setText("수정");
-		absolutePanel.add(button_1, 403, 391);
+		absolutePanel.add(button_1, 403, 446);
 		button_1.setSize("85px", "29px");
 		button_1.addClickHandler(new ClickHandler() {
 
@@ -80,7 +107,7 @@ public class CompanyList extends Composite {
 
 		Button button_2 = new Button("New button");
 		button_2.setText("삭제");
-		absolutePanel.add(button_2, 513, 391);
+		absolutePanel.add(button_2, 511, 446);
 		button_2.setSize("85px", "29px");
 		button_2.addClickHandler(new ClickHandler() {
 
@@ -89,7 +116,9 @@ public class CompanyList extends Composite {
 				if(selected == null){
 					Window.alert("회사를 선택해 주세요.");
 				}else{
-					
+					if(Window.confirm("삭제 하시겠습니까?")){
+						serviceImpl.deleteCompany(selected.getCompanyName());
+					}					
 				}
 			}
 		});
@@ -125,7 +154,7 @@ public class CompanyList extends Composite {
 				System.out.println("2."+getNameCheck());
 				if (nameText.getText().length() == 0) {
 					Window.alert("회사명을 입력해 주세요.");
-				} else if (getNameCheck() == true) {
+				} else if (nameCheck == true) {
 					Window.alert("이미 등록 된 회사 입니다.");
 				} else if (phoneText.getText().length() == 0) {
 					Window.alert("전화번호를 입력해 주세요.");
@@ -168,7 +197,7 @@ public class CompanyList extends Composite {
 
 		Button checkBtn = new Button("New button");
 		checkBtn.setText("중복");
-		aPanel.add(checkBtn, 349, 120);
+		aPanel.add(checkBtn, 356, 120);
 		checkBtn.setSize("63px", "31px");
 		checkBtn.addClickHandler(new ClickHandler() {
 
@@ -250,11 +279,10 @@ public class CompanyList extends Composite {
 
 	public void setNameCheck(boolean result) {
 		this.nameCheck = result;
-		System.out.println(nameCheck);
 	}
 
 	public boolean getNameCheck() {
-		
-		return nameCheck;
+		boolean check = this.nameCheck;
+		return check;
 	}
 }

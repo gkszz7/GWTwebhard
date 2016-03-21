@@ -35,7 +35,7 @@ h1 {
 .gwt-Label {
 	font-stretch: normal;
 	font-variant: normal;
-	font-size: 14px;
+	font-size: 18px;
 	font-style: normal;
 	font-weight: bold;
 }
@@ -45,19 +45,7 @@ h1 {
 	font-weight: bold;
 
 }
-login {
-	border-top: 1px inset;
-	border-right: 1px inset;
-	border-bottom: 1px inset;
-	border-left: 1px;
-}
-entry {
-	border:1px solid black;
-}
-editFolder {
-	font-size: 30px;
-	
-}
+
 .gwt-MenuItem {
 	font-size: 14px;
 	font-weight: bold;
@@ -76,6 +64,12 @@ editFolder {
 .gwt-TextBox {
 	border : 1px solid black;
 }
+
 .gwt-absolutePanel {
+	border: 1px solid black;
 	background-color: lightgray;
+	 margin-left:auto;
+     margin-right:auto;
+     margin-top:auto;
+     margin-bottom:auto;
 }

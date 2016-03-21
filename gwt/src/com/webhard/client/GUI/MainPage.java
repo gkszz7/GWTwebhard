@@ -135,35 +135,17 @@ public class MainPage extends Composite {
 				enterCompList();
 			}
 		});
-//		Window.addWindowClosingHandler(new ClosingHandler() {
-//			@Override
-//			public void onWindowClosing(ClosingEvent event) {
-//
-//			}
-//		});
-//		Window.addCloseHandler(new CloseHandler<Window>() {
-//
-//			@Override
-//			public void onClose(CloseEvent<Window> event) {
-//
-//			}
-//		});
+
 	}
 	public void setCompList(List<CompanyDto> list){
 		companys = list;
-//		if(companys == null){
-//			System.out.println("aqwasf");
-//		}
-//		if(companys != null){
-//			System.out.println("3." +companys.get(0).getCompanyName());
-//			System.out.println("qweqwe");
-//		}
+
 	}
 	public void enterCompList(){
 		
 		RootPanel.get().clear();
 		
-		CompanyServiceClientImpl compImpl = new CompanyServiceClientImpl(GWT.getModuleBaseURL()+"company");
+		CompanyServiceClientImpl compImpl = new CompanyServiceClientImpl(GWT.getModuleBaseURL()+"company",companys);
 		CompanyList companyList = new CompanyList(compImpl, companys);
 		RootPanel.get().add(companyList);
 	}
