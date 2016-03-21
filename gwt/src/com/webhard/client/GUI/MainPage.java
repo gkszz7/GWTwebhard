@@ -34,22 +34,19 @@ import com.webhard.client.service.MainServiceClientImpl;
 public class MainPage extends Composite {
 
 	private final MainServiceClientImpl serviceImpl;
-	AbsolutePanel absolutePanel;
+	private AbsolutePanel absolutePanel = new AbsolutePanel();
 	private List<CompanyDto> companys;
 
 	//파일 리스트. 폴더 리스트
-	public MainPage(MainServiceClientImpl mainServiceClientImpl,List<FolderDto> folderList,FolderDto homefolder) {
-		
-		this.serviceImpl = mainServiceClientImpl;
-		this.serviceImpl.compList();
-		absolutePanel = new AbsolutePanel();
+	public MainPage(final MainServiceClientImpl mainServiceClientImpl,List<FolderDto> folderList,FolderDto homefolder) {
 
 		initWidget(this.absolutePanel);
 		absolutePanel.setSize("857px", "514px");
-
 		HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
 		this.absolutePanel.add(horizontalSplitPanel, 0, 46);
 		horizontalSplitPanel.setSize("857px", "427px");
+		this.serviceImpl = mainServiceClientImpl;
+		this.serviceImpl.compList();
 
 		CellTree cellTree = new CellTree(new TreeViewModel() {
 			final AbstractDataProvider<String> dataProvider = new ListDataProvider<String>();
@@ -98,17 +95,12 @@ public class MainPage extends Composite {
 
 		MenuItem compMenu = new MenuItem("회사", false, menuBar_6);
 
-		menuBar_6.addItem("회사 목록", new ScheduledCommand() {
-
-			@Override
-			public void execute() {
-				enterCompList();
-			}
-		});
+		
 		menuBar_6.addItem("회사 가입", new ScheduledCommand() {
 
 			@Override
 			public void execute() {
+				
 				Window.alert("asd");
 			}
 		});
@@ -134,28 +126,45 @@ public class MainPage extends Composite {
 		MenuBar menuBar_2 = new MenuBar(true);
 
 		MenuItem mntmNewMenu_1 = new MenuItem("파일", false, menuBar_2);
-
-		Window.addWindowClosingHandler(new ClosingHandler() {
-			@Override
-			public void onWindowClosing(ClosingEvent event) {
-
-			}
-		});
-		Window.addCloseHandler(new CloseHandler<Window>() {
+		
+		menuBar_6.addItem("회사 목록", new ScheduledCommand() {
 
 			@Override
-			public void onClose(CloseEvent<Window> event) {
-
+			public void execute() {
+				
+				enterCompList();
 			}
 		});
+//		Window.addWindowClosingHandler(new ClosingHandler() {
+//			@Override
+//			public void onWindowClosing(ClosingEvent event) {
+//
+//			}
+//		});
+//		Window.addCloseHandler(new CloseHandler<Window>() {
+//
+//			@Override
+//			public void onClose(CloseEvent<Window> event) {
+//
+//			}
+//		});
 	}
 	public void setCompList(List<CompanyDto> list){
 		companys = list;
+//		if(companys == null){
+//			System.out.println("aqwasf");
+//		}
+//		if(companys != null){
+//			System.out.println("3." +companys.get(0).getCompanyName());
+//			System.out.println("qweqwe");
+//		}
 	}
 	public void enterCompList(){
+		
 		RootPanel.get().clear();
-		CompanyServiceClientImpl comp = new CompanyServiceClientImpl(GWT.getModuleBaseURL()+"company");
-		CompanyList compList = new CompanyList(comp, companys);
-		RootPanel.get().add(compList);
+		
+		CompanyServiceClientImpl compImpl = new CompanyServiceClientImpl(GWT.getModuleBaseURL()+"company");
+		CompanyList companyList = new CompanyList(compImpl, companys);
+		RootPanel.get().add(companyList);
 	}
 }

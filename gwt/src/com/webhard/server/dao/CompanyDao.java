@@ -53,7 +53,7 @@ public class CompanyDao implements Serializable {
         return companys;
 	}
 	//ȸ�� �̸����� ȸ�� ���� ã��
-	public CompanyDto getData(String companyName){
+	public CompanyDto getCompanyDtoByName(String companyName){
 		Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;

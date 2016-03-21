@@ -38,10 +38,9 @@ public class EntryUser extends Composite{
 		
 			
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-		
 		initWidget(this.vPanel);
 		this.serviceImpl = serviceImp;
-		
+
 		vPanel.setSize("474px", "615px");
 		LayoutPanel layoutPanel = new LayoutPanel();
 
@@ -158,7 +157,6 @@ public class EntryUser extends Composite{
 				}else{
 					Window.alert("아이디를 입력해 주세요.");
 				}
-				
 			}
 		});
 		
@@ -213,9 +211,6 @@ public class EntryUser extends Composite{
 					serviceImpl.entryUser(textBoxId.getText(), textBoxPw.getText(), textBoxName.getText(), 
 							textBoxPhone.getText(), textBoxAddr.getText(), comboBox.getValue(comboBox.getSelectedIndex()));				
 				}
-				
-				
-				
 			}
 		});
 		

@@ -7,20 +7,20 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.webhard.client.GUI.MainPage;
 import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.FolderDto;
 
 public class MainServiceClientImpl implements MainServiceClientInt{
 	
 	private MainServiceAsync mainAsync;
 	private MainPage main;
-
 	
-	public MainServiceClientImpl(String url) {
+	public MainServiceClientImpl(String url,FolderDto homefol,List<FolderDto> folList) {
 		
 		this.mainAsync = GWT.create(MainService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.mainAsync;
 		endPoint.setServiceEntryPoint(url);
 		
-		this.main = new MainPage(this, null, null);
+		this.main = new MainPage(this, folList, homefol);
 	}
 	
 	@Override
@@ -42,6 +42,7 @@ public class MainServiceClientImpl implements MainServiceClientInt{
 	}
 	
 	public MainPage getMainPage(){
+
 		return this.main;
 	}
 }

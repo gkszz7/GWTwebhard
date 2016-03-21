@@ -101,7 +101,6 @@ public class LoginUser extends Composite{
       userInsertBtn.addClickHandler(new ClickHandler() {   
          @Override
          public void onClick(ClickEvent event) { 
-            // TODO Auto-generated method stub
             entry();
             
          }
@@ -137,7 +136,6 @@ public class LoginUser extends Composite{
    
    public void entry(){
       RootPanel.get().clear();
-      
       EntryServiceClientImpl entry = new EntryServiceClientImpl(GWT.getModuleBaseURL()+"entry");
       EntryUser user = new EntryUser(entry, list);
       RootPanel.get().add(user);
