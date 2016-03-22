@@ -17,6 +17,7 @@ import com.webhard.server.dao.FolderDao;
  */
 
 public class CompanyServiceImpl extends RemoteServiceServlet implements CompanyService {
+	
 	private int selectNum;
 	
 	@Override

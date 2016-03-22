@@ -6,6 +6,26 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
+  <servlet>
+  <servlet-name>AccessListServlet</servlet-name>
+  <servlet-class>com.webhard.server.AccessListServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  <servlet-name>AccessListServlet</servlet-name>
+  <url-pattern>/gwt/AccessList</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  <servlet-name>UserListServlet</servlet-name>
+  <servlet-class>com.webhard.server.UserListServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  <servlet-name>UserListServlet</servlet-name>
+  <url-pattern>/gwt/UserList</url-pattern>
+  </servlet-mapping>
+  
  <servlet>
     <servlet-name>MainServlet</servlet-name>
     <servlet-class>com.webhard.server.MainServiceImpl</servlet-class>

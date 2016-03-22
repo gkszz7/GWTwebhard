@@ -34,15 +34,14 @@ public class CompanyList extends Composite {
 	private CellTable<CompanyDto> cellTable;
 	private CompanyDto selected;
 
-	public CompanyList(final CompanyServiceClientImpl compImpl,
-			final List<CompanyDto> companys) {
+	public CompanyList(final CompanyServiceClientImpl compImpl,final List<CompanyDto> companys) {
 
 		absolutePanel = new AbsolutePanel();
 		initWidget(this.absolutePanel);
 		absolutePanel.setStyleName("gwt-absolutePanel");
 		this.serviceImpl = compImpl;
-		
-		createTable(companys);
+		cellTable = new CellTable<CompanyDto>();
+		companyTable(companys);
 		absolutePanel.add(cellTable, 0, 159);
 		absolutePanel.setSize("667px", "503px");
 		Label label = new Label("회사 목록");
@@ -113,6 +112,7 @@ public class CompanyList extends Composite {
 
 			@Override
 			public void onClick(ClickEvent event) {
+			
 				if(selected == null){
 					Window.alert("회사를 선택해 주세요.");
 				}else{
@@ -220,18 +220,18 @@ public class CompanyList extends Composite {
 		});
 		/************************************************/
 	}
-
-	private void createTable(List<CompanyDto> companys) {
+	//회사목록
+	public void companyTable(List<CompanyDto> companys) {
+		
 		cellTable = new CellTable<CompanyDto>();
 		cellTable.setSkipRowHoverCheck(true);
 		cellTable.setSize("661px", "221px");
-		absolutePanel.add(cellTable, 0, 159);
-		// if(companys != null){
-		listByCom(companys);
-		// }
+		 if(companys != null){
+		companylistByCom(companys);
+		 }
 	}
 
-	public void listByCom(final List<CompanyDto> companys) {
+	public void companylistByCom(final List<CompanyDto> companys) {
 		cellTable.removeFromParent();
 		if (companys != null) {
 			TextColumn<CompanyDto> namecolumn = new TextColumn<CompanyDto>() {
@@ -268,15 +268,14 @@ public class CompanyList extends Composite {
 
 				@Override
 				public void onSelectionChange(SelectionChangeEvent event) {
-					selected = selectionModel.getSelectedObject();
+					CompanyDto selected = selectionModel.getSelectedObject();
 				}
 			});
 			cellTable.setRowCount(companys.size(),true);
-            cellTable.setRowData(0,companys);
+			cellTable.setRowData(0,companys);
 		}
 
 	}
-
 	public void setNameCheck(boolean result) {
 		this.nameCheck = result;
 	}
