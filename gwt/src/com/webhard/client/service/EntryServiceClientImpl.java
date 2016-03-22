@@ -10,20 +10,20 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.webhard.client.GUI.EntryUser;
 import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.UserDto;
 
 public class EntryServiceClientImpl implements EntryServiceClientInt {
 	
 	private EntryServiceAsync entryAsync;
 	private EntryUser entryUser;
-	private List<CompanyDto> list;
 	
-	public EntryServiceClientImpl(String url) {
+	public EntryServiceClientImpl(String url, List<CompanyDto> list ,List<UserDto> userList) {
 		
 		this.entryAsync = GWT.create(EntryService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.entryAsync;
 		endPoint.setServiceEntryPoint(url);
 		
-		this.entryUser = new EntryUser(this, list);
+		this.entryUser = new EntryUser(this,list, userList);
 	}
 	
 	@Override
@@ -68,9 +68,8 @@ public class EntryServiceClientImpl implements EntryServiceClientInt {
 		});
 	}
 
-//	public EntryUser getEntryUser(List<CompanyDto> result){
-//		list = result;
-//		return this.entryUser;
-//	}
+	public EntryUser getEntryUser(){
+		return this.entryUser;
+	}
 	
 }

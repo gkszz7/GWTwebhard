@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.FileDto;
 import com.webhard.client.model.FolderDto;
+import com.webhard.client.model.UserDto;
 import com.webhard.client.service.EntryServiceClientImpl;
 import com.webhard.client.service.LoginServiceClientImpl;
 import com.webhard.server.dao.FolderDao;
@@ -33,6 +34,7 @@ public class LoginUser extends Composite{
    private List<CompanyDto> list;
    private List<FolderDto> folderList;
    private FolderDto homefolder;   
+   private List<UserDto> userList;
    
    public LoginUser(final LoginServiceClientImpl loginSerivceClientImpl) {
             
@@ -44,6 +46,7 @@ public class LoginUser extends Composite{
       this.serviceImpl.comboList();
       this.serviceImpl.folderList();
       this.serviceImpl.homefolder();
+      this.serviceImpl.userList();
       dialogBox.setSize("1330px", "1000px");
       
       LayoutPanel layoutPanel = new LayoutPanel();
@@ -83,7 +86,7 @@ public class LoginUser extends Composite{
             if(textBox.getText().length()>0 && passwordTextBox.getText().length()>0){
             String id = textBox.getText();
             String pwd = passwordTextBox.getText();
-            serviceImpl.login(id, pwd, folderList,homefolder);
+            serviceImpl.login(id, pwd, folderList,homefolder, list);
             
             }
             else{
@@ -128,17 +131,22 @@ public class LoginUser extends Composite{
 	   
 	   folderList = folList;
 	 
-	   }
+   }
    
    public void setComList(List<CompanyDto> list1){
-      list = list1;
+	   list = list1;
+   }
+   public void setUserList(List<UserDto> list1){
+	   userList = list1;
    }
    
    public void entry(){
       RootPanel.get().clear();
-      EntryServiceClientImpl entry = new EntryServiceClientImpl(GWT.getModuleBaseURL()+"entry");
-      EntryUser user = new EntryUser(entry, list);
-      RootPanel.get().add(user);
+      System.out.println(list.get(0).getCompanyAddr());
+      System.out.println(userList.get(0).getUserAddr());
+      EntryServiceClientImpl entry = new EntryServiceClientImpl(GWT.getModuleBaseURL()+"entry",list, userList);
+      //EntryUser user = new EntryUser(entry, list, userList);
+      RootPanel.get().add(entry.getEntryUser());
    }
  
 }

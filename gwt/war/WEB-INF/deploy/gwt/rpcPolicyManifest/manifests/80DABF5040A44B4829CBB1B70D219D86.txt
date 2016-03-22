@@ -1,0 +1,2 @@
+serviceClass: com.webhard.client.service.MainService
+path: 85BBEB3BD64746B81DC10F23161AA869.gwt.rpc

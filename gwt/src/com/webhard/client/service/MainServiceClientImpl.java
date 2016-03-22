@@ -15,13 +15,13 @@ public class MainServiceClientImpl implements MainServiceClientInt{
 	private MainServiceAsync mainAsync;
 	private MainPage main;
 	
-	public MainServiceClientImpl(String url,FolderDto homefol,List<FolderDto> folList) {
+	public MainServiceClientImpl(String url,FolderDto homefol,List<FolderDto> folList, List<CompanyDto> compList) {
 		
 		this.mainAsync = GWT.create(MainService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.mainAsync;
 		endPoint.setServiceEntryPoint(url);
 		
-		this.main = new MainPage(this, folList, homefol);
+		this.main = new MainPage(this, folList, homefol, compList);
 	}
 	
 	@Override

@@ -13,4 +13,5 @@ public interface MainService extends RemoteService{
 	List<CompanyDto> compList();
 	List<UserDto> UserList();	
 	List<UserDto> AccessList();
+	
 }
