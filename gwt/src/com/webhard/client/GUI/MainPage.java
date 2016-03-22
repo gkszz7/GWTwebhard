@@ -36,13 +36,15 @@ public class MainPage extends Composite {
 	private final MainServiceClientImpl serviceImpl;
 	private AbsolutePanel absolutePanel = new AbsolutePanel();
 	private List<CompanyDto> companys;
+	private List<FolderDto> folderList;
+	private FolderDto homeFolder;
 	private DialogBox entryCompany;
 	private TextBox nameText;
 	private TextBox phoneText;
 	private TextBox addrText;
 
 	//파일 리스트. 폴더 리스트
-	public MainPage(final MainServiceClientImpl mainServiceClientImpl,List<FolderDto> folderList,FolderDto homefolder, final List<CompanyDto> compList) {
+	public MainPage(final MainServiceClientImpl mainServiceClientImpl) {
 
 		initWidget(this.absolutePanel);
 		absolutePanel.setSize("857px", "514px");
@@ -51,6 +53,8 @@ public class MainPage extends Composite {
 		horizontalSplitPanel.setSize("857px", "427px");
 		this.serviceImpl = mainServiceClientImpl;
 		this.serviceImpl.compList();
+		this.serviceImpl.folderList();
+		this.serviceImpl.homeFolder();
 
 		CellTree cellTree = new CellTree(new TreeViewModel() {
 			final AbstractDataProvider<String> dataProvider = new ListDataProvider<String>();
@@ -158,7 +162,7 @@ public class MainPage extends Composite {
 		nameText.setSize("284px", "27px");
 
 		Button createBtn = new Button("New button");
-		createBtn.setText("수정");
+		createBtn.setText("확인");
 		aPanel.add(createBtn, 159, 370);
 		createBtn.setSize("85px", "29px");
 		
@@ -200,9 +204,11 @@ public class MainPage extends Composite {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				
+				System.out.println("1"+folderList.get(0).getName());
+				System.out.println("2"+homeFolder.getName());
+				System.out.println("3"+companys.get(0).getCompanyName());
 				boolean check = false;
-				for(CompanyDto company : compList){
+				for(CompanyDto company : companys){
 					if(nameText.getText().equals(company.getCompanyName())){
 						check = true;
 					}
@@ -226,7 +232,7 @@ public class MainPage extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				boolean check = false;
-				for(CompanyDto company : compList){
+				for(CompanyDto company : companys){
 					if(nameText.getText().equals(company.getCompanyName())){
 						check = true;
 					}
@@ -241,7 +247,7 @@ public class MainPage extends Composite {
 				} else if (addrText.getText().length() == 0) {
 					Window.alert("주소를 입력해 주세요.");
 				} else {
-					//serviceImpl.updateCompany(selected.getCompanyName(), nameText.getText(), phoneText.getText(), addrText.getText());
+					serviceImpl.entryCompany(nameText.getText(), addrText.getText(), phoneText.getText());
 				}
 			}
 		});
@@ -257,6 +263,14 @@ public class MainPage extends Composite {
 	}
 	public void setCompList(List<CompanyDto> list){
 		companys = list;
+
+	}
+	public void setFolderList(List<FolderDto> fList){
+		folderList = fList;
+
+	}
+	public void setHomeFolder(FolderDto home){
+		homeFolder = home;
 
 	}
 	public void enterCompList(){
