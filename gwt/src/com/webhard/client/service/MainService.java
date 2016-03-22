@@ -10,4 +10,5 @@ import com.webhard.client.model.CompanyDto;
 public interface MainService extends RemoteService{
 
 	List<CompanyDto> compList();
+	
 }

@@ -12,6 +12,7 @@ import com.webhard.client.GUI.MainPage;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.FileDto;
 import com.webhard.client.model.FolderDto;
+import com.webhard.client.model.UserDto;
 
 public class LoginServiceClientImpl implements LoginServiceClientInt{
 	
@@ -33,9 +34,9 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	}
 
 	@Override
-	public int login(final String id, String pwd,final List<FolderDto> folderList, final FolderDto homefolder) {
+	public int login(final String id, String pwd,final List<FolderDto> folderList, final FolderDto homefolder, final List<CompanyDto> compList) {
 			
-		this.loginAsync.login(id, pwd, folderList, homefolder, new AsyncCallback<Integer>() {	
+		this.loginAsync.login(id, pwd, folderList, homefolder, compList, new AsyncCallback<Integer>() {	
 			@Override
 			public void onSuccess(Integer result) {
 				check = result;
@@ -53,7 +54,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 					
 					RootPanel.get().clear();
 					
-					MainServiceClientImpl main = new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main",homefolder,folderList);
+					MainServiceClientImpl main = new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main",homefolder,folderList, compList);
 					
 					RootPanel.get().add(main.getMainPage());
 					
@@ -123,6 +124,21 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 				
 			}
 		});	
+	}
+	@Override
+	public void userList() {
+		this.loginAsync.userList(new AsyncCallback<List<UserDto>>() {
+			
+			@Override
+			public void onSuccess(List<UserDto> result) {
+				loginuser.setUserList(result);
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 	
 	public LoginUser getLoginUser(){

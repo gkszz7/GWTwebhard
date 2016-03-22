@@ -24,7 +24,7 @@ import com.webhard.server.dao.UserDao;
 public class LoginServiceImpl extends RemoteServiceServlet implements LoginService {
 
 	@Override
-	public int login(String id,String pwd,List<FolderDto> folderList,FolderDto homefolder) {
+	public int login(String id,String pwd,List<FolderDto> folderList,FolderDto homefolder, List<CompanyDto> compList) {
 	
 		// TODO Auto-generated method stub
 		UserDao userDao = new UserDao();
@@ -62,6 +62,14 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		folderList = dao.selectFolderTree();
 		return folderList;
 	}
+	@Override
+	public List<UserDto> userList() {
+		List<UserDto> userList = new ArrayList<UserDto>();
+		UserDao dao = new UserDao();
+		userList = dao.selectAllUser();
+		return userList;
+	}
+	
 	@Override
 	public FolderDto homefolder() {
 		FolderDto homeFolder = new FolderDto();

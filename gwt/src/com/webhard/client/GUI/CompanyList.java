@@ -41,7 +41,6 @@ public class CompanyList extends Composite {
 		initWidget(this.absolutePanel);
 		absolutePanel.setStyleName("gwt-absolutePanel");
 		this.serviceImpl = compImpl;
-		
 		createTable(companys);
 		absolutePanel.add(cellTable, 0, 159);
 		absolutePanel.setSize("667px", "503px");
@@ -123,7 +122,7 @@ public class CompanyList extends Composite {
 			}
 		});
 
-		/** 수정 다이얼로그 **/
+		/********** 회사 수정 다이얼로그 **************/
 
 		editDialog = new DialogBox();
 		editDialog.setAnimationEnabled(true);
@@ -147,24 +146,7 @@ public class CompanyList extends Composite {
 		createBtn.setText("수정");
 		aPanel.add(createBtn, 159, 370);
 		createBtn.setSize("85px", "29px");
-		createBtn.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				System.out.println("2."+getNameCheck());
-				if (nameText.getText().length() == 0) {
-					Window.alert("회사명을 입력해 주세요.");
-				} else if (nameCheck == true) {
-					Window.alert("이미 등록 된 회사 입니다.");
-				} else if (phoneText.getText().length() == 0) {
-					Window.alert("전화번호를 입력해 주세요.");
-				} else if (addrText.getText().length() == 0) {
-					Window.alert("주소를 입력해 주세요.");
-				} else {
-					serviceImpl.updateCompany(selected.getCompanyName(), nameText.getText(), phoneText.getText(), addrText.getText());
-				}
-			}
-		});
+		
 		Button cancelBtn = new Button("New button");
 		cancelBtn.setText("취소");
 		aPanel.add(cancelBtn, 260, 370);
@@ -207,6 +189,31 @@ public class CompanyList extends Composite {
 					serviceImpl.compNameCheck(nameText.getText());
 				} else {
 					Window.alert("아이디를 입력해 주세요.");
+				}
+			}
+		});
+		
+		createBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				boolean check = false;
+				for(CompanyDto company : companys){
+					if(nameText.getText().equals(company.getCompanyName())){
+						check = true;
+					}
+				}
+				
+				if (nameText.getText().length() == 0) {
+					Window.alert("회사명을 입력해 주세요.");
+				} else if (check) {
+					Window.alert("이미 등록 된 회사 입니다.");
+				} else if (phoneText.getText().length() == 0) {
+					Window.alert("전화번호를 입력해 주세요.");
+				} else if (addrText.getText().length() == 0) {
+					Window.alert("주소를 입력해 주세요.");
+				} else {
+					serviceImpl.updateCompany(selected.getCompanyName(), nameText.getText(), phoneText.getText(), addrText.getText());
 				}
 			}
 		});
@@ -277,12 +284,13 @@ public class CompanyList extends Composite {
 
 	}
 
-	public void setNameCheck(boolean result) {
-		this.nameCheck = result;
+	public boolean isNameCheck() {
+		return nameCheck;
 	}
 
-	public boolean getNameCheck() {
-		boolean check = this.nameCheck;
-		return check;
+	public void setNameCheck(boolean nameCheck) {
+		this.nameCheck = nameCheck;
 	}
+
+	
 }

@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.UserDto;
 import com.webhard.client.service.EntryServiceClientImpl;
 import com.webhard.client.service.LoginServiceClientImpl;
 
@@ -34,7 +35,7 @@ public class EntryUser extends Composite{
 	private boolean idCheck;
 
 	
-	public EntryUser(final EntryServiceClientImpl serviceImp, List<CompanyDto> cDto) {
+	public EntryUser(final EntryServiceClientImpl serviceImp, List<CompanyDto> cDto, final List<UserDto> userList) {
 		
 			
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
@@ -187,11 +188,19 @@ public class EntryUser extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				
+				boolean check = false;
+				for(UserDto user : userList){
+					if(textBoxId.getText().equals(user.getUserId())){
+						check = true;
+					}
+				}
+				
 				if(textBoxId.getText().length() == 0){
 					Window.alert("아이디를 입력해 주세요");
 				}else if(textBoxId.getText().length() < 4){
 					Window.alert("아이디는 4자리 이상으로 입력해 주세요");
-				}else if(getIdCheck() == true){
+				}else if(check){
 					Window.alert("이미 사용 중인 아이디 입니다.");
 				}else if(textBoxPw.getText().length() == 0 ){
 					Window.alert("비밀번호를 입력해 주세요");
@@ -218,10 +227,10 @@ public class EntryUser extends Composite{
 	}
 
 	public void setIdCheck(boolean check){
-		this.idCheck = check;
+		idCheck = check;
 	}
-	public boolean getIdCheck(){
-		
-		return idCheck;
-	}
+//	public boolean getIdCheck(){
+//		
+//		return idCheck;
+//	}
 }

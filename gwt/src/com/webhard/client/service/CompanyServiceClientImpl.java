@@ -35,11 +35,10 @@ public class CompanyServiceClientImpl implements CompanyServiceClientInt{
 			public void onSuccess(Boolean result) {
 				if(result == true){
 					Window.alert("존재하는 회사명 입니다.");
-					company.setNameCheck(result);
 				}else{
 					Window.alert("수정 가능 한 회사명 입니다.");
-					company.setNameCheck(result);
 				}
+				company.setNameCheck(result);
 			}
 			
 			@Override
