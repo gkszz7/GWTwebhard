@@ -10,26 +10,29 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
+import com.google.gwt.view.client.SingleSelectionModel;
+import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.UserListServiceClientImpl;
 
 public class UserList extends Composite{
 	
 	private final UserListServiceClientImpl userListServiceClientImpl;
-	private TextBox textBox;
-	private ListBox comboBox;
+	private TextBox textBox,nameBox,phoneBox,addrBox;
+	private ListBox comboBox,compBox;
 	private AbsolutePanel absolutePanel;
 	private UserDto selected;
 	private CellTable<UserDto> cellTable_1;
-	private Button btnNewButton_2;
-	public UserList(final UserListServiceClientImpl userListServiceClientImpl,final List<UserDto> userList){
+	private DialogBox editDialog;
+	private Button updateBtn,btnNewButton1,button;
+	public UserList(final UserListServiceClientImpl userListServiceClientImpl,final List<UserDto> userList,final List<CompanyDto> compList){
 		
 		this.userListServiceClientImpl = userListServiceClientImpl;
 		absolutePanel = new AbsolutePanel();
@@ -97,8 +100,115 @@ public class UserList extends Composite{
 		absolutePanel_1.add(cellTable_1, 0, 0);
 		cellTable_1.setSize("860px", "338px");
 		
-		Button updateBtn = new Button("New button");
+		updateBtn = new Button("New button");
 		updateBtn.setText("수정");
+		updateBtn.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+					if(selected == null){
+						Window.alert("회사를 선택해 주세요.");
+					}else{
+						editDialog.center();
+					}
+				}
+		});
+		
+
+		/********** 회사 수정 다이얼로그 **************/
+
+		editDialog = new DialogBox();
+		editDialog.setAnimationEnabled(true);
+		AbsolutePanel aPanel = new AbsolutePanel();
+		aPanel.setStyleName("gwt-absolutePanel");
+		editDialog.setWidget(aPanel);
+		aPanel.setSize("500px", "600px");
+
+		Label lblNewLabe2 = new Label("이름");
+		lblNewLabe2.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+		aPanel.add(lblNewLabe2, 33, 56);
+		lblNewLabe2.setSize("50px", "18px");
+		
+		nameBox = new TextBox();
+		aPanel.add(nameBox, 33, 87);
+		nameBox.setSize("368px", "32px");
+		
+		Label lblwnth = new Label("주소");
+		lblwnth.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+		aPanel.add(lblwnth, 33, 158);
+		lblwnth.setSize("50px", "18px");
+		
+		addrBox = new TextBox();
+		aPanel.add(addrBox, 33, 189);
+		addrBox.setSize("368px", "32px");
+		
+		Label label_1 = new Label("전화번호");
+		label_1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+		aPanel.add(label_1, 33, 265);
+		label_1.setSize("62px", "18px");
+		
+		phoneBox = new TextBox();
+		aPanel.add(phoneBox, 33, 296);
+		phoneBox.setSize("368px", "32px");
+		
+		Label label = new Label("회사 선택");
+		label.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+		aPanel.add(label, 33, 364);
+		label.setSize("75px", "18px");
+		
+		compBox = new ListBox();
+		compBox.addItem("선택해주세요");
+		if(compList !=null){
+			for(CompanyDto company : compList){
+				
+				compBox.addItem(company.getCompanyName());
+			}
+		}else{
+			compBox.addItem("등록 X");
+		}
+		compBox.setDirectionEstimator(true);
+		compBox.setMultipleSelect(false);
+		aPanel.add(compBox, 33, 405);
+		compBox.setSize("95px", "29px");
+		
+		btnNewButton1 = new Button("New button");
+		btnNewButton1.setText("수정");
+		btnNewButton1.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+							
+				if (nameBox.getText().length() == 0) {
+					Window.alert("이름을 입력해 주세요.");
+				}  else if (phoneBox.getText().length() == 0) {
+					Window.alert("전화번호를 입력해 주세요.");
+				} else if (addrBox.getText().length() == 0) {
+					Window.alert("주소를 입력해 주세요.");
+				}else if(compBox.getItemCount() == 0){
+					Window.alert("회사를 선택해주세요.");
+				}
+				else {
+					userListServiceClientImpl.updateUser(selected.getUserId(), nameBox.getText(), phoneBox.getText(), addrBox.getText(), compBox.getValue(compBox.getSelectedIndex()));
+				}
+			}
+		});
+		aPanel.add(btnNewButton1, 117, 486);
+		btnNewButton1.setSize("85px", "32px");
+		
+		button = new Button("New button");
+		button.setText("취소");
+		button.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				editDialog.hide();
+				updateBtn.setEnabled(true);
+				updateBtn.setFocus(true);
+			}
+		});
+		aPanel.add(button, 230, 486);
+		button.setSize("85px", "32px");	
+			
+		/************************************************/
+		
 		absolutePanel_1.add(updateBtn, 626, 355);
 		updateBtn.setSize("85px", "27px");
 		
@@ -118,20 +228,8 @@ public class UserList extends Composite{
 		absolutePanel_1.add(deleteBtn, 729, 355);
 		deleteBtn.setSize("85px", "27px");
 		
-		Button btnNewButton_1 = new Button("New button");
-		btnNewButton_1.setText("수정");
-		btnNewButton_1.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				
-			}
-		});
-		btnNewButton_1.setSize("85px", "29px");
-		
-		
-		
 	}
+		
 	//사용자목록
 		public void UserListTable(List<UserDto> UserList) {
 

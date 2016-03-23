@@ -16,9 +16,10 @@ public interface UserListServiceAsync {
 
 	void searchUserByPhone(String phone, AsyncCallback<List<UserDto>> callback);
 
-	void searchUserById(String id,
-			AsyncCallback<List<UserDto>> callback);
+	void searchUserById(String id,AsyncCallback<List<UserDto>> callback);
 
 	void deleteUser(String id, AsyncCallback<List<UserDto>> callback);
 
-}
+	void updateUser(String id,String name, String phone, String addr,String company, AsyncCallback<List<UserDto>> callback);
+
+} 

@@ -307,7 +307,7 @@ public class MainPage extends Composite {
 		RootPanel.get().clear();
 		
 		UserListServiceClientImpl userImpl = new UserListServiceClientImpl(GWT.getModuleBaseURL()+"UserList");
-		UserList userlist = new UserList(userImpl, userList);
+		UserList userlist = new UserList(userImpl, userList,companys);
 		RootPanel.get().add(userlist);
 
 	}

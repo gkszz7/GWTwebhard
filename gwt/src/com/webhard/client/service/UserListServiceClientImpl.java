@@ -8,12 +8,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.webhard.client.GUI.UserList;
+import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.UserDto;
 
 public class UserListServiceClientImpl implements UserListServiceClientInt{
 
 	private UserListServiceAsync userListAsync;
 	private List<UserDto> userlist;
+	private List<CompanyDto> compList;
 	private UserList userList;
 	
 	public UserListServiceClientImpl(String url){
@@ -22,7 +24,7 @@ public class UserListServiceClientImpl implements UserListServiceClientInt{
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.userListAsync;
 		endPoint.setServiceEntryPoint(url);
 
-		this.userList = new UserList(this,userlist);
+		this.userList = new UserList(this,userlist,compList);
 	}
 	@Override
 	public void searchUserByName(String name) {
@@ -35,7 +37,7 @@ public class UserListServiceClientImpl implements UserListServiceClientInt{
 				RootPanel.get().clear();
 				
 				UserListServiceClientImpl userImpl = new UserListServiceClientImpl(GWT.getModuleBaseURL()+"UserList");
-				UserList userlist = new UserList(userImpl, result);
+				UserList userlist = new UserList(userImpl, result,compList);
 				RootPanel.get().add(userlist);
 				
 			}
@@ -56,7 +58,7 @@ public class UserListServiceClientImpl implements UserListServiceClientInt{
 				RootPanel.get().clear();
 				
 				UserListServiceClientImpl userImpl = new UserListServiceClientImpl(GWT.getModuleBaseURL()+"UserList");
-				UserList userlist = new UserList(userImpl, result);
+				UserList userlist = new UserList(userImpl, result,compList);
 				RootPanel.get().add(userlist);
 			}
 			
@@ -75,7 +77,7 @@ public class UserListServiceClientImpl implements UserListServiceClientInt{
 				RootPanel.get().clear();
 				
 				UserListServiceClientImpl userImpl = new UserListServiceClientImpl(GWT.getModuleBaseURL()+"UserList");
-				UserList userlist = new UserList(userImpl, result);
+				UserList userlist = new UserList(userImpl, result,compList);
 				RootPanel.get().add(userlist);
 			}
 			
@@ -95,7 +97,7 @@ public class UserListServiceClientImpl implements UserListServiceClientInt{
 				RootPanel.get().clear();
 				
 				UserListServiceClientImpl userImpl = new UserListServiceClientImpl(GWT.getModuleBaseURL()+"UserList");
-				UserList userlist = new UserList(userImpl, result);
+				UserList userlist = new UserList(userImpl, result,compList);
 				RootPanel.get().add(userlist);
 			}
 			
@@ -119,7 +121,7 @@ public class UserListServiceClientImpl implements UserListServiceClientInt{
 				RootPanel.get().clear();
 				
 				UserListServiceClientImpl userImpl = new UserListServiceClientImpl(GWT.getModuleBaseURL()+"UserList");
-				UserList userlist = new UserList(userImpl, result);
+				UserList userlist = new UserList(userImpl, result,compList);
 				RootPanel.get().add(userlist);
 			}
 			
@@ -131,7 +133,27 @@ public class UserListServiceClientImpl implements UserListServiceClientInt{
 		});
 	}
 	
+	@Override
+	public void updateUser(String id,String name, String phone,String addr, String company) {
+		this.userListAsync.updateUser(id, name, phone, addr, company, new AsyncCallback<List<UserDto>>() {
+			
+			@Override
+			public void onSuccess(List<UserDto> result) {
+				RootPanel.get().clear();
+				
+				UserListServiceClientImpl userImpl = new UserListServiceClientImpl(GWT.getModuleBaseURL()+"UserList");
+				UserList userlist = new UserList(userImpl, result,compList);
+				RootPanel.get().add(userlist);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}	
 	public UserList getUserList(){
 		return this.userList;
-	}	
+	}
 }
