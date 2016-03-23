@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.UserDto;
+import com.webhard.client.model.FolderDto;
 
 @RemoteServiceRelativePath("Main")
 public interface MainService extends RemoteService{
@@ -13,5 +14,7 @@ public interface MainService extends RemoteService{
 	List<CompanyDto> compList();
 	List<UserDto> UserList();	
 	List<UserDto> AccessList();
-	
+	List<FolderDto> folderList();
+	FolderDto homeFolder();
+	void entryCompany(String name, String addr, String phone);
 }

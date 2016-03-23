@@ -11,9 +11,7 @@ import com.webhard.client.model.UserDto;
 @RemoteServiceRelativePath("login")
 public interface LoginService extends RemoteService{
 
-	int login(String id,String pwd,List<FolderDto> folderList,FolderDto homefolder, List<CompanyDto> compList);
+	int login(String id,String pwd);
 	List<CompanyDto> comboList();
-	List<FolderDto> folderList();
-	FolderDto homefolder();
 	List<UserDto> userList();
 }

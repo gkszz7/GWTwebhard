@@ -8,10 +8,8 @@ import com.webhard.client.model.FolderDto;
 
 
 public interface LoginServiceClientInt {
-	int login(String id, String pwd,List<FolderDto> folderList,FolderDto homefolder, List<CompanyDto> compList);
+	int login(String id, String pwd);
 	void comboList();
-	void folderList();
-	void homefolder();
 	void userList();
 }
  

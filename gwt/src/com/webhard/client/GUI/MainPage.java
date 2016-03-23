@@ -43,13 +43,16 @@ public class MainPage extends Composite {
 	private List<UserDto> accessList;
 	private TableList table = new TableList();
 	private List<CompanyDto> companys;
+	private List<FolderDto> folderList;
+	private FolderDto homeFolder;
 	private DialogBox entryCompany;
 	private TextBox nameText;
 	private TextBox phoneText;
 	private TextBox addrText;
 
 	//파일 리스트. 폴더 리스트
-	public MainPage(final MainServiceClientImpl mainServiceClientImpl,List<FolderDto> folderList,FolderDto homefolder,final List<CompanyDto> compList) {
+	
+	public MainPage(final MainServiceClientImpl mainServiceClientImpl) {
 
 		absolutePanel = new AbsolutePanel();
 		initWidget(this.absolutePanel);
@@ -60,6 +63,8 @@ public class MainPage extends Composite {
 		this.serviceImpl = mainServiceClientImpl;
 		this.serviceImpl.UserList();
 		this.serviceImpl.compList();
+		this.serviceImpl.folderList();
+		this.serviceImpl.homeFolder();
 		this.serviceImpl.AccessList();
 		
 		CellTree cellTree = new CellTree(new TreeViewModel() {
@@ -186,7 +191,7 @@ public class MainPage extends Composite {
 		nameText.setSize("284px", "27px");
 
 		Button createBtn = new Button("New button");
-		createBtn.setText("수정");
+		createBtn.setText("확인");
 		aPanel.add(createBtn, 159, 370);
 		createBtn.setSize("85px", "29px");
 		
@@ -230,7 +235,7 @@ public class MainPage extends Composite {
 			public void onClick(ClickEvent event) {
 				
 				boolean check = false;
-				for(CompanyDto company : compList){
+				for(CompanyDto company : companys){
 					if(nameText.getText().equals(company.getCompanyName())){
 						check = true;
 					}
@@ -254,7 +259,7 @@ public class MainPage extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				boolean check = false;
-				for(CompanyDto company : compList){
+				for(CompanyDto company : companys){
 					if(nameText.getText().equals(company.getCompanyName())){
 						check = true;
 					}
@@ -269,7 +274,7 @@ public class MainPage extends Composite {
 				} else if (addrText.getText().length() == 0) {
 					Window.alert("주소를 입력해 주세요.");
 				} else {
-					//serviceImpl.updateCompany(selected.getCompanyName(), nameText.getText(), phoneText.getText(), addrText.getText());
+					serviceImpl.entryCompany(nameText.getText(), addrText.getText(), phoneText.getText());
 				}
 			}
 		});
@@ -295,6 +300,14 @@ public class MainPage extends Composite {
 		companys = list;
 
 	}
+	public void setFolderList(List<FolderDto> fList){
+		folderList = fList;
+
+	}
+	public void setHomeFolder(FolderDto home){
+		homeFolder = home;
+
+	}
 	public void AccessList(){
 		RootPanel.get().clear();
 		
@@ -311,7 +324,6 @@ public class MainPage extends Composite {
 		RootPanel.get().add(userlist);
 
 	}
-	
 	public void enterCompList(){
 		
 		RootPanel.get().clear();

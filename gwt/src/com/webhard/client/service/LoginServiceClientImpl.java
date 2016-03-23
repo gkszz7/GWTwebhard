@@ -34,9 +34,9 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	}
 
 	@Override
-	public int login(final String id, String pwd,final List<FolderDto> folderList, final FolderDto homefolder, final List<CompanyDto> compList) {
+	public int login(final String id, String pwd) {
 			
-		this.loginAsync.login(id, pwd, folderList, homefolder, compList, new AsyncCallback<Integer>() {	
+		this.loginAsync.login(id, pwd, new AsyncCallback<Integer>() {	
 			@Override
 			public void onSuccess(Integer result) {
 				check = result;
@@ -54,7 +54,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 					
 					RootPanel.get().clear();
 					
-					MainServiceClientImpl main = new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main",homefolder,folderList, compList);
+					MainServiceClientImpl main = new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main");
 					
 					RootPanel.get().add(main.getMainPage());
 					
@@ -90,41 +90,6 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 		
 	}
 
-	@Override
-	public void folderList() {
-		this.loginAsync.folderList(new AsyncCallback<List<FolderDto>>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				
-			}
-
-			@Override
-			public void onSuccess(List<FolderDto> result) {
-				// TODO Auto-generated method stub
-				
-				loginuser.setfolderList(result);
-			}			
-		});
-		
-	}
-	@Override
-	public void homefolder() {
-		this.loginAsync.homefolder(new AsyncCallback<FolderDto>() {
-			
-			@Override
-			public void onSuccess(FolderDto result) {
-				// TODO Auto-generated method stub
-				loginuser.sethomefolder(result);
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
-		});	
-	}
 	@Override
 	public void userList() {
 		this.loginAsync.userList(new AsyncCallback<List<UserDto>>() {

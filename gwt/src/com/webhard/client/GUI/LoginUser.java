@@ -32,8 +32,6 @@ public class LoginUser extends Composite{
    private PasswordTextBox passwordTextBox;
    
    private List<CompanyDto> list;
-   private List<FolderDto> folderList;
-   private FolderDto homefolder;   
    private List<UserDto> userList;
    
    public LoginUser(final LoginServiceClientImpl loginSerivceClientImpl) {
@@ -44,8 +42,6 @@ public class LoginUser extends Composite{
       initWidget(this.dialogBox);
       this.serviceImpl = loginSerivceClientImpl;
       this.serviceImpl.comboList();
-      this.serviceImpl.folderList();
-      this.serviceImpl.homefolder();
       this.serviceImpl.userList();
       dialogBox.setSize("1330px", "1000px");
       
@@ -86,7 +82,7 @@ public class LoginUser extends Composite{
             if(textBox.getText().length()>0 && passwordTextBox.getText().length()>0){
             String id = textBox.getText();
             String pwd = passwordTextBox.getText();
-            serviceImpl.login(id, pwd, folderList,homefolder, list);
+            serviceImpl.login(id, pwd);
             
             }
             else{
@@ -119,18 +115,6 @@ public class LoginUser extends Composite{
       layoutPanel.setWidgetLeftWidth(passwordTextBox, 125.0, Unit.PX, 397.0, Unit.PX);
       layoutPanel.setWidgetTopHeight(passwordTextBox, 233.0, Unit.PX, 34.0, Unit.PX);
       
-   }
-   
-   public void sethomefolder(FolderDto Homefolder){
-	   
-	   homefolder = Homefolder;
-
-   }
-  
-   public void setfolderList(List<FolderDto> folList){
-	   
-	   folderList = folList;
-	 
    }
    
    public void setComList(List<CompanyDto> list1){
