@@ -17,12 +17,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.webhard.client.model.CompanyDto;
-import com.webhard.client.model.FileDto;
-import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.EntryServiceClientImpl;
 import com.webhard.client.service.LoginServiceClientImpl;
-import com.webhard.server.dao.FolderDao;
 
 public class LoginUser extends Composite{
     

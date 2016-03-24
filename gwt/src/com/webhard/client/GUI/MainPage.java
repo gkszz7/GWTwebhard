@@ -21,10 +21,8 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.view.client.AbstractDataProvider;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.NoSelectionModel;
-import com.google.gwt.view.client.SelectionModel.AbstractSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.FolderDto;
@@ -45,11 +43,11 @@ public class MainPage extends Composite {
 	private List<CompanyDto> companys;
 	private List<FolderDto> folderList;
 	private FolderDto homeFolder;
-	private DialogBox entryCompany;
+	private DialogBox entryCompany,FileDialog;
 	private TextBox nameText;
 	private TextBox phoneText;
 	private TextBox addrText;
-
+	
 	//파일 리스트. 폴더 리스트
 	
 	public MainPage(final MainServiceClientImpl mainServiceClientImpl) {
@@ -58,6 +56,7 @@ public class MainPage extends Composite {
 		initWidget(this.absolutePanel);
 		absolutePanel.setSize("1121px", "760px");
 		HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
+		horizontalSplitPanel.setSplitPosition("30%");
 		this.absolutePanel.add(horizontalSplitPanel, 10, 51);
 		horizontalSplitPanel.setSize("1121px", "631px");
 		this.serviceImpl = mainServiceClientImpl;
@@ -66,29 +65,16 @@ public class MainPage extends Composite {
 		this.serviceImpl.folderList();
 		this.serviceImpl.homeFolder();
 		this.serviceImpl.AccessList();
-		
-		CellTree cellTree = new CellTree(new TreeViewModel() {
-			final AbstractDataProvider<String> dataProvider = new ListDataProvider<String>();
-			final AbstractSelectionModel<String> selectionModel = new NoSelectionModel<String>();
-
-			@Override
-			public <T> NodeInfo<?> getNodeInfo(T value) {
-				return new DefaultNodeInfo<String>(dataProvider,
-						new TextCell(), selectionModel, null);
-			}
-
-			@Override
-			public boolean isLeaf(Object value) {
-				return true;
-			}
-		}, null);
-
-		horizontalSplitPanel.setLeftWidget(cellTree);
-		cellTree.setSize("100%", "100%");
-
+			    		  		    
 		CellTable<Object> cellTable = new CellTable<Object>();
 		horizontalSplitPanel.setRightWidget(cellTable);
-		cellTable.setSize("545px", "100%");
+		cellTable.setSize("767px", "100%");
+	
+	    CellTree tree = new CellTree(null, "Item 1");
+
+	    
+		horizontalSplitPanel.setLeftWidget(tree);
+		tree.setSize("313px", "628px");
 
 		MenuBar menuBar = new MenuBar(false);
 		menuBar.setStyleName("gwt-MenuBar");
@@ -101,6 +87,14 @@ public class MainPage extends Composite {
 		MenuBar menuBar_3 = new MenuBar(true);
 
 		MenuItem fileMenu = new MenuItem("파일", false, menuBar_3);
+		menuBar_3.addItem("파일 등록",new ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				FileDialog = serviceImpl.fileUpload();
+				FileDialog.center();
+			}
+		});
 		menuBar.addItem(fileMenu);
 		MenuBar menuBar_4 = new MenuBar(true);
 
@@ -287,6 +281,8 @@ public class MainPage extends Composite {
 		});
 		
 		/*********************************************************/
+		
+			
 	}
 	public void selectUser(List<UserDto> UserList){
 		this.userList = UserList;
@@ -332,4 +328,5 @@ public class MainPage extends Composite {
 		CompanyList companyList = new CompanyList(compImpl, companys);
 		RootPanel.get().add(companyList);
 	}
+
 }

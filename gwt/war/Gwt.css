@@ -2,14 +2,6 @@
 
 
 /** Example rules used by the template application (remove for your app) */
-h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: #777777;
-  margin: 40px 0px 70px;
-  
-}
-
 .sendButton {
   display: block;
   font-size: 16pt;
@@ -47,13 +39,23 @@ h1 {
 }
 
 .gwt-MenuItem {
+	color: Black;
 	font-size: 14px;
 	font-weight: bold;
-	cursor:pointer;
+	vertical-align: text-top;
+	line-height: inherit;
+	text-indent: 1px;
+	letter-spacing: 1px;
+	text-align: center;
+	direction: ltr;
+	text-transform: none;
+	white-space: normal;
+	word-spacing: 1px;
+	cursor: pointer;
 }
 .gwt-MenuBar {
 	border: 1px solid black;
-	background-color: lightcyan;
+	background-color: Silver;
 }
 .gwt-label {
 	font-size: 15px;
@@ -67,7 +69,6 @@ h1 {
 
 .gwt-absolutePanel {
 	border: 1px solid black;
-	background-color: lightgray;
 	 margin-left:auto;
      margin-right:auto;
      margin-top:auto;

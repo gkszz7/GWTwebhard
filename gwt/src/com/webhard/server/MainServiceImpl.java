@@ -70,5 +70,5 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		Accesslist = Dao.selectAccessUser();
 		return Accesslist;
 	}
-	
+	 
 }

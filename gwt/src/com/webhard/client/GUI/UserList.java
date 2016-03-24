@@ -32,6 +32,7 @@ public class UserList extends Composite{
 	private CellTable<UserDto> cellTable_1;
 	private DialogBox editDialog;
 	private Button updateBtn,btnNewButton1,button;
+	
 	public UserList(final UserListServiceClientImpl userListServiceClientImpl,final List<UserDto> userList,final List<CompanyDto> compList){
 		
 		this.userListServiceClientImpl = userListServiceClientImpl;
@@ -65,6 +66,7 @@ public class UserList extends Composite{
 		comboBox.setDirectionEstimator(true);
 		absolutePanel.add(comboBox, 307, 62);
 		comboBox.setSize("78px", "25px");
+		
 		btnNewButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -216,7 +218,7 @@ public class UserList extends Composite{
 		deleteBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if(selected == null){
-					Window.alert("회사를 선택해 주세요.");
+					Window.alert("사용자를 선택해 주세요.");
 				}else{
 					if(Window.confirm("삭제 하시겠습니까?")){
 						userListServiceClientImpl.deleteUser(selected.getUserId());
