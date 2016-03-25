@@ -2,13 +2,13 @@ package com.webhard.client.GUI;
 
 import java.util.List;
 
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -21,11 +21,11 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.TreeViewModel;
+import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.FolderDto;
+import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.AccessListServiceClientImpl;
 import com.webhard.client.service.CompanyServiceClientImpl;
@@ -40,16 +40,17 @@ public class MainPage extends Composite {
 	private List<UserDto> userList;
 	private List<UserDto> accessList;
 	private List<CompanyDto> companys;
-	private List<FolderDto> folderList;
-	private FolderDto homeFolder;
-	private DialogBox entryCompany,FileDialog;
+	private DialogBox entryCompany,FileDialog, createFolder, editFolder;
 	private TextBox nameText;
 	private TextBox phoneText;
 	private TextBox addrText;
+	private Tree tree;
+	private TreeItem selectItem;
+	private ItemDto selectItemData;
 	
 	//파일 리스트. 폴더 리스트
 	
-	public MainPage(final MainServiceClientImpl mainServiceClientImpl) {
+	public MainPage(final MainServiceClientImpl mainServiceClientImpl, Tree getTree) {
 
 		absolutePanel = new AbsolutePanel();
 		initWidget(this.absolutePanel);
@@ -61,29 +62,71 @@ public class MainPage extends Composite {
 		this.serviceImpl = mainServiceClientImpl;
 		this.serviceImpl.UserList();
 		this.serviceImpl.compList();
-		this.serviceImpl.folderList();
-		this.serviceImpl.homeFolder();
 		this.serviceImpl.AccessList();
-			    		  		    
+		this.tree = getTree;
+		
 		CellTable<Object> cellTable = new CellTable<Object>();
 		horizontalSplitPanel.setRightWidget(cellTable);
 		cellTable.setSize("767px", "100%");
 		
-		
-	    
-//		horizontalSplitPanel.setLeftWidget(tree);
-//		tree.setSize("313px", "628px");
-
+		horizontalSplitPanel.setLeftWidget(tree);
+		tree.setSize("313px", "628px");
+				
 		MenuBar menuBar = new MenuBar(false);
 		menuBar.setStyleName("gwt-MenuBar");
 		absolutePanel.add(menuBar, 0, 0);
 		menuBar.setSize("1119px", "40px");
+		
 		MenuBar menuBar_1 = new MenuBar(true);
-
 		MenuItem folderMenu = new MenuItem("폴더", false, menuBar_1);
 		menuBar.addItem(folderMenu);
-		MenuBar menuBar_3 = new MenuBar(true);
-
+		menuBar_1.addItem("폴더 생성", new ScheduledCommand() {
+			@Override
+			public void execute() {
+				if(selectItemData != null){
+					if(selectItemData.getType() == 0){
+						createFolder = serviceImpl.createFolderBox();
+						createFolder.center();
+					}else{
+						Window.alert("폴더를 선택해주세요.");
+					}
+				}else{
+					Window.alert("폴더를 선택해주세요.");
+				}
+			}
+		});
+		menuBar_1.addItem("폴더 수정", new ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				if(selectItemData != null){
+					if(selectItemData.getType() == 0){
+						Window.alert("성공");
+					}else{
+						Window.alert("폴더를 선택해주세요.");
+					}
+				}else{
+					Window.alert("폴더를 선택해주세요.");
+				}
+			}
+		});
+		menuBar_1.addItem("폴더 삭제", new ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				if(selectItemData != null){
+					if(selectItemData.getType() == 0){
+						Window.alert("성공");
+					}else{
+						Window.alert("폴더를 선택해주세요.");
+					}
+				}else{
+					Window.alert("폴더를 선택해주세요.");
+				}
+			}
+		});
+		
+		MenuBar menuBar_3 = new MenuBar(true);		
 		MenuItem fileMenu = new MenuItem("파일", false, menuBar_3);
 		menuBar_3.addItem("파일 등록",new ScheduledCommand() {
 			
@@ -94,8 +137,8 @@ public class MainPage extends Composite {
 			}
 		});
 		menuBar.addItem(fileMenu);
+		
 		MenuBar menuBar_4 = new MenuBar(true);
-
 		MenuItem userMenu = new MenuItem("사용자", false, menuBar_4);
 		menuBar_4.addItem("사용자목록",new ScheduledCommand() {
 			
@@ -119,11 +162,27 @@ public class MainPage extends Composite {
 			}
 		});
 		menuBar.addItem(AccessMenu);
+		
 		MenuBar menuBar_6 = new MenuBar(true);
-
 		MenuItem compMenu = new MenuItem("회사", false, menuBar_6);
 		menuBar.addItem(compMenu);
+		menuBar_6.addItem("회사 가입", new ScheduledCommand() {
 
+			@Override
+			public void execute() {
+				entryCompany.center();
+			}
+		});
+		
+		menuBar_6.addItem("회사 목록", new ScheduledCommand() {
+
+			@Override
+			public void execute() {
+				
+				enterCompList();
+			}
+		});
+		
 		Button btnNewButton = new Button("New button");
 		btnNewButton.setText("로그아웃");
 		absolutePanel.add(btnNewButton, 1009, 706);
@@ -142,25 +201,6 @@ public class MainPage extends Composite {
 
 		MenuBar menuBar_2 = new MenuBar(true);
 
-		MenuItem mntmNewMenu_1 = new MenuItem("파일", false, menuBar_2);
-		
-		menuBar_6.addItem("회사 가입", new ScheduledCommand() {
-
-			@Override
-			public void execute() {
-				entryCompany.center();
-			}
-		});
-		
-		menuBar_6.addItem("회사 목록", new ScheduledCommand() {
-
-			@Override
-			public void execute() {
-				
-				enterCompList();
-			}
-		});
-		
 		
 		/********** 회사 가입 다이얼로그 **************/
 
@@ -280,6 +320,21 @@ public class MainPage extends Composite {
 		
 		/*********************************************************/
 		
+		/********************폴더 생성 다이얼로그********************/
+		
+		/*********************************************************/
+		
+		
+		/*************트리 선택 핸들러********************************/
+		tree.addSelectionHandler(new SelectionHandler<TreeItem>() {
+			
+			@Override
+			public void onSelection(SelectionEvent<TreeItem> event) {
+				selectItem = event.getSelectedItem();
+				selectItemData = (ItemDto)selectItem.getUserObject();
+			}
+		});
+		/************************************************************/
 			
 	}
 	public void selectUser(List<UserDto> UserList){
@@ -294,14 +349,13 @@ public class MainPage extends Composite {
 		companys = list;
 
 	}
-	public void setFolderList(List<FolderDto> fList){
-		folderList = fList;
-
+	public ItemDto getSelectNode(){
+		selectItem = tree.getSelectedItem();
+		if(selectItem != null)
+		selectItemData = (ItemDto)selectItem.getUserObject();
+		return selectItemData;
 	}
-	public void setHomeFolder(FolderDto home){
-		homeFolder = home;
 
-	}
 	public void AccessList(){
 		RootPanel.get().clear();
 		

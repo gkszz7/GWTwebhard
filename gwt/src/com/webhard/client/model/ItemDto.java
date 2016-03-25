@@ -1,6 +1,8 @@
 package com.webhard.client.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemDto implements Serializable{
 	private int itemNum;
@@ -9,6 +11,8 @@ public class ItemDto implements Serializable{
 	private int parentNum;
 	private String userId;
 	private int companyNum;
+	private int type;
+	private List<ItemDto> child = new ArrayList<ItemDto>();
 	
 	public ItemDto(){
 		
@@ -78,4 +82,21 @@ public class ItemDto implements Serializable{
 		// TODO Auto-generated method stub
 		return name;
 	}
+	
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public List<ItemDto> getChild() {
+		return child;
+	}
+
+	public void setChild(ItemDto child) {
+		this.child.add(child);
+	}
+	
 }

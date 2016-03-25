@@ -7,6 +7,7 @@ public interface MainServiceClientInt {
 	void AccessList();
 	void compList();
 	void entryCompany(String name, String addr, String phone);
-	void folderList();
-	void homeFolder();
+	void createFolder(String name, int parentNum, int companyNum);
+	void updateFolder(String name, int itemNum);
+	void deleteFolder(int itemNum);
 }

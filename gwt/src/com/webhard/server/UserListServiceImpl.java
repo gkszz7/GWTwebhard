@@ -72,7 +72,7 @@ public class UserListServiceImpl extends RemoteServiceServlet implements UserLis
 
 		List<UserDto> users = new ArrayList<UserDto>();
 		UserDao userDao = new UserDao();
-		UserDto uDto = userDao.getData(id);
+		UserDto uDto = userDao.getUserData(id);
 		uDto = userDao.updateUser(id, name, addr, phone, company);
 		users = userDao.selectAllUser();
 		return users;
