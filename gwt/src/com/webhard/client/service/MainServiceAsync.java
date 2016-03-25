@@ -1,5 +1,6 @@
 package com.webhard.client.service;
 
+import java.io.File;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -16,4 +17,5 @@ public interface MainServiceAsync {
 	void entryCompany(String name, String addr, String phone, AsyncCallback callback);
 	void folderList(AsyncCallback<List<FolderDto>> callback);
 	void homeFolder(AsyncCallback<FolderDto> callback);
+	
 }

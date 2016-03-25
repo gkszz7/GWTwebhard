@@ -2,13 +2,11 @@ package com.webhard.client.GUI;
 
 import java.util.List;
 
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -21,9 +19,6 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.TreeViewModel;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.UserDto;
@@ -47,18 +42,22 @@ public class MainPage extends Composite {
 	private TextBox nameText;
 	private TextBox phoneText;
 	private TextBox addrText;
+	private String fileName;
+	private long filesize;
 	
 	//파일 리스트. 폴더 리스트
 	
 	public MainPage(final MainServiceClientImpl mainServiceClientImpl) {
 
 		absolutePanel = new AbsolutePanel();
+		absolutePanel.setStyleName("gwt-absolutePanel");
 		initWidget(this.absolutePanel);
 		absolutePanel.setSize("1121px", "760px");
 		HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
+		horizontalSplitPanel.setStyleName("gwt-Label-new");
 		horizontalSplitPanel.setSplitPosition("30%");
-		this.absolutePanel.add(horizontalSplitPanel, 10, 51);
-		horizontalSplitPanel.setSize("1121px", "631px");
+		this.absolutePanel.add(horizontalSplitPanel, 0, 51);
+		horizontalSplitPanel.setSize("1131px", "631px");
 		this.serviceImpl = mainServiceClientImpl;
 		this.serviceImpl.UserList();
 		this.serviceImpl.compList();
@@ -70,11 +69,13 @@ public class MainPage extends Composite {
 		horizontalSplitPanel.setRightWidget(cellTable);
 		cellTable.setSize("767px", "100%");
 	
+	    /*
 	    CellTree tree = new CellTree(null, "Item 1");
 
 	    
 		horizontalSplitPanel.setLeftWidget(tree);
 		tree.setSize("313px", "628px");
+		*/
 
 		MenuBar menuBar = new MenuBar(false);
 		menuBar.setStyleName("gwt-MenuBar");
@@ -91,8 +92,8 @@ public class MainPage extends Composite {
 			
 			@Override
 			public void execute() {
-				FileDialog = serviceImpl.fileUpload();
-				FileDialog.center();
+				/*FileDialog = serviceImpl.fileUpload();
+				FileDialog.center();*/
 			}
 		});
 		menuBar.addItem(fileMenu);
@@ -303,6 +304,9 @@ public class MainPage extends Composite {
 	public void setHomeFolder(FolderDto home){
 		homeFolder = home;
 
+	}
+	public void setFile(String fileName){
+		this.fileName = fileName;
 	}
 	public void AccessList(){
 		RootPanel.get().clear();

@@ -22,7 +22,7 @@ public class MainServiceClientImpl implements MainServiceClientInt{
 	
 	private MainServiceAsync mainAsync;
 	private MainPage main;
-	
+	private  DialogBox FileDialog;
 	public MainServiceClientImpl(String url) {
 		
 		this.mainAsync = GWT.create(MainService.class);
@@ -130,65 +130,9 @@ public class MainServiceClientImpl implements MainServiceClientInt{
 			}
 		});		
 	}
-/*
- 	public TreeGrid test(){
-		Tree grid1Tree = new Tree();  
-        grid1Tree.setModelType(TreeModelType.CHILDREN);  
-        grid1Tree.setNameProperty("Name");  
-        grid1Tree.setRoot(
-        		new PartsTreeNode("Root",new PartsTreeNode("Bin 1",new PartsTreeNode("Blue Cube", "folder1.png"),  
-                new PartsTreeNode("Yellow Cube", "folder1.png"),  
-                new PartsTreeNode("Green Cube", "folder1.png")  
-                ),  
-                new PartsTreeNode("Bin 2",  
-                new PartsTreeNode("Blue Piece", "folder1.png"),  
-                new PartsTreeNode("Green Piece", "folder1.png"),  
-                new PartsTreeNode("Yellow Piece", "folder1.png")  
-                )  
-        ));  
-  
-        final PartsTreeGrid grid1 = new PartsTreeGrid();  
-        grid1.setDragDataAction(DragDataAction.MOVE);  
-        grid1.setData(grid1Tree);  
-        grid1.getData().openAll();  
-        return grid1;
-	}
-	 public static class PartsTreeGrid extends TreeGrid {  
-	        public PartsTreeGrid() {  
-	            setWidth(200);  
-	            setHeight(200);  
-	            setShowEdges(true);  
-	            setBorder("0px");  
-	            setBodyStyleName("normal");  
-	            setShowHeader(false);  
-	            setLeaveScrollbarGap(false);  
-	            setEmptyMessage("<br>Drag & drop parts here");  
-	            setManyItemsImage("folder1.png");  	        
-	            setCanReorderRecords(true);  
-	            setCanAcceptDroppedRecords(true);  
-	            setCanDragRecordsOut(true);  
-	        }  
-	    }  
-	public static class PartsTreeNode extends TreeNode {  
-        public PartsTreeNode(String name, String icon) {  
-            this(name, icon, new PartsTreeNode[]{});  
-        }  
-  
-        public PartsTreeNode(String name, PartsTreeNode... children) {  
-            this(name, null, children);  
-        }  
-  
-        public PartsTreeNode(String name, String icon, PartsTreeNode... children) {  
-            setAttribute("Name", name);  
-            setAttribute("children", children);  
-            if (icon != null)  
-                setAttribute("icon", icon);  
-        }  
-    } 
-     */
-	
+
 	public DialogBox fileUpload(){
-final DialogBox FileDialog = new DialogBox();
+		FileDialog = new DialogBox();
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		FileDialog.setWidget(absolutePanel);
@@ -209,12 +153,13 @@ final DialogBox FileDialog = new DialogBox();
 		
 		Button button = new Button("FileUpload");
 		button.addClickHandler(new ClickHandler() {
+			
 		      public void onClick(ClickEvent event) {
-		        String filename = fileUpload.getFilename();
-		        
+		    	 String filename = fileUpload.getFilename();
 		        if (filename.length() == 0) {
 		          Window.alert("Error");
 		        } else {
+		        main.setFile(filename);
 		          Window.alert("Success");
 		        }
 		      }
@@ -236,9 +181,10 @@ final DialogBox FileDialog = new DialogBox();
 	    
 	    return FileDialog;
 	}
+	
 	public MainPage getMainPage(){
 
 		return this.main;
 	}
-	
+
 }

@@ -30,6 +30,7 @@
 	font-size: 15px;
 	font-style: normal;
 	font-weight: bold;
+
 }
 .gwt-Title {
 
@@ -73,4 +74,12 @@
      margin-right:auto;
      margin-top:auto;
      margin-bottom:auto;
+}
+.gwt-Label-new {
+font-stretch: normal;
+	font-variant: normal;
+	font-size: 15px;
+	font-style: normal;
+	font-weight: bold;
+	border: 1px solid black;
 }

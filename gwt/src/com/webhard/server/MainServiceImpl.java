@@ -1,22 +1,34 @@
 package com.webhard.server;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.net.ftp.FTPClient;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.webhard.client.model.CompanyDto;
-import com.webhard.client.model.UserDto;
 import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.MainService;
 import com.webhard.server.dao.CompanyDao;
-import com.webhard.server.dao.UserDao;
+import com.webhard.server.dao.FTPUtil;
 import com.webhard.server.dao.FolderDao;
+import com.webhard.server.dao.UserDao;
 
 public class MainServiceImpl extends RemoteServiceServlet implements MainService{
+	
+	private FTPClient client = null;
+	private String host = "192.168.1.6";
+	private String id = "user1";
+	private String password = "1234";
+	private int port = 21;
+	private String dir = "test/";
 	
 	@Override
 	public List<CompanyDto> compList() {
@@ -70,5 +82,4 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		Accesslist = Dao.selectAccessUser();
 		return Accesslist;
 	}
-	 
 }
