@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -26,8 +27,8 @@ public class EntryUser extends Composite{
 	private VerticalPanel vPanel = new VerticalPanel();
 	private final EntryServiceClientImpl serviceImpl;
 	private TextBox textBoxId;
-	private TextBox textBoxPw;
-	private TextBox textBoxPwCheck;
+	private PasswordTextBox textBoxPw;
+	private PasswordTextBox textBoxPwCheck;
 	private TextBox textBoxName;
 	private TextBox textBoxPhone;
 	private TextBox textBoxAddr;
@@ -66,7 +67,7 @@ public class EntryUser extends Composite{
 		layoutPanel.setWidgetLeftWidth(lblPw, 29.0, Unit.PX, 80.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(lblPw, 148.0, Unit.PX, 34.0, Unit.PX);
 		
-		textBoxPw = new TextBox();
+		textBoxPw = new PasswordTextBox();
 		layoutPanel.add(textBoxPw);
 		layoutPanel.setWidgetLeftWidth(textBoxPw, 125.0, Unit.PX, 215.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(textBoxPw, 148.0, Unit.PX, 34.0, Unit.PX);
@@ -116,7 +117,7 @@ public class EntryUser extends Composite{
 		layoutPanel.setWidgetLeftWidth(lblCheck, 29.0, Unit.PX, 80.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(lblCheck, 199.0, Unit.PX, 34.0, Unit.PX);
 		
-		textBoxPwCheck = new TextBox();
+		textBoxPwCheck = new PasswordTextBox();
 		layoutPanel.add(textBoxPwCheck);
 		layoutPanel.setWidgetLeftWidth(textBoxPwCheck, 125.0, Unit.PX, 215.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(textBoxPwCheck, 199.0, Unit.PX, 34.0, Unit.PX);

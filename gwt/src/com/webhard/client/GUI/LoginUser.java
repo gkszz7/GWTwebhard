@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.UserDto;
@@ -27,7 +28,7 @@ public class LoginUser extends Composite{
    private final LoginServiceClientImpl serviceImpl;
    private TextBox textBox;
    private PasswordTextBox passwordTextBox;
-   
+   private Tree tree;
    private List<CompanyDto> list;
    private List<UserDto> userList;
    
@@ -40,6 +41,7 @@ public class LoginUser extends Composite{
       this.serviceImpl = loginSerivceClientImpl;
       this.serviceImpl.comboList();
       this.serviceImpl.userList();
+      this.serviceImpl.itemTree();
       dialogBox.setSize("1330px", "1000px");
       
       LayoutPanel layoutPanel = new LayoutPanel();
@@ -79,7 +81,7 @@ public class LoginUser extends Composite{
             if(textBox.getText().length()>0 && passwordTextBox.getText().length()>0){
             String id = textBox.getText();
             String pwd = passwordTextBox.getText();
-            serviceImpl.login(id, pwd);
+            serviceImpl.login(id, pwd, tree);
             
             }
             else{
@@ -120,11 +122,12 @@ public class LoginUser extends Composite{
    public void setUserList(List<UserDto> list1){
 	   userList = list1;
    }
+   public void setTree(Tree tree1){
+		tree = tree1;
+	}
    
    public void entry(){
       RootPanel.get().clear();
-      System.out.println(list.get(0).getCompanyAddr());
-      System.out.println(userList.get(0).getUserAddr());
       EntryServiceClientImpl entry = new EntryServiceClientImpl(GWT.getModuleBaseURL()+"entry",list, userList);
       //EntryUser user = new EntryUser(entry, list, userList);
       RootPanel.get().add(entry.getEntryUser());

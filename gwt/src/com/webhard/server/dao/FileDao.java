@@ -181,7 +181,7 @@ public class FileDao implements Serializable{
         
         try {
 			con = connection.conn();
-			String sql="select f.fileURL, f.fileSize, f.fileType, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum"
+			String sql="select f.fileURL, f.fileSize, f.fileType, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum, i.type"
 					+ " from file f, item i where i.parentNum=? and i.itemNum=f.itemNum";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, itemNum);
@@ -198,7 +198,7 @@ public class FileDao implements Serializable{
 				file.setParentNum(rs.getInt(7));
 				file.setUserId(rs.getString(8));
 				file.setCompanyNum(rs.getInt(9));
-				
+				file.setType(rs.getInt(10));
 				files.add(file);
 			}
 			
@@ -248,7 +248,8 @@ public class FileDao implements Serializable{
 	        FileDto dto = new FileDto();
 	        try {
 				con=connection.conn();
-				String sql="select f.fileURL, f.fileSize, f.fileType, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum from file f, item i where i.itemNum= ? and i.itemNum=f.itemNum";
+				String sql="select f.fileURL, f.fileSize, f.fileType, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum, i.type"
+						+ " from file f, item i where i.itemNum= ? and i.itemNum=f.itemNum";
 				ps = con.prepareStatement(sql);
 				ps.setInt(1, ItemNum);
 				rs = ps.executeQuery();
@@ -262,6 +263,7 @@ public class FileDao implements Serializable{
 					dto.setParentNum(rs.getInt(7));
 					dto.setUserId(rs.getString(8));
 					dto.setCompanyNum(rs.getInt(9));
+					dto.setType(rs.getInt(10));
 				}
 				
 			} catch (Exception e) {

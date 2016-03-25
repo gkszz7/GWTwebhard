@@ -164,7 +164,7 @@ public class FolderDao implements Serializable{
         
         try {
 			con = connection.conn();
-			String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum"
+			String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum, i.type"
 					+ " from folder f, item i where i.itemNum = f.itemNum order by i.companyNum , f.step, i.itemNum";
 			ps = con.prepareStatement(sql);
 			rs=ps.executeQuery();
@@ -179,7 +179,7 @@ public class FolderDao implements Serializable{
 				folder.setParentNum(rs.getInt(6));
 				folder.setUserId(rs.getString(7));
 				folder.setCompanyNum(rs.getInt(8));
-				
+				folder.setType(rs.getInt(9));
 				folders.add(folder);
 			}
 			
@@ -205,8 +205,8 @@ public class FolderDao implements Serializable{
         FolderDto folder = new FolderDto();
         try {
 			con = connection.conn();
-			String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum "
-					+ "from folder f, item i where i.itemNum = f.itemNum and i.itemNum = 78";
+			String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum, i.type "
+					+ "from folder f, item i where i.itemNum = f.itemNum and i.itemNum = 140";
 			ps = con.prepareStatement(sql);
 			rs=ps.executeQuery();
 			
@@ -220,6 +220,7 @@ public class FolderDao implements Serializable{
 				folder.setParentNum(rs.getInt(6));
 				folder.setUserId(rs.getString(7));
 				folder.setCompanyNum(rs.getInt(8));
+				folder.setType(rs.getInt(9));
 			}
 			
 			
@@ -245,7 +246,7 @@ public class FolderDao implements Serializable{
         
         try {
 			con = connection.conn();
-			String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum"
+			String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum, i.type"
 					+ " from folder f, item i where i.parentNum=? and i.itemNum=f.itemNum";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, itemNum);
@@ -261,6 +262,7 @@ public class FolderDao implements Serializable{
 				folder.setParentNum(rs.getInt(6));
 				folder.setUserId(rs.getString(7));
 				folder.setCompanyNum(rs.getInt(8));
+				folder.setType(rs.getInt(9));
 				
 				folders.add(folder);
 			}
@@ -372,7 +374,7 @@ public class FolderDao implements Serializable{
         
         try {
 			con = connection.conn();
-			String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum"
+			String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum, i.type"
 					+ " from folder f, item i where i.itemNum=? and i.itemNum=f.itemNum";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, itemNum);
@@ -387,6 +389,7 @@ public class FolderDao implements Serializable{
 				folder.setParentNum(rs.getInt(6));
 				folder.setUserId(rs.getString(7));
 				folder.setCompanyNum(rs.getInt(8));
+				folder.setType(rs.getInt(9));
 			}
 			
 		} catch (Exception e) {
@@ -409,7 +412,7 @@ public class FolderDao implements Serializable{
 			con = connection.conn();
 			//String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum"
 			//+ " from folder f, item i where i.itemNum=? and i.itemNum=f.itemNum";
-			String sql="select i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum"
+			String sql="select i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum, i.type"
 					+ " from folder f, item i where i.parentNum=? and i.itemNum = f.itemNum";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, itemNum);
@@ -423,11 +426,11 @@ public class FolderDao implements Serializable{
 				item.setParentNum(rs.getInt(4));
 				item.setUserId(rs.getString(5));
 				item.setCompanyNum(rs.getInt(6));
-				
+				item.setType(rs.getInt(7));
 				items.add(item);
 			}
 			
-			String sql2="select i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum, f.fileurl, "
+			String sql2="select i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum, i.type, f.fileurl, "
 					+ "f.filesize, f.filetype from file f, item i where i.parentNum = ? and i.itemNum = f.itemNum";
 			ps = con.prepareStatement(sql2);
 			ps.setInt(1, itemNum);
@@ -441,9 +444,10 @@ public class FolderDao implements Serializable{
 				item.setParentNum(rs.getInt(4));
 				item.setUserId(rs.getString(5));
 				item.setCompanyNum(rs.getInt(6));
-				item.setFileURL(rs.getString(7));
-				item.setFileSize(rs.getString(8));
-				item.setFileType(rs.getString(9));
+				item.setType(rs.getInt(7));
+				item.setFileURL(rs.getString(8));
+				item.setFileSize(rs.getString(9));
+				item.setFileType(rs.getString(10));
 				
 				items.add(item);
 			}
@@ -471,7 +475,7 @@ public class FolderDao implements Serializable{
         
         try {
 			con = connection.conn();
-			String sql="select * from item where companyNum= ? and parentNum = 78";
+			String sql="select * from item where companyNum= ? and parentNum = 140";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, comNum);
 			rs=ps.executeQuery();
@@ -583,8 +587,8 @@ public class FolderDao implements Serializable{
         
         try {
 			con = connection.conn();
-			String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum"
-					+ " from folder f, item i where i.parentNum= 78 and f.foldertype = 1 and i.itemNum=f.itemNum";
+			String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum, i.type"
+					+ " from folder f, item i where i.parentNum= 140 and f.foldertype = 1 and i.itemNum=f.itemNum";
 			ps = con.prepareStatement(sql);
 			rs=ps.executeQuery();
 			
@@ -597,6 +601,7 @@ public class FolderDao implements Serializable{
 				folder.setParentNum(rs.getInt(6));
 				folder.setUserId(rs.getString(7));
 				folder.setCompanyNum(rs.getInt(8));
+				folder.setType(rs.getInt(9));
 			}
 			
 		} catch (Exception e) {

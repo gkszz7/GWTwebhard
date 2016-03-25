@@ -1,5 +1,6 @@
 package com.webhard.client.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -7,11 +8,11 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
 import com.webhard.client.GUI.LoginUser;
-import com.webhard.client.GUI.MainPage;
 import com.webhard.client.model.CompanyDto;
-import com.webhard.client.model.FileDto;
-import com.webhard.client.model.FolderDto;
+import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 
 public class LoginServiceClientImpl implements LoginServiceClientInt{
@@ -20,7 +21,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	private LoginUser loginuser;
 	private int check = 0;
 	private List<CompanyDto> list;
-
+	private Tree tree;
 	
 	public LoginServiceClientImpl(String url) {
 		
@@ -34,7 +35,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	}
 
 	@Override
-	public int login(final String id, String pwd) {
+	public int login(final String id, String pwd, final Tree tree) {
 			
 		this.loginAsync.login(id, pwd, new AsyncCallback<Integer>() {	
 			@Override
@@ -44,17 +45,9 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 					
 					Window.alert("로그인 성공");
 					
-//					RootPanel.get().clear();
-//					
-//					MainServiceClientImpl main = new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main");
-//					
-//					MainPage mainpage = new MainPage(main, folderList, homefolder);
-//					
-//					RootPanel.get().add(mainpage);
-					
 					RootPanel.get().clear();
 					
-					MainServiceClientImpl main = new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main");
+					MainServiceClientImpl main = new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree);
 					
 					RootPanel.get().add(main.getMainPage());
 					
@@ -104,6 +97,57 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 				
 			}
 		});
+	}
+	
+	@Override
+	public void itemTree() {
+		this.loginAsync.itemTree(new AsyncCallback<ItemDto>() {
+			@Override
+			public void onSuccess(ItemDto result) {
+				tree = new Tree();
+				TreeItem homeItem = new TreeItem();
+				homeItem.setText(result.getName());
+				homeItem.setUserObject(result);
+				getTree(homeItem);
+				loginuser.setTree(tree);
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+
+			}
+		});
+	}
+	public void getTree(TreeItem result){
+		
+		TreeItem item = result;
+		List<ItemDto> childNodes = new ArrayList<ItemDto>();
+		List<ItemDto> grandChildNodes = new ArrayList<ItemDto>();
+		ItemDto itemDto = (ItemDto)result.getUserObject();
+		childNodes = itemDto.getChild();
+		
+		for(int i=0;i<childNodes.size();i++){
+			ItemDto childNode = childNodes.get(i);
+			
+			TreeItem childItem = new TreeItem();
+			childItem.setText(childNode.getName());
+			childItem.setUserObject(childNode);
+			
+			grandChildNodes = childNode.getChild();
+			if(grandChildNodes.size() != 0){
+				for(int j=0; j<grandChildNodes.size(); j++){
+					
+					getTree(childItem);
+					item.addItem(childItem);
+					break;
+				}
+			}else{
+				if(itemDto.getItemNum() == 140 || childItem.getChildCount() == 0){
+					item.addItem(childItem);
+				}
+			}
+			
+		}
+		tree.addItem(item);
 	}
 	
 	public LoginUser getLoginUser(){

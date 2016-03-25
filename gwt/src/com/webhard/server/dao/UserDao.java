@@ -814,7 +814,7 @@ public class UserDao {
         return dto;
 	}
 	//userID�� ������ �˻�
-	public UserDto getData(String userid){
+	public UserDto getUserData(String userid){
 		Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
