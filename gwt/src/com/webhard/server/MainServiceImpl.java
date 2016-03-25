@@ -63,13 +63,26 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 	}
 	@Override
 	public ItemDto createFolder(String name, int parentNum, int companyNum) {
-		// TODO Auto-generated method stub
-		return null;
+		FolderDao dao = new FolderDao();
+		
+		HttpServletRequest httpServletRequest = this.getThreadLocalRequest();
+	    HttpSession session = httpServletRequest.getSession(true);
+	    UserDto user = (UserDto)session.getAttribute("user");
+	    
+		dao.addNewFolder(name, parentNum, user.getUserId(), companyNum);
+		
+		homeFolder = dao.selectHomeFolder();
+		setTree(homeFolder);
+		return homeFolder;
 	}
 	@Override
 	public ItemDto updateFolder(String name, int itemNum) {
-		// TODO Auto-generated method stub
-		return null;
+		FolderDao dao = new FolderDao();
+		dao.updateFolder(name, itemNum);
+		
+		homeFolder = dao.selectHomeFolder();
+		setTree(homeFolder);
+		return homeFolder;
 	}
 	@Override
 	public ItemDto deleteFolder(int itemNum) {
@@ -108,8 +121,6 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 					}
 
 				} else {
-					System.out.println(folDao.itemNumByParentNum(
-							childNode.getItemNum()).size());
 					if (home.getItemNum() == homeFolder.getItemNum() || folDao.itemNumByParentNum(childNode.getItemNum()).size() == 0) {
 						home.setChild(childNode);
 					}

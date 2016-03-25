@@ -30,7 +30,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	private MainServiceAsync mainAsync;
 	private MainPage main;
 	private Tree tree;
-
+	private DialogBox folderBox, FileDialog;
 	public MainServiceClientImpl(String url, Tree getTree) {
 
 		this.mainAsync = GWT.create(MainService.class);
@@ -126,7 +126,20 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		this.mainAsync.createFolder(name, parentNum, companyNum, new AsyncCallback<ItemDto>() {
 			@Override
 			public void onSuccess(ItemDto result) {
+				Window.alert("폴더가 추가되었습니다.");
 				
+				tree = new Tree();
+				TreeItem homeItem = new TreeItem();
+				homeItem.setText(result.getName());
+				homeItem.setUserObject(result);
+				getTree(homeItem);
+				
+				RootPanel.get().clear();
+
+				MainServiceClientImpl main = new MainServiceClientImpl(
+						GWT.getModuleBaseURL() + "Main", tree);
+
+				RootPanel.get().add(main.getMainPage());
 			}
 			@Override
 			public void onFailure(Throwable caught) {
@@ -139,7 +152,20 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		this.mainAsync.updateFolder(name, itemNum, new AsyncCallback<ItemDto>() {
 			@Override
 			public void onSuccess(ItemDto result) {
+				Window.alert("폴더가 변경되었습니다.");
 				
+				tree = new Tree();
+				TreeItem homeItem = new TreeItem();
+				homeItem.setText(result.getName());
+				homeItem.setUserObject(result);
+				getTree(homeItem);
+				
+				RootPanel.get().clear();
+
+				MainServiceClientImpl main = new MainServiceClientImpl(
+						GWT.getModuleBaseURL() + "Main", tree);
+
+				RootPanel.get().add(main.getMainPage());
 			}
 			
 			@Override
@@ -184,6 +210,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 					
 					getTree(childItem);
 					item.addItem(childItem);
+					break;
 				}
 			}else{
 				if(itemDto.getItemNum() == 78 || childItem.getChildCount() == 0){
@@ -197,7 +224,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	/**********************************************************/
 	/************************파일 업로드 다이얼로그*******************/
 	public DialogBox fileUpload() {
-		final DialogBox FileDialog = new DialogBox();
+		FileDialog = new DialogBox();
 
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		FileDialog.setWidget(absolutePanel);
@@ -246,20 +273,21 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		return FileDialog;
 	}
 	/**********************************************************/
+	
 	/*************************폴더 관련 다이얼로그 ****************/
-	public DialogBox createFolderBox(){
-		DialogBox createFolderBox = new DialogBox();
-		createFolderBox.setAnimationEnabled(true);
+	public DialogBox createFolderBox(final int parentNum, final int companyNum){
+		folderBox = new DialogBox();
+		folderBox.setAnimationEnabled(true);
 		AbsolutePanel aPanel = new AbsolutePanel();
 		aPanel.setStyleName("gwt-absolutePanel");
-		createFolderBox.setWidget(aPanel);
+		folderBox.setWidget(aPanel);
 		aPanel.setSize("397px", "325px");
 		
 		Label label = new Label("폴더 이름");
 		aPanel.add(label, 39, 100);
 		label.setSize("92px", "32px");
 		
-		TextBox textBox = new TextBox();
+		final TextBox textBox = new TextBox();
 		aPanel.add(textBox, 39, 138);
 		textBox.setSize("316px", "28px");
 		
@@ -267,13 +295,72 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		btnNewButton.setText("확 인");
 		aPanel.add(btnNewButton, 73, 231);
 		btnNewButton.setSize("92px", "41px");
-		
+		btnNewButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if(textBox.getText() != null){
+					createFolder(textBox.getText(), parentNum, companyNum);
+				}else{
+					Window.alert("이름을 입력해주세요.");
+				}
+			}
+		});		
 		Button button = new Button("New button");
 		button.setText("취 소");
 		aPanel.add(button, 242, 231);
 		button.setSize("92px", "41px");
+		button.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				folderBox.hide();
+			}
+		});
 		
-		return createFolderBox;
+		return folderBox;
+	}
+	
+	public DialogBox updateFolderBox(final int itemNum){
+		folderBox = new DialogBox();
+		folderBox.setAnimationEnabled(true);
+		AbsolutePanel aPanel = new AbsolutePanel();
+		aPanel.setStyleName("gwt-absolutePanel");
+		folderBox.setWidget(aPanel);
+		aPanel.setSize("397px", "325px");
+		
+		Label label = new Label("폴더 이름");
+		aPanel.add(label, 39, 100);
+		label.setSize("92px", "32px");
+		
+		final TextBox textBox = new TextBox();
+		aPanel.add(textBox, 39, 138);
+		textBox.setSize("316px", "28px");
+		
+		Button btnNewButton = new Button("New button");
+		btnNewButton.setText("확 인");
+		aPanel.add(btnNewButton, 73, 231);
+		btnNewButton.setSize("92px", "41px");
+		btnNewButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if(textBox.getText() != null){
+					updateFolder(textBox.getText(), itemNum);
+				}else{
+					Window.alert("이름을 입력해주세요.");
+				}
+			}
+		});		
+		Button button = new Button("New button");
+		button.setText("취 소");
+		aPanel.add(button, 242, 231);
+		button.setSize("92px", "41px");
+		button.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				folderBox.hide();
+			}
+		});
+		
+		return folderBox;
 	}
 	/**********************************************************/
 	public MainPage getMainPage() {

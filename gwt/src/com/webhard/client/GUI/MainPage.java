@@ -85,7 +85,7 @@ public class MainPage extends Composite {
 			public void execute() {
 				if(selectItemData != null){
 					if(selectItemData.getType() == 0){
-						createFolder = serviceImpl.createFolderBox();
+						createFolder = serviceImpl.createFolderBox(getSelectNode().getItemNum(), getSelectNode().getCompanyNum());
 						createFolder.center();
 					}else{
 						Window.alert("폴더를 선택해주세요.");
@@ -101,7 +101,8 @@ public class MainPage extends Composite {
 			public void execute() {
 				if(selectItemData != null){
 					if(selectItemData.getType() == 0){
-						Window.alert("성공");
+						editFolder = serviceImpl.updateFolderBox(getSelectNode().getItemNum());
+						editFolder.center();
 					}else{
 						Window.alert("폴더를 선택해주세요.");
 					}

@@ -43,7 +43,7 @@ public class CompanyServiceImpl extends RemoteServiceServlet implements CompanyS
 		CompanyDto cDto = cDao.getCompanyDtoByName(basicName);
 		cDao.updateCompany(cDto.getCompanyNum(), name, addr, phone);
 		ItemDto item = fDao.printCompFolderbyCompanyNum(cDto.getCompanyNum());
-		fDao.updateFolder(name, item.getItemNum(), cDto.getCompanyNum());
+		fDao.updateFolder(name, item.getItemNum());
 		companys = cDao.selectCompany();
 		return companys;
 	}

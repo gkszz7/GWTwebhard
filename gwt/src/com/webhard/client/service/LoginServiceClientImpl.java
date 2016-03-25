@@ -138,6 +138,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 					
 					getTree(childItem);
 					item.addItem(childItem);
+					break;
 				}
 			}else{
 				if(itemDto.getItemNum() == 78 || childItem.getChildCount() == 0){

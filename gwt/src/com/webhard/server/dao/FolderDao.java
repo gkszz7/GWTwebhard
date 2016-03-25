@@ -282,14 +282,13 @@ public class FolderDao implements Serializable{
 	/**
 	 * ��� �̸� ����
 	 */
-	public FolderDto updateFolder(String name, int itemNum,int companyNum) {
+	public FolderDto updateFolder(String name, int itemNum) {
 		Connection con = null;
         PreparedStatement ps = null;
         FolderDto dto = new FolderDto();
         
         dto.setName(name);
         dto.setItemNum(itemNum);
-        dto.setCompanyNum(companyNum);
         try {
 			con = connection.conn();
 			String sql="update item set name = ?, item_creation_date = current_date where itemNum = ?";
