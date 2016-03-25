@@ -39,7 +39,6 @@ public class MainPage extends Composite {
 	private CellTable<FolderDto> cellTable;
 	private List<UserDto> userList;
 	private List<UserDto> accessList;
-	private TableList table = new TableList();
 	private List<CompanyDto> companys;
 	private List<FolderDto> folderList;
 	private FolderDto homeFolder;
@@ -69,12 +68,11 @@ public class MainPage extends Composite {
 		CellTable<Object> cellTable = new CellTable<Object>();
 		horizontalSplitPanel.setRightWidget(cellTable);
 		cellTable.setSize("767px", "100%");
-	
-	    CellTree tree = new CellTree(null, "Item 1");
-
+		
+		
 	    
-		horizontalSplitPanel.setLeftWidget(tree);
-		tree.setSize("313px", "628px");
+//		horizontalSplitPanel.setLeftWidget(tree);
+//		tree.setSize("313px", "628px");
 
 		MenuBar menuBar = new MenuBar(false);
 		menuBar.setStyleName("gwt-MenuBar");

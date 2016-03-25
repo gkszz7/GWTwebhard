@@ -44,14 +44,6 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 					
 					Window.alert("로그인 성공");
 					
-//					RootPanel.get().clear();
-//					
-//					MainServiceClientImpl main = new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main");
-//					
-//					MainPage mainpage = new MainPage(main, folderList, homefolder);
-//					
-//					RootPanel.get().add(mainpage);
-					
 					RootPanel.get().clear();
 					
 					MainServiceClientImpl main = new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main");
