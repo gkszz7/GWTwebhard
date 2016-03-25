@@ -211,6 +211,7 @@ final DialogBox FileDialog = new DialogBox();
 		button.addClickHandler(new ClickHandler() {
 		      public void onClick(ClickEvent event) {
 		        String filename = fileUpload.getFilename();
+		        
 		        if (filename.length() == 0) {
 		          Window.alert("Error");
 		        } else {
