@@ -15,7 +15,7 @@ public class AccessListServiceImpl extends RemoteServiceServlet implements Acces
 		
 		List<UserDto> searchName = new ArrayList<UserDto>();
 		UserDao Dao = new UserDao();
-		searchName = Dao.searchUserByUserName(name);
+		searchName = Dao.searchAccessByUserName(name);
 		
 		return searchName;
 	}
@@ -25,7 +25,7 @@ public class AccessListServiceImpl extends RemoteServiceServlet implements Acces
 		
 		List<UserDto> searchcompany = new ArrayList<UserDto>();
 		UserDao Dao = new UserDao();
-		searchcompany = Dao.searchUserByCompany(company);
+		searchcompany = Dao.searchAccessByCompany(company);
 		
 		return searchcompany;
 		
@@ -36,7 +36,7 @@ public class AccessListServiceImpl extends RemoteServiceServlet implements Acces
 		
 		List<UserDto> searchphone = new ArrayList<UserDto>();
 		UserDao Dao = new UserDao();
-		searchphone = Dao.searchUserByUserPhone(phone);
+		searchphone = Dao.searchAccessByPhone(phone);
 		
 		return searchphone;
 	}
@@ -46,7 +46,7 @@ public class AccessListServiceImpl extends RemoteServiceServlet implements Acces
 		
 		List<UserDto> searchId = new ArrayList<UserDto>();
 		UserDao Dao = new UserDao();
-		searchId = Dao.searchUserByUserId(id);
+		searchId = Dao.searchAccessByUserId(id);
 		
 		return searchId;
 	}

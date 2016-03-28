@@ -46,6 +46,8 @@ public class MainPage extends Composite {
 	private TextBox nameText;
 	private TextBox phoneText;
 	private TextBox addrText;
+	private String fileName;
+	private long filesize;
 	private Tree tree;
 	private TreeItem selectItem;
 	private ItemDto selectItemData;
@@ -55,12 +57,14 @@ public class MainPage extends Composite {
 	public MainPage(final MainServiceClientImpl mainServiceClientImpl, Tree getTree, String compName, int homeNum, String id) {
 
 		absolutePanel = new AbsolutePanel();
+		absolutePanel.setStyleName("gwt-absolutePanel");
 		initWidget(this.absolutePanel);
 		absolutePanel.setSize("1121px", "760px");
 		HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
+		horizontalSplitPanel.setStyleName("gwt-Label-new");
 		horizontalSplitPanel.setSplitPosition("30%");
-		this.absolutePanel.add(horizontalSplitPanel, 10, 51);
-		horizontalSplitPanel.setSize("1121px", "631px");
+		this.absolutePanel.add(horizontalSplitPanel, 0, 51);
+		horizontalSplitPanel.setSize("1131px", "631px");
 		this.serviceImpl = mainServiceClientImpl;
 		this.serviceImpl.UserList();
 		this.serviceImpl.compList();
@@ -137,8 +141,7 @@ public class MainPage extends Composite {
 			
 			@Override
 			public void execute() {
-				FileDialog = serviceImpl.fileUpload();
-				FileDialog.center();
+				file();
 			}
 		});
 		menuBar.addItem(fileMenu);
@@ -189,6 +192,7 @@ public class MainPage extends Composite {
 		});
 		
 		Button btnNewButton = new Button("New button");
+		
 		btnNewButton.setText("로그아웃");
 		absolutePanel.add(btnNewButton, 1009, 706);
 		btnNewButton.setSize("85px", "25px");
@@ -356,6 +360,15 @@ public class MainPage extends Composite {
 		return selectItemData;
 	}
 
+	public void setFile(String fileName){
+		this.fileName = fileName;
+		
+	}
+	public void file(){
+	/*	FileUploader file = new FileUploader();
+		file.center();*/
+	}
+	
 	public void AccessList(){
 		RootPanel.get().clear();
 		

@@ -35,15 +35,15 @@ public class FileDao implements Serializable{
 		try {
 			con = connection.conn();
 			if(companyNum == 0){
-				sql = "insert into item (itemNum,name,item_creation_date,parentNum,userId) "
-						+ "values (next value for itemNum, ?, current_date, ?,?)";
+				sql = "insert into item (itemNum,name,item_creation_date,parentNum,userId,type) "
+						+ "values (next value for itemNum, ?, current_date, ?,?,1)";
 				ps = con.prepareStatement(sql);
 				ps.setString(1, name);
 				ps.setInt(2, itemNum);
 				ps.setString(3, userId);
 			}else{
-				sql = "insert into item (itemNum,name,item_creation_date,parentNum,userId,companyNum) "
-						+ "values (next value for itemNum, ?, current_date, ?,?,?)";
+				sql = "insert into item (itemNum,name,item_creation_date,parentNum,userId,companyNum,type) "
+						+ "values (next value for itemNum, ?, current_date, ?,?,?,1)";
 				ps = con.prepareStatement(sql);
 				ps.setString(1, name);
 				ps.setInt(2, itemNum);

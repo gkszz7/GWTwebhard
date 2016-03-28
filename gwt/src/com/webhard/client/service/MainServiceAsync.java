@@ -1,5 +1,6 @@
 package com.webhard.client.service;
 
+import java.io.File;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -16,4 +17,5 @@ public interface MainServiceAsync {
 	void createFolder(String name, int parentNum, int companyNum, AsyncCallback<ItemDto> callback);
 	void updateFolder(String name, int itemNum, AsyncCallback<ItemDto> callback);
 	void deleteFolder(int itemNum, AsyncCallback<ItemDto> callback);
+	
 }

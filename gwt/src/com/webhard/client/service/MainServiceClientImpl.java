@@ -107,8 +107,6 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 	}
@@ -122,11 +120,9 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				// TODO Auto-generated method stub
 				main.selectAccess(result);
 			}
-
+			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 	}
@@ -219,6 +215,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 			}
 		});
 	}
+
 	/*************************트리 생성***********************/
 	public void getTree(TreeItem result){
 		
@@ -244,7 +241,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 					break;
 				}
 			}else{
-				if(itemDto.getItemNum() == 78 || childItem.getChildCount() == 0){
+				if(itemDto.getItemNum() == 140 || childItem.getChildCount() == 0){
 					item.addItem(childItem);
 				}
 			}
@@ -254,7 +251,9 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	}
 	/**********************************************************/
 	/************************파일 업로드 다이얼로그*******************/
+
 	public DialogBox fileUpload() {
+
 		FileDialog = new DialogBox();
 
 		AbsolutePanel absolutePanel = new AbsolutePanel();
@@ -273,12 +272,12 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		HTML html_1 = new HTML("<br>");
 		absolutePanel.add(html_1, 10, 155);
 		html_1.setSize("300px", "20px");
-
+		
 		Button button = new Button("FileUpload");
 		button.addClickHandler(new ClickHandler() {
+			
 			public void onClick(ClickEvent event) {
 				String filename = fileUpload.getFilename();
-
 				if (filename.length() == 0) {
 					Window.alert("Error");
 				} else {
@@ -288,10 +287,10 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		});
 		absolutePanel.add(button, 10, 249);
 		button.setSize("85px", "25px");
-
+		
 		Button button_1 = new Button("Cancel");
 		button_1.addClickHandler(new ClickHandler() {
-
+			
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
@@ -393,6 +392,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		
 		return folderBox;
 	}
+	
 	/**********************************************************/
 	public MainPage getMainPage() {
 

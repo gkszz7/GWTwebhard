@@ -1,0 +1,2 @@
+serviceClass: com.webhard.client.service.LoginService
+path: DF52426A6A44A087C921A47F6A1A11FF.gwt.rpc

@@ -1,25 +1,33 @@
 package com.webhard.server;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.webhard.client.model.CompanyDto;
-import com.webhard.client.model.ItemDto;
-import com.webhard.client.model.UserDto;
 import com.webhard.client.model.FolderDto;
+import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.MainService;
 import com.webhard.server.dao.CompanyDao;
-import com.webhard.server.dao.UserDao;
 import com.webhard.server.dao.FolderDao;
+import com.webhard.server.dao.UserDao;
 
 public class MainServiceImpl extends RemoteServiceServlet implements MainService{
 	private ItemDto homeFolder;
+
 	private int parentNum = 0;
+
+
+
 	@Override
 	public List<CompanyDto> compList() {
 		CompanyDao compDao = new CompanyDao();
@@ -60,6 +68,7 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		List<UserDto> Accesslist = new ArrayList<UserDto>();
 		UserDao Dao = new UserDao();
 		Accesslist = Dao.selectAccessUser();
+		
 		return Accesslist;
 	}
 	@Override
@@ -95,6 +104,8 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		setTree(homeFolder);
 		return homeFolder;
 	}
+	
+	
 	public void setTree(ItemDto cycle) {
 
 		FolderDao folDao = new FolderDao();
@@ -147,6 +158,7 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		// tree = new JTree(home);
 
 	}
+
 	public void delete(int itemNum) {
 
 		ArrayList<Integer> childs = new ArrayList<Integer>();
@@ -172,4 +184,18 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 
 		}
 	} 
+
+	public void test(String filename){
+		
+		File file = new File(filename);
+		file.getName();
+		
+	}
+	public class Files extends HttpServlet{
+		@Override
+		protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+				throws ServletException, IOException {
+			super.doGet(req, resp);
+		}
+	}
 }

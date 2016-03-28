@@ -146,7 +146,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 					break;
 				}
 			}else{
-				if(itemDto.getItemNum() == 78 || childItem.getChildCount() == 0){
+				if(itemDto.getItemNum() == 140 || childItem.getChildCount() == 0){
 					item.addItem(childItem);
 				}
 			}

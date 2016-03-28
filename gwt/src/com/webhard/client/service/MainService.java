@@ -1,5 +1,6 @@
 package com.webhard.client.service;
 
+import java.io.File;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
