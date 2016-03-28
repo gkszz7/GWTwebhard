@@ -309,7 +309,7 @@ public class FolderDao implements Serializable{
         return dto;
 	}
 	/**
-	 * ���� ����� �����۳ѹ� ������
+	 * 
 	 */
 	public List<Integer> itemNumByParentNum(int itemNum){
 		Connection con = null;

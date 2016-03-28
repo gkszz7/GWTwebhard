@@ -6,6 +6,8 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
@@ -30,14 +32,21 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	private MainServiceAsync mainAsync;
 	private MainPage main;
 	private Tree tree;
+	private String companyName;
+	private int homeFolNum;
+	private String id;
 	private DialogBox folderBox, FileDialog;
-	public MainServiceClientImpl(String url, Tree getTree) {
+	
+	public MainServiceClientImpl(String url, Tree getTree, String compName, int homeNum , String id) {
 
 		this.mainAsync = GWT.create(MainService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget) this.mainAsync;
 		endPoint.setServiceEntryPoint(url);
+		this.companyName = compName;
+		this.homeFolNum = homeNum;
+		this.id = id;
 		this.tree = getTree;
-		this.main = new MainPage(this, getTree);
+		this.main = new MainPage(this, getTree, compName, homeNum, id);
 	}
 
 	@Override
@@ -73,8 +82,8 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 						
 						RootPanel.get().clear();
 
-						MainServiceClientImpl main = new MainServiceClientImpl(
-								GWT.getModuleBaseURL() + "Main", tree);
+						MainServiceClientImpl main = 
+								new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, id);
 
 						RootPanel.get().add(main.getMainPage());
 					}
@@ -136,8 +145,8 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				
 				RootPanel.get().clear();
 
-				MainServiceClientImpl main = new MainServiceClientImpl(
-						GWT.getModuleBaseURL() + "Main", tree);
+				MainServiceClientImpl main = 
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, id);
 
 				RootPanel.get().add(main.getMainPage());
 			}
@@ -162,8 +171,8 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				
 				RootPanel.get().clear();
 
-				MainServiceClientImpl main = new MainServiceClientImpl(
-						GWT.getModuleBaseURL() + "Main", tree);
+				MainServiceClientImpl main = 
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, id);
 
 				RootPanel.get().add(main.getMainPage());
 			}
@@ -179,7 +188,29 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		this.mainAsync.deleteFolder(itemNum, new AsyncCallback<ItemDto>() {
 			@Override
 			public void onSuccess(ItemDto result) {
+				Window.alert("폴더가 삭제되었습니다.");
 				
+				tree = new Tree(){
+					@Override
+					public void onBrowserEvent(Event event) {
+						if(DOM.eventGetType(event) == event.ONCONTEXTMENU){
+							
+						}
+						super.onBrowserEvent(event);
+					}
+				};
+				TreeItem homeItem = new TreeItem();
+				homeItem.setText(result.getName());
+				homeItem.setUserObject(result);
+				homeItem.setState(true);
+				getTree(homeItem);
+				
+				RootPanel.get().clear();
+
+				MainServiceClientImpl main = 
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, id);
+
+				RootPanel.get().add(main.getMainPage());
 			}
 			
 			@Override

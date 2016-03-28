@@ -19,6 +19,7 @@ import com.webhard.server.dao.FolderDao;
 
 public class MainServiceImpl extends RemoteServiceServlet implements MainService{
 	private ItemDto homeFolder;
+	private int parentNum = 0;
 	@Override
 	public List<CompanyDto> compList() {
 		CompanyDao compDao = new CompanyDao();
@@ -86,8 +87,13 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 	}
 	@Override
 	public ItemDto deleteFolder(int itemNum) {
-		// TODO Auto-generated method stub
-		return null;
+		FolderDao dao = new FolderDao();
+		parentNum = itemNum;
+		delete(itemNum);
+		
+		homeFolder = dao.selectHomeFolder();
+		setTree(homeFolder);
+		return homeFolder;
 	}
 	public void setTree(ItemDto cycle) {
 
@@ -141,5 +147,29 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		// tree = new JTree(home);
 
 	}
-	 
+	public void delete(int itemNum) {
+
+		ArrayList<Integer> childs = new ArrayList<Integer>();
+		FolderDao dao = new FolderDao();
+		childs = (ArrayList<Integer>) dao.itemNumByParentNum(itemNum);
+
+		for (int i = 0; i < childs.size(); i++) {
+			int child = childs.get(i);
+			ArrayList<Integer> grandChilds = (ArrayList<Integer>) dao.itemNumByParentNum(child);
+			if (grandChilds.size() != 0) {
+				for (int j = 0; j < grandChilds.size(); j++) {
+					delete(child);
+					if (((ArrayList<Integer>) dao.itemNumByParentNum(child)).size() == 0) {
+						dao.deleteFolder(child);
+					}
+				}
+			} else {
+				dao.deleteFolder(child);
+			}
+		}
+		if (((ArrayList<Integer>) dao.itemNumByParentNum(parentNum)).size() == 0) {
+			dao.deleteFolder(parentNum);
+
+		}
+	} 
 }

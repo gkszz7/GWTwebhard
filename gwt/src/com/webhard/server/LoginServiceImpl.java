@@ -1,7 +1,10 @@
 package com.webhard.server;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +17,7 @@ import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.LoginService;
 import com.webhard.server.dao.CompanyDao;
+import com.webhard.server.dao.FileDao;
 import com.webhard.server.dao.FolderDao;
 import com.webhard.server.dao.UserDao;
 
@@ -22,34 +26,49 @@ import com.webhard.server.dao.UserDao;
  */
 
 
-public class LoginServiceImpl extends RemoteServiceServlet implements LoginService {
+public class LoginServiceImpl extends RemoteServiceServlet implements LoginService{
 	
 	private ItemDto homeFolder;
 	
 	@Override
-	public int login(String id,String pwd) {
+	public HashMap<String, Object> login(String id,String pwd) {
 	
 		// TODO Auto-generated method stub
 		UserDao userDao = new UserDao();
+		CompanyDao compDao = new CompanyDao();
+		FolderDao folDao = new FolderDao();
+		FileDao fileDao = new FileDao();
 		UserDto userDto = new UserDto();
+		int homeFolderNum = folDao.selectHomeFolder().getItemNum();
+		String companyName = null;
+		
 		int chack = userDao.loginUser(id, pwd);
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		if(chack == 1){
 			if(id.equals("admin")){
 				userDto = userDao.getOneUserData(id);
 			}else{
 				userDto = userDao.getUserData(id);
+				int compNum = userDao.selectcompany(id);
+				companyName = userDao.selectcompanyname(compNum);
 			}
 			HttpServletRequest httpServletRequest = this.getThreadLocalRequest();
 		    HttpSession session = httpServletRequest.getSession(true);
 		    session.setAttribute("user", userDto);
 		    
-			return chack;
+		    map.put("check", chack);
+		    map.put("companyName", companyName);
+		    map.put("homeFolderNum", homeFolderNum);
+		    
+			return map;
 			
 		}else if(chack == 0){
-			return chack;
+			map.put("check", chack);
+			return map;
 		}else{
-			return chack;
+			map.put("check", chack);
+			return map;
 		}
 	}
 	@Override

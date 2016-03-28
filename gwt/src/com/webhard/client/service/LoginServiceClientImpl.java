@@ -1,6 +1,7 @@
 package com.webhard.client.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -37,21 +38,25 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	@Override
 	public int login(final String id, String pwd, final Tree tree) {
 			
-		this.loginAsync.login(id, pwd, new AsyncCallback<Integer>() {	
+		this.loginAsync.login(id, pwd, new AsyncCallback<HashMap<String, Object>>() {	
 			@Override
-			public void onSuccess(Integer result) {
-				check = result;
-				if(result == 1){
-					
+			public void onSuccess(HashMap<String, Object> result) {
+				System.out.println(123);
+				check = (Integer)result.get("check");
+				System.out.println(check);
+				if((Integer)result.get("check") == 1){
+					String compName = (String)result.get("companyName");
+					int homeFolderNum = (Integer)result.get("homeFolderNum");
 					Window.alert("로그인 성공");
 					
 					RootPanel.get().clear();
 					
-					MainServiceClientImpl main = new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree);
+					MainServiceClientImpl main = 
+							new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree,compName,homeFolderNum, id);
 					
 					RootPanel.get().add(main.getMainPage());
 					
-				}else if(result == 0){
+				}else if((Integer)result.get("check") == 0){
 					Window.alert("비밀번호 실패");
 					
 				}else{

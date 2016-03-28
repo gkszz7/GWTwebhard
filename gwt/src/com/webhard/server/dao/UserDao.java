@@ -1,5 +1,6 @@
 package com.webhard.server.dao;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +11,7 @@ import com.webhard.client.model.UserDto;
 
 
 
-public class UserDao {
+public class UserDao implements Serializable{
 	
     /*
      * �α���
