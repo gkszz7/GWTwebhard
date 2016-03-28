@@ -194,7 +194,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	}
 	/**********************************************************/
 	/************************파일 업로드 다이얼로그*******************/
-	public DialogBox fileUpload(){
+/*	public DialogBox fileUpload(){
 		FileDialog = new DialogBox();
 
 		AbsolutePanel absolutePanel = new AbsolutePanel();
@@ -242,7 +242,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		button_1.setSize("64px", "25px");
 
 		return FileDialog;
-	}
+	}*/
 	/**********************************************************/
 	/*************************폴더 관련 다이얼로그 ****************/
 	public DialogBox createFolderBox(){

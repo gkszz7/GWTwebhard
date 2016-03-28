@@ -21,7 +21,6 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.webhard.client.model.CompanyDto;
@@ -137,8 +136,7 @@ public class MainPage extends Composite {
 			
 			@Override
 			public void execute() {
-				/*FileDialog = serviceImpl.fileUpload();
-				FileDialog.center();*/
+				file();
 			}
 		});
 		menuBar.addItem(fileMenu);
@@ -189,6 +187,7 @@ public class MainPage extends Composite {
 		});
 		
 		Button btnNewButton = new Button("New button");
+		
 		btnNewButton.setText("로그아웃");
 		absolutePanel.add(btnNewButton, 1009, 706);
 		btnNewButton.setSize("85px", "25px");
@@ -365,6 +364,11 @@ public class MainPage extends Composite {
 		this.fileName = fileName;
 		
 	}
+	public void file(){
+	/*	FileUploader file = new FileUploader();
+		file.center();*/
+	}
+	
 	public void AccessList(){
 		RootPanel.get().clear();
 		
