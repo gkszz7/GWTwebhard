@@ -72,7 +72,7 @@ public class MainPage extends Composite {
 		CellTable<Object> cellTable = new CellTable<Object>();
 		horizontalSplitPanel.setRightWidget(cellTable);
 		cellTable.setSize("767px", "100%");
-		
+		String id = "test";
 		horizontalSplitPanel.setLeftWidget(tree);
 		tree.setSize("313px", "628px");
 				
@@ -140,52 +140,54 @@ public class MainPage extends Composite {
 			}
 		});
 		menuBar.addItem(fileMenu);
-		
-		MenuBar menuBar_4 = new MenuBar(true);
-		MenuItem userMenu = new MenuItem("사용자", false, menuBar_4);
-		menuBar_4.addItem("사용자목록",new ScheduledCommand() {
+		if(id.equals("test")){
+			MenuBar menuBar_4 = new MenuBar(true);
+			MenuItem userMenu = new MenuItem("사용자", false, menuBar_4);
+			menuBar_4.addItem("사용자목록",new ScheduledCommand() {
+				
+				@Override
+				public void execute() {
+					
+					enterUserList();
+				}
+			});
+			menuBar.addItem(userMenu);
+			MenuBar menuBar_5 = new MenuBar(true);
+			MenuItem AccessMenu = new MenuItem("인증", false, menuBar_5);
 			
-			@Override
-			public void execute() {
+			menuBar_5.addItem("인증대기 목록",new ScheduledCommand() {
 				
-				enterUserList();
-			}
-		});
-		menuBar.addItem(userMenu);
-		MenuBar menuBar_5 = new MenuBar(true);
-		MenuItem AccessMenu = new MenuItem("인증", false, menuBar_5);
-		
-		menuBar_5.addItem("인증대기 목록",new ScheduledCommand() {
+				@Override
+				public void execute() {
+					
+					AccessList();
+					
+				}
+			});
+			menuBar.addItem(AccessMenu);
 			
-			@Override
-			public void execute() {
-				
-				AccessList();
-				
-			}
-		});
-		menuBar.addItem(AccessMenu);
-		
-		MenuBar menuBar_6 = new MenuBar(true);
-		MenuItem compMenu = new MenuItem("회사", false, menuBar_6);
-		menuBar.addItem(compMenu);
-		menuBar_6.addItem("회사 가입", new ScheduledCommand() {
+			MenuBar menuBar_6 = new MenuBar(true);
+			MenuItem compMenu = new MenuItem("회사", false, menuBar_6);
+			menuBar.addItem(compMenu);
+			menuBar_6.addItem("회사 가입", new ScheduledCommand() {
 
-			@Override
-			public void execute() {
-				entryCompany.center();
-			}
-		});
-		
-		menuBar_6.addItem("회사 목록", new ScheduledCommand() {
+				@Override
+				public void execute() {
+					entryCompany.center();
+				}
+			});
+			
+			menuBar_6.addItem("회사 목록", new ScheduledCommand() {
 
-			@Override
-			public void execute() {
+				@Override
+				public void execute() {
+					
+					enterCompList();
+				}
+			});
+
+		}
 				
-				enterCompList();
-			}
-		});
-		
 		Button btnNewButton = new Button("New button");
 		
 		btnNewButton.setText("로그아웃");
@@ -365,8 +367,10 @@ public class MainPage extends Composite {
 		
 	}
 	public void file(){
-	/*	FileUploader file = new FileUploader();
-		file.center();*/
+		/*
+		FileUploader file = new FileUploader();
+		file.center();
+		*/
 	}
 	
 	public void AccessList(){
