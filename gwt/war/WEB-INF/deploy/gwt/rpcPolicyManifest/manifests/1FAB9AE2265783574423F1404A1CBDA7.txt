@@ -1,0 +1,2 @@
+serviceClass: com.webhard.client.service.EntryService
+path: 9E1B374A936CAB24D4B4F6F0915E2B18.gwt.rpc

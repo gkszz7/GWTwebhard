@@ -2,7 +2,9 @@ package com.webhard.client.model;
 
 import java.io.Serializable;
 
-public class FolderDto extends ItemDto implements Serializable{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class FolderDto extends ItemDto implements IsSerializable{
 	private int step;
 	private int folderType;
 	

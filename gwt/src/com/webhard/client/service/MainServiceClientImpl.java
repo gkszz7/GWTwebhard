@@ -1,11 +1,14 @@
 package com.webhard.client.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
@@ -21,7 +24,6 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.webhard.client.GUI.MainPage;
 import com.webhard.client.model.CompanyDto;
-import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 
@@ -29,16 +31,22 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 
 	private MainServiceAsync mainAsync;
 	private MainPage main;
-	private  DialogBox FileDialog;
 	private Tree tree;
-
-	public MainServiceClientImpl(String url, Tree getTree) {
+	private String companyName;
+	private int homeFolNum;
+	private UserDto userDto;
+	private DialogBox folderBox, FileDialog;
+	
+	public MainServiceClientImpl(String url, Tree getTree, String compName, int homeNum , UserDto userDto) {
 
 		this.mainAsync = GWT.create(MainService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget) this.mainAsync;
 		endPoint.setServiceEntryPoint(url);
+		this.companyName = compName;
+		this.homeFolNum = homeNum;
 		this.tree = getTree;
-		this.main = new MainPage(this, getTree);
+		this.userDto = userDto;
+		this.main = new MainPage(this, getTree, compName, homeNum, userDto);
 	}
 
 	@Override
@@ -74,8 +82,8 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 						
 						RootPanel.get().clear();
 
-						MainServiceClientImpl main = new MainServiceClientImpl(
-								GWT.getModuleBaseURL() + "Main", tree);
+						MainServiceClientImpl main = 
+								new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
 
 						RootPanel.get().add(main.getMainPage());
 					}
@@ -123,7 +131,20 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		this.mainAsync.createFolder(name, parentNum, companyNum, new AsyncCallback<ItemDto>() {
 			@Override
 			public void onSuccess(ItemDto result) {
+				Window.alert("폴더가 추가되었습니다.");
 				
+				tree = new Tree();
+				TreeItem homeItem = new TreeItem();
+				homeItem.setText(result.getName());
+				homeItem.setUserObject(result);
+				getTree(homeItem);
+				
+				RootPanel.get().clear();
+
+				MainServiceClientImpl main = 
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
+
+				RootPanel.get().add(main.getMainPage());
 			}
 			@Override
 			public void onFailure(Throwable caught) {
@@ -136,7 +157,20 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		this.mainAsync.updateFolder(name, itemNum, new AsyncCallback<ItemDto>() {
 			@Override
 			public void onSuccess(ItemDto result) {
+				Window.alert("폴더가 변경되었습니다.");
 				
+				tree = new Tree();
+				TreeItem homeItem = new TreeItem();
+				homeItem.setText(result.getName());
+				homeItem.setUserObject(result);
+				getTree(homeItem);
+				
+				RootPanel.get().clear();
+
+				MainServiceClientImpl main = 
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
+
+				RootPanel.get().add(main.getMainPage());
 			}
 			
 			@Override
@@ -150,7 +184,29 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		this.mainAsync.deleteFolder(itemNum, new AsyncCallback<ItemDto>() {
 			@Override
 			public void onSuccess(ItemDto result) {
+				Window.alert("폴더가 삭제되었습니다.");
 				
+				tree = new Tree(){
+					@Override
+					public void onBrowserEvent(Event event) {
+						if(DOM.eventGetType(event) == event.ONCONTEXTMENU){
+							
+						}
+						super.onBrowserEvent(event);
+					}
+				};
+				TreeItem homeItem = new TreeItem();
+				homeItem.setText(result.getName());
+				homeItem.setUserObject(result);
+				homeItem.setState(true);
+				getTree(homeItem);
+				
+				RootPanel.get().clear();
+
+				MainServiceClientImpl main = 
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
+
+				RootPanel.get().add(main.getMainPage());
 			}
 			
 			@Override
@@ -160,6 +216,18 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		});
 	}
 
+	@Override
+	public void ItemInTable(int itemNum) {
+		this.mainAsync.ItemInTable(itemNum, new AsyncCallback<HashMap<String,Object>>() {
+			@Override
+			public void onSuccess(HashMap<String, Object> result) {
+				
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+		});
+	}
 	/*************************트리 생성***********************/
 	public void getTree(TreeItem result){
 		
@@ -244,20 +312,21 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		return FileDialog;
 	}*/
 	/**********************************************************/
+	
 	/*************************폴더 관련 다이얼로그 ****************/
-	public DialogBox createFolderBox(){
-		DialogBox createFolderBox = new DialogBox();
-		createFolderBox.setAnimationEnabled(true);
+	public DialogBox createFolderBox(final int parentNum, final int companyNum){
+		folderBox = new DialogBox();
+		folderBox.setAnimationEnabled(true);
 		AbsolutePanel aPanel = new AbsolutePanel();
 		aPanel.setStyleName("gwt-absolutePanel");
-		createFolderBox.setWidget(aPanel);
+		folderBox.setWidget(aPanel);
 		aPanel.setSize("397px", "325px");
 		
 		Label label = new Label("폴더 이름");
 		aPanel.add(label, 39, 100);
 		label.setSize("92px", "32px");
 		
-		TextBox textBox = new TextBox();
+		final TextBox textBox = new TextBox();
 		aPanel.add(textBox, 39, 138);
 		textBox.setSize("316px", "28px");
 		
@@ -265,13 +334,72 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		btnNewButton.setText("확 인");
 		aPanel.add(btnNewButton, 73, 231);
 		btnNewButton.setSize("92px", "41px");
-		
+		btnNewButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if(textBox.getText() != null){
+					createFolder(textBox.getText(), parentNum, companyNum);
+				}else{
+					Window.alert("이름을 입력해주세요.");
+				}
+			}
+		});		
 		Button button = new Button("New button");
 		button.setText("취 소");
 		aPanel.add(button, 242, 231);
 		button.setSize("92px", "41px");
+		button.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				folderBox.hide();
+			}
+		});
 		
-		return createFolderBox;
+		return folderBox;
+	}
+	
+	public DialogBox updateFolderBox(final int itemNum){
+		folderBox = new DialogBox();
+		folderBox.setAnimationEnabled(true);
+		AbsolutePanel aPanel = new AbsolutePanel();
+		aPanel.setStyleName("gwt-absolutePanel");
+		folderBox.setWidget(aPanel);
+		aPanel.setSize("397px", "325px");
+		
+		Label label = new Label("폴더 이름");
+		aPanel.add(label, 39, 100);
+		label.setSize("92px", "32px");
+		
+		final TextBox textBox = new TextBox();
+		aPanel.add(textBox, 39, 138);
+		textBox.setSize("316px", "28px");
+		
+		Button btnNewButton = new Button("New button");
+		btnNewButton.setText("확 인");
+		aPanel.add(btnNewButton, 73, 231);
+		btnNewButton.setSize("92px", "41px");
+		btnNewButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if(textBox.getText() != null){
+					updateFolder(textBox.getText(), itemNum);
+				}else{
+					Window.alert("이름을 입력해주세요.");
+				}
+			}
+		});		
+		Button button = new Button("New button");
+		button.setText("취 소");
+		aPanel.add(button, 242, 231);
+		button.setSize("92px", "41px");
+		button.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				folderBox.hide();
+			}
+		});
+		
+		return folderBox;
 	}
 	
 	/**********************************************************/

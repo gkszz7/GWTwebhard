@@ -1,8 +1,8 @@
 package com.webhard.client.model;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class UserDto implements Serializable{
+public class UserDto implements IsSerializable{
 	private String userId;
 	private String passwd;
 	private String userName;

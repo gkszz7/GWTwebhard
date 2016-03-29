@@ -8,6 +8,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.ClientBundleWithLookup;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -52,7 +54,7 @@ public class MainPage extends Composite {
 	
 	//파일 리스트. 폴더 리스트
 	
-	public MainPage(final MainServiceClientImpl mainServiceClientImpl, Tree getTree) {
+	public MainPage(final MainServiceClientImpl mainServiceClientImpl, Tree getTree, String compName, int homeNum, UserDto userDto) {
 
 		absolutePanel = new AbsolutePanel();
 		absolutePanel.setStyleName("gwt-absolutePanel");
@@ -68,14 +70,14 @@ public class MainPage extends Composite {
 		this.serviceImpl.compList();
 		this.serviceImpl.AccessList();
 		this.tree = getTree;
-		
+		System.out.println(userDto.getUserId());
 		CellTable<Object> cellTable = new CellTable<Object>();
 		horizontalSplitPanel.setRightWidget(cellTable);
 		cellTable.setSize("767px", "100%");
 		String id = "test";
 		horizontalSplitPanel.setLeftWidget(tree);
 		tree.setSize("313px", "628px");
-				
+		
 		MenuBar menuBar = new MenuBar(false);
 		menuBar.setStyleName("gwt-MenuBar");
 		absolutePanel.add(menuBar, 0, 0);
@@ -89,7 +91,7 @@ public class MainPage extends Composite {
 			public void execute() {
 				if(selectItemData != null){
 					if(selectItemData.getType() == 0){
-						createFolder = serviceImpl.createFolderBox();
+						createFolder = serviceImpl.createFolderBox(getSelectNode().getItemNum(), getSelectNode().getCompanyNum());
 						createFolder.center();
 					}else{
 						Window.alert("폴더를 선택해주세요.");
@@ -105,7 +107,8 @@ public class MainPage extends Composite {
 			public void execute() {
 				if(selectItemData != null){
 					if(selectItemData.getType() == 0){
-						Window.alert("성공");
+						editFolder = serviceImpl.updateFolderBox(getSelectNode().getItemNum());
+						editFolder.center();
 					}else{
 						Window.alert("폴더를 선택해주세요.");
 					}
@@ -120,7 +123,9 @@ public class MainPage extends Composite {
 			public void execute() {
 				if(selectItemData != null){
 					if(selectItemData.getType() == 0){
-						Window.alert("성공");
+						if(Window.confirm("삭제 하시겠습니까?")){
+							serviceImpl.deleteFolder(selectItemData.getItemNum());
+						}
 					}else{
 						Window.alert("폴더를 선택해주세요.");
 					}
@@ -190,16 +195,17 @@ public class MainPage extends Composite {
 				
 		Button btnNewButton = new Button("New button");
 		
+		
 		btnNewButton.setText("로그아웃");
 		absolutePanel.add(btnNewButton, 1009, 706);
 		btnNewButton.setSize("85px", "25px");
-
-		Label lblNewLabel = new Label("회사 명 : 제네지");
+		
+		Label lblNewLabel = new Label("회사 명 : "+compName);
 		lblNewLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		absolutePanel.add(lblNewLabel, 838, 713);
 		lblNewLabel.setSize("129px", "18px");
 
-		Label lblNewLabel_1 = new Label("아이디 : test1");
+		Label lblNewLabel_1 = new Label("아이디 : "+userDto.getUserId());
 		lblNewLabel_1
 				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		absolutePanel.add(lblNewLabel_1, 686, 713);
@@ -326,18 +332,14 @@ public class MainPage extends Composite {
 		
 		/*********************************************************/
 		
-		/********************폴더 생성 다이얼로그********************/
-		
-		/*********************************************************/
-		
 		
 		/*************트리 선택 핸들러********************************/
 		tree.addSelectionHandler(new SelectionHandler<TreeItem>() {
-			
 			@Override
 			public void onSelection(SelectionEvent<TreeItem> event) {
 				selectItem = event.getSelectedItem();
 				selectItemData = (ItemDto)selectItem.getUserObject();
+				serviceImpl.ItemInTable(selectItemData.getItemNum());
 			}
 		});
 		/************************************************************/

@@ -2,7 +2,9 @@ package com.webhard.client.model;
 
 import java.io.Serializable;
 
-public class FileDto extends ItemDto implements Serializable{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class FileDto extends ItemDto implements IsSerializable{
 	
 	private String fileURL;
 	private String fileSize;
