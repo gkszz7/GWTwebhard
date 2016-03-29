@@ -54,7 +54,7 @@ public class MainPage extends Composite {
 	
 	//파일 리스트. 폴더 리스트
 	
-	public MainPage(final MainServiceClientImpl mainServiceClientImpl, Tree getTree, String compName, int homeNum, String id) {
+	public MainPage(final MainServiceClientImpl mainServiceClientImpl, Tree getTree, String compName, int homeNum, UserDto userDto) {
 
 		absolutePanel = new AbsolutePanel();
 		absolutePanel.setStyleName("gwt-absolutePanel");
@@ -70,7 +70,7 @@ public class MainPage extends Composite {
 		this.serviceImpl.compList();
 		this.serviceImpl.AccessList();
 		this.tree = getTree;
-		
+		System.out.println(userDto.getUserId());
 		CellTable<Object> cellTable = new CellTable<Object>();
 		horizontalSplitPanel.setRightWidget(cellTable);
 		cellTable.setSize("767px", "100%");
@@ -202,7 +202,7 @@ public class MainPage extends Composite {
 		absolutePanel.add(lblNewLabel, 838, 713);
 		lblNewLabel.setSize("129px", "18px");
 
-		Label lblNewLabel_1 = new Label("아이디 : "+id);
+		Label lblNewLabel_1 = new Label("아이디 : "+userDto.getUserId());
 		lblNewLabel_1
 				.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		absolutePanel.add(lblNewLabel_1, 686, 713);

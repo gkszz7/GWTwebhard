@@ -24,8 +24,6 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.webhard.client.GUI.MainPage;
 import com.webhard.client.model.CompanyDto;
-import com.webhard.client.model.FileDto;
-import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 
@@ -36,19 +34,19 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	private Tree tree;
 	private String companyName;
 	private int homeFolNum;
-	private String id;
+	private UserDto userDto;
 	private DialogBox folderBox, FileDialog;
 	
-	public MainServiceClientImpl(String url, Tree getTree, String compName, int homeNum , String id) {
+	public MainServiceClientImpl(String url, Tree getTree, String compName, int homeNum , UserDto userDto) {
 
 		this.mainAsync = GWT.create(MainService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget) this.mainAsync;
 		endPoint.setServiceEntryPoint(url);
 		this.companyName = compName;
 		this.homeFolNum = homeNum;
-		this.id = id;
 		this.tree = getTree;
-		this.main = new MainPage(this, getTree, compName, homeNum, id);
+		this.userDto = userDto;
+		this.main = new MainPage(this, getTree, compName, homeNum, userDto);
 	}
 
 	@Override
@@ -85,7 +83,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 						RootPanel.get().clear();
 
 						MainServiceClientImpl main = 
-								new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, id);
+								new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
 
 						RootPanel.get().add(main.getMainPage());
 					}
@@ -144,7 +142,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				RootPanel.get().clear();
 
 				MainServiceClientImpl main = 
-						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, id);
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
 
 				RootPanel.get().add(main.getMainPage());
 			}
@@ -170,7 +168,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				RootPanel.get().clear();
 
 				MainServiceClientImpl main = 
-						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, id);
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
 
 				RootPanel.get().add(main.getMainPage());
 			}
@@ -206,7 +204,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				RootPanel.get().clear();
 
 				MainServiceClientImpl main = 
-						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, id);
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
 
 				RootPanel.get().add(main.getMainPage());
 			}

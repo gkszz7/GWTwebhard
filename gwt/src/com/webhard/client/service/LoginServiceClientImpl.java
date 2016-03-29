@@ -45,12 +45,13 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 				if(Integer.parseInt((String)result.get("check")) == 1){
 					String compName = (String)result.get("companyName");
 					int homeFolderNum = Integer.parseInt((String)result.get("homeFolderNum"));
+					UserDto userDto = (UserDto)result.get("userDto");
 					Window.alert("로그인 성공");
 					
 					RootPanel.get().clear();
 					
 					MainServiceClientImpl main = 
-							new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree,compName,homeFolderNum, id);
+							new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree,compName,homeFolderNum, userDto);
 					
 					RootPanel.get().add(main.getMainPage());
 					

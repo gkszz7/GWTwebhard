@@ -59,6 +59,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		    map.put("check", check);
 		    map.put("companyName", companyName);
 		    map.put("homeFolderNum", homeFolderNum);
+		    map.put("userDto", userDto);
 		    
 			return map;
 			
