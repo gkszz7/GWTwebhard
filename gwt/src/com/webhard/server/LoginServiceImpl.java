@@ -1,5 +1,6 @@
 package com.webhard.server;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,11 +33,9 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	
 		// TODO Auto-generated method stub
 		UserDao userDao = new UserDao();
-		CompanyDao compDao = new CompanyDao();
 		FolderDao folDao = new FolderDao();
-		FileDao fileDao = new FileDao();
 		UserDto userDto = new UserDto();
-		int homeFolderNum = folDao.selectHomeFolder().getItemNum();
+		int homeNum = folDao.selectHomeFolder().getItemNum();
 		String companyName = null;
 		
 		int chack = userDao.loginUser(id, pwd);
@@ -54,17 +53,22 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		    HttpSession session = httpServletRequest.getSession(true);
 		    session.setAttribute("user", userDto);
 		    
-		    map.put("check", chack);
+		    String check = Integer.toString(chack);
+		    String homeFolderNum = Integer.toString(homeNum);
+		    
+		    map.put("check", check);
 		    map.put("companyName", companyName);
 		    map.put("homeFolderNum", homeFolderNum);
 		    
 			return map;
 			
 		}else if(chack == 0){
-			map.put("check", chack);
+			String check = Integer.toString(chack);
+			map.put("check", check);
 			return map;
 		}else{
-			map.put("check", chack);
+			String check = Integer.toString(chack);
+			map.put("check", check);
 			return map;
 		}
 	}

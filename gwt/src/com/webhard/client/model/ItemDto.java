@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemDto implements Serializable{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class ItemDto implements IsSerializable{
 	private int itemNum;
 	private String name;
 	private String date;

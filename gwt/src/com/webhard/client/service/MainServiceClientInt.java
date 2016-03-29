@@ -1,5 +1,11 @@
 package com.webhard.client.service;
 
+import java.util.List;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.webhard.client.model.FileDto;
+import com.webhard.client.model.FolderDto;
+
 
 public interface MainServiceClientInt {
 	
@@ -10,4 +16,5 @@ public interface MainServiceClientInt {
 	void createFolder(String name, int parentNum, int companyNum);
 	void updateFolder(String name, int itemNum);
 	void deleteFolder(int itemNum);
+	void ItemInTable(int itemNum);
 }

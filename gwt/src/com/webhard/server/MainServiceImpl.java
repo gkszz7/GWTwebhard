@@ -3,6 +3,7 @@ package com.webhard.server;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -13,11 +14,13 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.FileDto;
 import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.MainService;
 import com.webhard.server.dao.CompanyDao;
+import com.webhard.server.dao.FileDao;
 import com.webhard.server.dao.FolderDao;
 import com.webhard.server.dao.UserDao;
 
@@ -103,6 +106,23 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		homeFolder = dao.selectHomeFolder();
 		setTree(homeFolder);
 		return homeFolder;
+	}
+	@Override
+	public HashMap<String, Object> ItemInTable(int itemNum) {
+		FileDao fileDao = new FileDao();
+		FolderDao folDao = new FolderDao();
+		List<FileDto> fileList = new ArrayList<FileDto>();		
+		List<FolderDto> folList = new ArrayList<FolderDto>();
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		fileList = fileDao.printFileInParentFolder(itemNum);
+		folList = folDao.printFolderInParentFolder(itemNum);
+		
+		map.put("fileList", fileList);
+		map.put("folderList", folList);
+		
+		return map;
 	}
 	
 	

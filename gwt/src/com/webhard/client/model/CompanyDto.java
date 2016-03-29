@@ -2,7 +2,9 @@ package com.webhard.client.model;
 
 import java.io.Serializable;
 
-public class CompanyDto implements Serializable{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class CompanyDto implements IsSerializable{
 	private int companyNum;
 	private String companyName;
 	private String companyAddr;

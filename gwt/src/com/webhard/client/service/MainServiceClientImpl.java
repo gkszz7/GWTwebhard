@@ -1,6 +1,7 @@
 package com.webhard.client.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -23,6 +24,7 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.webhard.client.GUI.MainPage;
 import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.FileDto;
 import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
@@ -215,7 +217,18 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 			}
 		});
 	}
-
+	@Override
+	public void ItemInTable(int itemNum) {
+		this.mainAsync.ItemInTable(itemNum, new AsyncCallback<HashMap<String,Object>>() {
+			@Override
+			public void onSuccess(HashMap<String, Object> result) {
+				
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+		});
+	}
 	/*************************트리 생성***********************/
 	public void getTree(TreeItem result){
 		

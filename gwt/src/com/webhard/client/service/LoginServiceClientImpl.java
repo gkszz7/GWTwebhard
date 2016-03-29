@@ -41,12 +41,10 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 		this.loginAsync.login(id, pwd, new AsyncCallback<HashMap<String, Object>>() {	
 			@Override
 			public void onSuccess(HashMap<String, Object> result) {
-				System.out.println(123);
-				check = (Integer)result.get("check");
-				System.out.println(check);
-				if((Integer)result.get("check") == 1){
+				check = Integer.parseInt((String)result.get("check"));
+				if(Integer.parseInt((String)result.get("check")) == 1){
 					String compName = (String)result.get("companyName");
-					int homeFolderNum = (Integer)result.get("homeFolderNum");
+					int homeFolderNum = Integer.parseInt((String)result.get("homeFolderNum"));
 					Window.alert("로그인 성공");
 					
 					RootPanel.get().clear();
@@ -56,7 +54,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 					
 					RootPanel.get().add(main.getMainPage());
 					
-				}else if((Integer)result.get("check") == 0){
+				}else if(Integer.parseInt((String)result.get("check")) == 0){
 					Window.alert("비밀번호 실패");
 					
 				}else{

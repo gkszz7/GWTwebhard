@@ -336,6 +336,7 @@ public class MainPage extends Composite {
 			public void onSelection(SelectionEvent<TreeItem> event) {
 				selectItem = event.getSelectedItem();
 				selectItemData = (ItemDto)selectItem.getUserObject();
+				serviceImpl.ItemInTable(selectItemData.getItemNum());
 			}
 		});
 		/************************************************************/
