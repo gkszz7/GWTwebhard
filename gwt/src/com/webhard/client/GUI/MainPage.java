@@ -258,7 +258,14 @@ public class MainPage extends Composite {
 		}
 				
 		Button btnNewButton = new Button("New button");
-		
+		btnNewButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if(Window.confirm("로그아웃 하시겠습니까?")){
+					mainServiceClientImpl.logout();
+				}
+			}
+		});
 		
 		btnNewButton.setText("로그아웃");
 		absolutePanel.add(btnNewButton, 1009, 706);
@@ -408,11 +415,13 @@ public class MainPage extends Composite {
 					selectItemData = (ItemDto)selectItem.getUserObject();
 					
 					if(selectItem != null){
-						if(selectItemData.getCompanyNum() != userDto.getCompanyNum()){
-							Window.alert("타 회사는 열람 할 수 없습니다.");
-						}else{
-							serviceImpl.ItemInTable(selectItemData.getItemNum());
-						}
+						if(selectItemData.getCompanyNum() != 0){
+		                     if(selectItemData.getCompanyNum() != userDto.getCompanyNum()){
+		                        Window.alert("타 회사는 열람 할 수 없습니다.");
+		                     }else{
+		                        serviceImpl.ItemInTable(selectItemData.getItemNum());
+		                     }
+		                }
 					}
 				}
 				
@@ -492,5 +501,4 @@ public class MainPage extends Composite {
 		RootPanel.get().add(companyList);
 	}
 	
-
 }

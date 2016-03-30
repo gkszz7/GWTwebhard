@@ -213,4 +213,12 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 
 		}
 	}
+
+	@Override
+	public void logout() {
+		
+		HttpServletRequest httpServletRequest = this.getThreadLocalRequest();
+	    HttpSession session = httpServletRequest.getSession(true);
+	    session.removeAttribute("user");
+	}
 }

@@ -33,8 +33,7 @@ public class LoginUser extends Composite{
    private List<UserDto> userList;
    
    public LoginUser(final LoginServiceClientImpl loginSerivceClientImpl) {
-            
-      
+          
       dialogBox.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
       
       initWidget(this.dialogBox);

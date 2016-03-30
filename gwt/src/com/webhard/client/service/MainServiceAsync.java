@@ -22,5 +22,6 @@ public interface MainServiceAsync {
 	void deleteFolder(int itemNum, AsyncCallback<ItemDto> callback);
 	
 	void ItemInTable(int itemNum, AsyncCallback<HashMap<String, Object>> callback);
+	void logout(AsyncCallback<Void> callback);
 
 }
