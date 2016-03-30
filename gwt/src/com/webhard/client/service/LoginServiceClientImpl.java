@@ -23,7 +23,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	private int check = 0;
 	private List<CompanyDto> list;
 	private Tree tree;
-	private int homeFolderNum = 140;
+	private int homeFolderNum = 78;
 	
 	public LoginServiceClientImpl(String url) {
 		
