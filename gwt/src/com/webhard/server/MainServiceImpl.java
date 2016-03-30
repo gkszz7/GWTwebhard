@@ -210,7 +210,5 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 			dao.deleteFolder(parentNum);
 
 		}
-	} 
-
-
+	}
 }

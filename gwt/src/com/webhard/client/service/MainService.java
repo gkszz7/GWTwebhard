@@ -23,6 +23,5 @@ public interface MainService extends RemoteService{
 	ItemDto createFolder(String name, int parentNum, int companyNum);
 	ItemDto updateFolder(String name, int itemNum);
 	ItemDto deleteFolder(int itemNum);
-	HashMap<String, Object> ItemInTable(int itemNum);
-	
+	HashMap<String, Object> ItemInTable(int itemNum);	
 }

@@ -8,8 +8,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.ClientBundleWithLookup;
+import com.google.gwt.resources.client.ClientBundle.Source;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
+import com.sun.java.swing.plaf.windows.resources.windows;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.ItemDto;
@@ -33,6 +34,7 @@ import com.webhard.client.service.AccessListServiceClientImpl;
 import com.webhard.client.service.CompanyServiceClientImpl;
 import com.webhard.client.service.MainServiceClientImpl;
 import com.webhard.client.service.UserListServiceClientImpl;
+import com.webhard.server.dao.UserDao;
 
 public class MainPage extends Composite {
 
@@ -48,13 +50,15 @@ public class MainPage extends Composite {
 	private TextBox addrText;
 	private String fileName;
 	private long filesize;
+	private Boolean check;
 	private Tree tree;
+	
 	private TreeItem selectItem;
 	private ItemDto selectItemData;
 	
 	//파일 리스트. 폴더 리스트
 	
-	public MainPage(final MainServiceClientImpl mainServiceClientImpl, Tree getTree, String compName, int homeNum, UserDto userDto) {
+	public MainPage(final MainServiceClientImpl mainServiceClientImpl, Tree getTree, String compName, final int homeNum, final UserDto userDto) {
 
 		absolutePanel = new AbsolutePanel();
 		absolutePanel.setStyleName("gwt-absolutePanel");
@@ -69,30 +73,45 @@ public class MainPage extends Composite {
 		this.serviceImpl.UserList();
 		this.serviceImpl.compList();
 		this.serviceImpl.AccessList();
+		
 		this.tree = getTree;
-		System.out.println(userDto.getUserId());
+		
 		CellTable<Object> cellTable = new CellTable<Object>();
 		horizontalSplitPanel.setRightWidget(cellTable);
 		cellTable.setSize("767px", "100%");
-		String id = "test";
 		horizontalSplitPanel.setLeftWidget(tree);
 		tree.setSize("313px", "628px");
-		
+
 		MenuBar menuBar = new MenuBar(false);
 		menuBar.setStyleName("gwt-MenuBar");
 		absolutePanel.add(menuBar, 0, 0);
 		menuBar.setSize("1119px", "40px");
 		
 		MenuBar menuBar_1 = new MenuBar(true);
-		MenuItem folderMenu = new MenuItem("폴더", false, menuBar_1);
+		final MenuItem folderMenu = new MenuItem("폴더", false, menuBar_1);
+		
+		folderMenu.setScheduledCommand(new ScheduledCommand() {
+            @Override
+            public void execute() {
+               if(userDto.getAccess() == 0){
+                  folderMenu.setEnabled(false);
+                  Window.alert("인증 후 이용 가능 합니다.");
+               }
+            }
+         });
+		
 		menuBar.addItem(folderMenu);
 		menuBar_1.addItem("폴더 생성", new ScheduledCommand() {
 			@Override
 			public void execute() {
 				if(selectItemData != null){
 					if(selectItemData.getType() == 0){
-						createFolder = serviceImpl.createFolderBox(getSelectNode().getItemNum(), getSelectNode().getCompanyNum());
-						createFolder.center();
+						if(selectItemData.getItemNum() != homeNum){
+							createFolder = serviceImpl.createFolderBox(getSelectNode().getItemNum(), getSelectNode().getCompanyNum());
+							createFolder.center();
+						}else{
+							Window.alert("HOME폴더는 사용할수없습니다.");
+						}
 					}else{
 						Window.alert("폴더를 선택해주세요.");
 					}
@@ -107,8 +126,12 @@ public class MainPage extends Composite {
 			public void execute() {
 				if(selectItemData != null){
 					if(selectItemData.getType() == 0){
+						if(selectItemData.getItemNum() != homeNum){
 						editFolder = serviceImpl.updateFolderBox(getSelectNode().getItemNum());
 						editFolder.center();
+						}else{
+							Window.alert("HOME폴더는 사용할수없습니다.");
+						}
 					}else{
 						Window.alert("폴더를 선택해주세요.");
 					}
@@ -123,29 +146,50 @@ public class MainPage extends Composite {
 			public void execute() {
 				if(selectItemData != null){
 					if(selectItemData.getType() == 0){
-						if(Window.confirm("삭제 하시겠습니까?")){
-							serviceImpl.deleteFolder(selectItemData.getItemNum());
+						if(selectItemData.getItemNum() != homeNum){
+							if(Window.confirm("삭제 하시겠습니까?")){
+								serviceImpl.deleteFolder(selectItemData.getItemNum());
+							}
+						}else{
+							Window.alert("HOME폴더는 사용할수없습니다.");
 						}
+						}else{
+							Window.alert("폴더를 선택해주세요.");
+						}	
 					}else{
 						Window.alert("폴더를 선택해주세요.");
 					}
+				}
+		});
+		
+		MenuBar menuBar_3 = new MenuBar(true);				
+		final MenuItem fileMenu = new MenuItem("파일", false, menuBar_3);
+		
+		fileMenu.setScheduledCommand(new ScheduledCommand() {
+            @Override
+            public void execute() {
+               if(userDto.getAccess() == 0){
+            	   fileMenu.setEnabled(false);
+                  Window.alert("인증 후 이용 가능 합니다.");
+               }
+            }
+         });
+		
+		menuBar_3.addItem("파일 등록",new ScheduledCommand() {
+			@Override
+			public void execute() {
+				int check = selectItemData.getType();
+				if(check == 0){
+					Window.alert("폴더입니다.");
 				}else{
-					Window.alert("폴더를 선택해주세요.");
+					Window.alert("파일입니다.");
 				}
 			}
 		});
-		
-		MenuBar menuBar_3 = new MenuBar(true);		
-		MenuItem fileMenu = new MenuItem("파일", false, menuBar_3);
-		menuBar_3.addItem("파일 등록",new ScheduledCommand() {
-			
-			@Override
-			public void execute() {
-				file();
-			}
-		});
 		menuBar.addItem(fileMenu);
-		if(id.equals("test")){
+		
+		if(userDto.getUserId().equals("admin")){
+			
 			MenuBar menuBar_4 = new MenuBar(true);
 			MenuItem userMenu = new MenuItem("사용자", false, menuBar_4);
 			menuBar_4.addItem("사용자목록",new ScheduledCommand() {
@@ -178,7 +222,9 @@ public class MainPage extends Composite {
 
 				@Override
 				public void execute() {
+					
 					entryCompany.center();
+					
 				}
 			});
 			
@@ -188,6 +234,7 @@ public class MainPage extends Composite {
 				public void execute() {
 					
 					enterCompList();
+					
 				}
 			});
 
@@ -340,6 +387,7 @@ public class MainPage extends Composite {
 				selectItem = event.getSelectedItem();
 				selectItemData = (ItemDto)selectItem.getUserObject();
 				serviceImpl.ItemInTable(selectItemData.getItemNum());
+				
 			}
 		});
 		/************************************************************/
@@ -364,17 +412,16 @@ public class MainPage extends Composite {
 		return selectItemData;
 	}
 
-	public void setFile(String fileName){
-		this.fileName = fileName;
-		
-	}
+	
 	public void file(){
 		/*
 		FileUploader file = new FileUploader();
 		file.center();
 		*/
 	}
-	
+	public void checkfolder(Boolean check){
+		this.check = check;
+	}
 	public void AccessList(){
 		RootPanel.get().clear();
 		
@@ -391,6 +438,7 @@ public class MainPage extends Composite {
 		RootPanel.get().add(userlist);
 
 	}
+	 
 	public void enterCompList(){
 		
 		RootPanel.get().clear();

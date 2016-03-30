@@ -47,7 +47,10 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 					int homeFolderNum = Integer.parseInt((String)result.get("homeFolderNum"));
 					UserDto userDto = (UserDto)result.get("userDto");
 					Window.alert("로그인 성공");
-					
+							
+					if(userDto.getAccess() == 0){
+						Window.alert("인증대기자 입니다.");
+					}
 					RootPanel.get().clear();
 					
 					MainServiceClientImpl main = 
@@ -129,6 +132,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 		ItemDto itemDto = (ItemDto)result.getUserObject();
 		childNodes = itemDto.getChild();
 		
+		
 		for(int i=0;i<childNodes.size();i++){
 			ItemDto childNode = childNodes.get(i);
 			
@@ -142,6 +146,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 					
 					getTree(childItem);
 					item.addItem(childItem);
+					
 					break;
 				}
 			}else{
@@ -152,6 +157,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 			
 		}
 		tree.addItem(item);
+		
 	}
 	
 	public LoginUser getLoginUser(){
