@@ -24,4 +24,5 @@ public interface MainService extends RemoteService{
 	ItemDto updateFolder(String name, int itemNum);
 	ItemDto deleteFolder(int itemNum);
 	HashMap<String, Object> ItemInTable(int itemNum);	
+	void logout();
 }

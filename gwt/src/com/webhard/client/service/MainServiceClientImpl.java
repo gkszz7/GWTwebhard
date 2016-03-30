@@ -27,6 +27,7 @@ import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
+import com.webhard.client.GUI.LoginUser;
 import com.webhard.client.GUI.MainPage;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.FileDto;
@@ -484,4 +485,25 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		return this.main;
 	}
 
+	@Override
+	public void logout() {
+		this.mainAsync.logout(new AsyncCallback<Void>() {
+			
+			@Override
+			public void onSuccess(Void result) {
+				Window.alert("로그아웃 하셨습니다.");
+				
+				RootPanel.get().clear();
+				
+				LoginServiceClientImpl login = new LoginServiceClientImpl(GWT.getModuleBaseURL()+"login");
+				
+				RootPanel.get().add(login.getLoginUser());
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Error");
+			}
+		});
+	}
 }

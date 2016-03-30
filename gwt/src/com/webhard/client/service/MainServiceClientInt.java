@@ -17,4 +17,5 @@ public interface MainServiceClientInt {
 	void updateFolder(String name, int itemNum);
 	void deleteFolder(int itemNum);
 	void ItemInTable(int itemNum);
+	void logout();
 }
