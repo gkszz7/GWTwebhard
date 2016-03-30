@@ -822,7 +822,7 @@ public class UserDao implements Serializable{
         UserDto dto = new UserDto();
         try {
 			con=connection.conn();
-			String sql="select u.userid, u.username, u.userphone, u.useraddr,c.companyName,u.admin,u.access "
+			String sql="select u.userid, u.username, u.userphone, u.useraddr,c.companyName,u.admin,u.access,c.companyNum "
 					+ "from users u,(select companyNum, companyName from company) c "
 					+ "where c.companyNum=u.companyNum and u.userid=?";
 			ps = con.prepareStatement(sql);
@@ -834,8 +834,9 @@ public class UserDao implements Serializable{
 				dto.setUserPhone(rs.getString(3));
 				dto.setUserAddr(rs.getString(4));
 				dto.setCompanyName(rs.getString(5));
-				dto.setAdmin(rs.getShort(6));
+				dto.setAdmin(rs.getInt(6));
 				dto.setAccess(rs.getInt(7));
+				dto.setCompanyNum(rs.getInt(8));
 			}
 			
 		} catch (Exception e) {
@@ -866,7 +867,7 @@ public class UserDao implements Serializable{
 				dto.setUserPhone(rs.getString(3));
 				dto.setUserAddr(rs.getString(4));
 				dto.setCompanyNum(rs.getInt(5));
-				dto.setAdmin(rs.getShort(6));
+				dto.setAdmin(rs.getInt(6));
 				dto.setAccess(rs.getInt(7));
 			}
 			

@@ -26,8 +26,10 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.sun.java.swing.plaf.windows.resources.windows;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SelectionChangeEvent.Handler;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.webhard.client.model.CompanyDto;
-import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.AccessListServiceClientImpl;
@@ -37,10 +39,11 @@ import com.webhard.client.service.UserListServiceClientImpl;
 import com.webhard.server.dao.UserDao;
 
 public class MainPage extends Composite {
-
+	
+	private HorizontalSplitPanel horizontalSplitPanel;
 	private final MainServiceClientImpl serviceImpl;
 	private AbsolutePanel absolutePanel;
-	private CellTable<FolderDto> cellTable;
+	private CellTable<ItemDto> cellTable = new CellTable<ItemDto>();
 	private List<UserDto> userList;
 	private List<UserDto> accessList;
 	private List<CompanyDto> companys;
@@ -55,6 +58,7 @@ public class MainPage extends Composite {
 	
 	private TreeItem selectItem;
 	private ItemDto selectItemData;
+	private ItemDto selected;
 	
 	//파일 리스트. 폴더 리스트
 	
@@ -64,7 +68,7 @@ public class MainPage extends Composite {
 		absolutePanel.setStyleName("gwt-absolutePanel");
 		initWidget(this.absolutePanel);
 		absolutePanel.setSize("1121px", "760px");
-		HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
+		horizontalSplitPanel = new HorizontalSplitPanel();
 		horizontalSplitPanel.setStyleName("gwt-Label-new");
 		horizontalSplitPanel.setSplitPosition("30%");
 		this.absolutePanel.add(horizontalSplitPanel, 0, 51);
@@ -76,12 +80,26 @@ public class MainPage extends Composite {
 		
 		this.tree = getTree;
 		
-		CellTable<Object> cellTable = new CellTable<Object>();
+		CellTable<Object> cellTable = new CellTable<Object>();	
 		horizontalSplitPanel.setRightWidget(cellTable);
 		cellTable.setSize("767px", "100%");
 		horizontalSplitPanel.setLeftWidget(tree);
 		tree.setSize("313px", "628px");
 
+		if(userDto.getAccess() == 0){
+			for(int i=0;i<tree.getItem(0).getChildCount();i++){
+				TreeItem item = tree.getItem(0).getChild(i);
+				item.removeItems();
+			}			
+		}else{
+			for(int i=0;i<tree.getItem(0).getChildCount();i++){
+				TreeItem item = tree.getItem(0).getChild(i);
+				ItemDto itemDto = (ItemDto)item.getUserObject();
+				if((userDto.getCompanyNum() != itemDto.getCompanyNum()) && userDto.getAdmin() == 0){
+					item.removeItems();
+				}
+			}	
+		}
 		MenuBar menuBar = new MenuBar(false);
 		menuBar.setStyleName("gwt-MenuBar");
 		absolutePanel.add(menuBar, 0, 0);
@@ -99,7 +117,6 @@ public class MainPage extends Composite {
                }
             }
          });
-		
 		menuBar.addItem(folderMenu);
 		menuBar_1.addItem("폴더 생성", new ScheduledCommand() {
 			@Override
@@ -384,9 +401,21 @@ public class MainPage extends Composite {
 		tree.addSelectionHandler(new SelectionHandler<TreeItem>() {
 			@Override
 			public void onSelection(SelectionEvent<TreeItem> event) {
-				selectItem = event.getSelectedItem();
-				selectItemData = (ItemDto)selectItem.getUserObject();
-				serviceImpl.ItemInTable(selectItemData.getItemNum());
+				if(userDto.getAccess()==0){
+					Window.alert("인증 후 이용 가능 합니다.");
+				}else{
+					selectItem = event.getSelectedItem();
+					selectItemData = (ItemDto)selectItem.getUserObject();
+					
+					if(selectItem != null){
+						if(selectItemData.getCompanyNum() != userDto.getCompanyNum()){
+							Window.alert("타 회사는 열람 할 수 없습니다.");
+						}else{
+							serviceImpl.ItemInTable(selectItemData.getItemNum());
+						}
+					}
+				}
+				
 				
 			}
 		});
@@ -411,7 +440,22 @@ public class MainPage extends Composite {
 		selectItemData = (ItemDto)selectItem.getUserObject();
 		return selectItemData;
 	}
-
+	public void setTable(CellTable<ItemDto> table){
+		cellTable = new CellTable<ItemDto>();
+		this.cellTable = table;
+		horizontalSplitPanel.setRightWidget(cellTable);
+		cellTable.setSize("767px", "100%");
+		final SingleSelectionModel<ItemDto> selectionModel = new SingleSelectionModel<ItemDto>();
+		cellTable.setSelectionModel(selectionModel);
+		selectionModel.addSelectionChangeHandler(new Handler() {
+			
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				selected = selectionModel.getSelectedObject();
+				System.out.println(selected.getItemNum());
+			}
+		});
+	}
 	
 	public void file(){
 		/*
@@ -447,5 +491,6 @@ public class MainPage extends Composite {
 		CompanyList companyList = new CompanyList(compImpl, companys);
 		RootPanel.get().add(companyList);
 	}
+	
 
 }

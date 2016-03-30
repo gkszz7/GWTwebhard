@@ -613,4 +613,41 @@ public class FolderDao implements Serializable{
         
         return folder;
 	}
+	public List<ItemDto> printItembyParentNum(int itemNum) {
+		Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<ItemDto> items = new ArrayList<ItemDto>();
+        
+        try {
+			con = connection.conn();
+			String sql="select i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum, i.type"
+					+ " from item i where i.parentNum=?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, itemNum);
+			rs=ps.executeQuery();
+			
+			while(rs.next()){
+				ItemDto item = new ItemDto();
+				item.setItemNum(rs.getInt(1));
+				item.setName(rs.getString(2));
+				item.setDate(rs.getString(3));
+				item.setParentNum(rs.getInt(4));
+				item.setUserId(rs.getString(5));
+				item.setCompanyNum(rs.getInt(6));
+				item.setType(rs.getInt(7));
+				
+				items.add(item);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			try {rs.close();} catch (Exception e) {e.printStackTrace();}
+			try {ps.close();} catch (Exception e) {e.printStackTrace();}
+			try {con.close();} catch (Exception e) {e.printStackTrace();}
+		}
+        
+        return items;
+	}
 }

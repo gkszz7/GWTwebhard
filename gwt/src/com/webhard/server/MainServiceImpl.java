@@ -113,15 +113,17 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		FolderDao folDao = new FolderDao();
 		List<FileDto> fileList = new ArrayList<FileDto>();		
 		List<FolderDto> folList = new ArrayList<FolderDto>();
+		List<ItemDto> itemList = new ArrayList<ItemDto>();
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		fileList = fileDao.printFileInParentFolder(itemNum);
 		folList = folDao.printFolderInParentFolder(itemNum);
+		itemList = folDao.printItembyParentNum(itemNum);
 		
 		map.put("fileList", fileList);
 		map.put("folderList", folList);
-		
+		map.put("itemList", itemList);
 		return map;
 	}
 	

@@ -23,6 +23,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	private int check = 0;
 	private List<CompanyDto> list;
 	private Tree tree;
+	private int homeFolderNum = 140;
 	
 	public LoginServiceClientImpl(String url) {
 		
@@ -116,6 +117,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 				homeItem.setText(result.getName());
 				homeItem.setUserObject(result);
 				getTree(homeItem);
+				
 				loginuser.setTree(tree);
 			}
 			@Override
@@ -150,7 +152,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 					break;
 				}
 			}else{
-				if(itemDto.getItemNum() == 140 || childItem.getChildCount() == 0){
+				if(itemDto.getItemNum() == homeFolderNum || childItem.getChildCount() == 0){
 					item.addItem(childItem);
 				}
 			}
@@ -158,6 +160,9 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 		}
 		tree.addItem(item);
 		
+		if(((ItemDto)item.getUserObject()).getItemNum() == homeFolderNum){
+			item.setState(true);
+		}
 	}
 	
 	public LoginUser getLoginUser(){
