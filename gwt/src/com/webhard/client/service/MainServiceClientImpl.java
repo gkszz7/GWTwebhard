@@ -7,6 +7,8 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
@@ -22,8 +24,13 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.webhard.client.GUI.MainPage;
 import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.FileDto;
+import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 
@@ -36,6 +43,11 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	private int homeFolNum;
 	private UserDto userDto;
 	private DialogBox folderBox, FileDialog;
+	private CellTable<ItemDto> cellTable;
+	private List<ItemDto> itemList;
+	private List<FolderDto> folderList;
+	private List<FileDto> fileList;
+	private ItemDto selected;
 	
 	public MainServiceClientImpl(String url, Tree getTree, String compName, int homeNum , UserDto userDto) {
 
@@ -220,7 +232,14 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		this.mainAsync.ItemInTable(itemNum, new AsyncCallback<HashMap<String,Object>>() {
 			@Override
 			public void onSuccess(HashMap<String, Object> result) {
-				
+				List<ItemDto> item = (List<ItemDto>)result.get("itemList");
+				List<FolderDto> folder = (List<FolderDto>)result.get("folderList");
+				List<FileDto> file = (List<FileDto>)result.get("fileList");
+				itemList = item;
+				folderList = folder;
+				fileList = file;
+				companyTable(itemList);
+				main.setTable(cellTable);
 			}
 			@Override
 			public void onFailure(Throwable caught) {
@@ -252,13 +271,16 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 					break;
 				}
 			}else{
-				if(itemDto.getItemNum() == 140 || childItem.getChildCount() == 0){
+				if(itemDto.getItemNum() == homeFolNum || childItem.getChildCount() == 0){
 					item.addItem(childItem);
 				}
 			}
 			
 		}
 		tree.addItem(item);
+		if(((ItemDto)item.getUserObject()).getItemNum() ==homeFolNum){
+			item.setState(true);
+		}
 	}
 	/**********************************************************/
 	/************************파일 업로드 다이얼로그*******************/
@@ -405,6 +427,60 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	}
 	
 	/**********************************************************/
+	
+	/********************테이블 생성 코드 ***********************/
+	public void companyTable(List<ItemDto> items) {
+		
+		cellTable = new CellTable<ItemDto>();
+		cellTable.setSkipRowHoverCheck(true);
+		cellTable.setSize("661px", "221px");
+		 if(items != null){
+		companylistByCom(items);
+		 }
+	}
+
+	public void companylistByCom(final List<ItemDto> items) {
+		cellTable.removeFromParent();
+		if (items != null) {
+			TextColumn<ItemDto> nameColumn = new TextColumn<ItemDto>() {
+				@Override
+				public String getValue(ItemDto object) {
+					return object.getName();
+				}
+			};
+			TextColumn<ItemDto> dateColumn = new TextColumn<ItemDto>() {
+				@Override
+				public String getValue(ItemDto object) {
+					return object.getDate();
+				}
+			};
+			TextColumn<ItemDto> userColumn = new TextColumn<ItemDto>() {
+				@Override
+				public String getValue(ItemDto object) {
+					return object.getUserId();
+				}
+			};
+			TextColumn<ItemDto> typeColumn = new TextColumn<ItemDto>() {
+				@Override
+				public String getValue(ItemDto object) {
+					if(object.getType()==0){
+						return "폴더";
+					}else{
+						return "파일";
+					}
+					
+				}
+			};
+			cellTable.addColumn(nameColumn, "이름");
+			cellTable.addColumn(dateColumn, "등록일");
+			cellTable.addColumn(userColumn, "만든 이");
+			cellTable.addColumn(typeColumn, "유형");
+			cellTable.setRowCount(items.size(),true);
+			cellTable.setRowData(0,items);
+		}
+
+	}
+	/***********************************************************/
 	public MainPage getMainPage() {
 
 		return this.main;
