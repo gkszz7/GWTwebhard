@@ -275,4 +275,43 @@ public class FileDao implements Serializable{
 			}
 			return dto;
 		}
+		public List<FileDto> printAllFile() {
+			Connection con = null;
+	        PreparedStatement ps = null;
+	        ResultSet rs = null;
+	        ArrayList<FileDto> files = new ArrayList<FileDto>();
+	        
+	        try {
+				con = connection.conn();
+				String sql="select f.fileURL, f.fileSize, f.fileType, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum, i.type"
+						+ " from file f, item i where i.itemNum=f.itemNum";
+				ps = con.prepareStatement(sql);
+				rs=ps.executeQuery();
+				
+				while(rs.next()){
+					FileDto file = new FileDto();
+					file.setFileURL(rs.getString(1));
+					file.setFileSize(rs.getString(2));
+					file.setFileType(rs.getString(3));
+					file.setItemNum(rs.getInt(4));
+					file.setName(rs.getString(5));
+					file.setDate(rs.getString(6));
+					file.setParentNum(rs.getInt(7));
+					file.setUserId(rs.getString(8));
+					file.setCompanyNum(rs.getInt(9));
+					file.setType(rs.getInt(10));
+					files.add(file);
+				}
+				
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally{
+				try {rs.close();} catch (Exception e) {e.printStackTrace();}
+				try {ps.close();} catch (Exception e) {e.printStackTrace();}
+				try {con.close();} catch (Exception e) {e.printStackTrace();}
+			}
+	        
+	        return files;
+		}
 }

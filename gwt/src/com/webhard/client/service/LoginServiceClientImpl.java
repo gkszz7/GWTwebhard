@@ -12,11 +12,14 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.webhard.client.GUI.LoginUser;
 import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.FileDto;
+import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 
@@ -28,6 +31,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	private List<CompanyDto> list;
 	private Tree tree;
 	private int homeFolderNum = 78;
+	private List<FileDto> files;
 	Images images = GWT.create(Images.class);
 	public LoginServiceClientImpl(String url) {
 		
@@ -113,28 +117,35 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	
 	@Override
 	public void itemTree() {
-		this.loginAsync.itemTree(new AsyncCallback<ItemDto>() {
+		this.loginAsync.allFiles(new AsyncCallback<List<FileDto>>() {
 			@Override
-			public void onSuccess(ItemDto result) {
-				
-				tree = new Tree(images);
-				TreeItem homeItem = new TreeItem();
-				homeItem.setText(result.getName());
-				homeItem.setUserObject(result);
-				getTree(homeItem);
-				tree.addItem(homeItem);
-				loginuser.setTree(tree);
+			public void onSuccess(List<FileDto> result) {
+				files = result;
+				loginAsync.itemTree(new AsyncCallback<FolderDto>() {
+					@Override
+					public void onSuccess(FolderDto result) {				
+						FolderDto homeFolder = result;
+						tree = new Tree();
+						TreeItem homeItem = new TreeItem();
+						homeItem.setText(homeFolder.getName());
+						homeItem.setUserObject(homeFolder);
+						getTree(homeItem);
+						loginuser.setTree(tree);
+					}
+					@Override
+					public void onFailure(Throwable caught) {
+					}
+				});
 			}
 			@Override
 			public void onFailure(Throwable caught) {
-
 			}
 		});
+		
 	}
 	public void getTree(TreeItem result){
 		
 		TreeItem item = result;
-		addImageItem(item, result.getText(), images.treeLeaf());
 		List<ItemDto> childNodes = new ArrayList<ItemDto>();
 		List<ItemDto> grandChildNodes = new ArrayList<ItemDto>();
 		ItemDto itemDto = (ItemDto)result.getUserObject();
@@ -152,12 +163,53 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 				for(int j=0; j<grandChildNodes.size(); j++){
 					
 					getTree(childItem);
+					if(childNode.getType() == 0){
+						childItem.setHTML(imageItemHTML(images.treeLeaf(), childItem.getText()));
+					}else{
+						for(int a=0;a<files.size();a++){
+							if(childNode.getItemNum() == files.get(a).getItemNum()){
+								if(files.get(a).getFileType().equals("pptx")){
+									childItem.setHTML(imageItemHTML(images.ppt(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("txt")){
+									childItem.setHTML(imageItemHTML(images.text(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("xlsx")){
+									childItem.setHTML(imageItemHTML(images.excel(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("zip")){
+									childItem.setHTML(imageItemHTML(images.zip(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("mp3")){
+									childItem.setHTML(imageItemHTML(images.mp3(), childItem.getText()));
+								}else{
+									childItem.setHTML(imageItemHTML(images.files(), childItem.getText()));
+								}
+							}
+						}
+					}
 					item.addItem(childItem);
-					
 					break;
 				}
 			}else{
 				if(itemDto.getItemNum() == homeFolderNum || childItem.getChildCount() == 0){
+					if(childNode.getType() == 0){
+						childItem.setHTML(imageItemHTML(images.treeLeaf(), childItem.getText()));
+					}else{
+						for(int a=0;a<files.size();a++){
+							if(childNode.getItemNum() == files.get(a).getItemNum()){
+								if(files.get(a).getFileType().equals("pptx")){
+									childItem.setHTML(imageItemHTML(images.ppt(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("txt")){
+									childItem.setHTML(imageItemHTML(images.text(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("xlsx")){
+									childItem.setHTML(imageItemHTML(images.excel(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("zip")){
+									childItem.setHTML(imageItemHTML(images.zip(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("mp3")){
+									childItem.setHTML(imageItemHTML(images.mp3(), childItem.getText()));
+								}else{
+									childItem.setHTML(imageItemHTML(images.files(), childItem.getText()));
+								}
+							}
+						}
+					}
 					item.addItem(childItem);
 				}
 			}
@@ -173,13 +225,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	public LoginUser getLoginUser(){
 		return this.loginuser;
 	}
-	private TreeItem addImageItem(TreeItem root, String title,
-		      ImageResource imageProto) {
-		    TreeItem item = new TreeItem(imageItemHTML(imageProto, title));
-		    root.addItem(item);
-		    return item;
-		  }
-	 private SafeHtml imageItemHTML(ImageResource imageProto, String title) {
+	public SafeHtml imageItemHTML(ImageResource imageProto, String title) {
 		    SafeHtmlBuilder builder = new SafeHtmlBuilder();
 		    builder.append(AbstractImagePrototype.create(imageProto).getSafeHtml());
 		    builder.appendHtmlConstant(" ");
@@ -187,20 +233,23 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 		    return builder.toSafeHtml();
 	}
 	public interface Images extends Tree.Resources {
-		@Source("folder1.png")
-	    ImageResource drafts();
-		@Source("folder1.png")
-	    ImageResource home();
-		@Source("folder1.png")
-	    ImageResource inbox();
-		@Source("folder1.png")
-	    ImageResource sent();
-		@Source("folder1.png")
-	    ImageResource templates();
-		@Source("folder1.png")
-	    ImageResource trash();
+		@Source("Folder-48.png")
+	    ImageResource ppt();
+		@Source("Folder-48.png")
+	    ImageResource excel();
+		@Source("Folder-48.png")
+	    ImageResource text();
+		@Source("Folder-48.png")
+	    ImageResource mp3();
+		@Source("Folder-48.png")
+	    ImageResource zip();
+		@Source("Folder-48.png")
+	    ImageResource files();
 	    @Override
-	    @Source("folder1.png")
+	    @Source("Folder-48.png")
 	    ImageResource treeLeaf();
+	    @Override
+	    @Source("Open Folder-48.png")
+	    ImageResource treeOpen();
 	  }
 }

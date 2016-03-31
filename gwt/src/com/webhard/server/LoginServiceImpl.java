@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.FileDto;
 import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
@@ -26,7 +27,7 @@ import com.webhard.server.dao.UserDao;
 
 public class LoginServiceImpl extends RemoteServiceServlet implements LoginService{
 	
-	private ItemDto homeFolder;
+	private FolderDto homeFolder;
 	
 	@Override
 	public HashMap<String, Object> login(String id,String pwd) {
@@ -89,11 +90,19 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		userList = dao.selectAllUser();
 		return userList;
 	}
-	
 	@Override
-	public ItemDto itemTree() {
+	public List<FileDto> allFiles() {
+		FileDao fileDao = new FileDao();
+		List<FileDto> files = new ArrayList<FileDto>();
+		files = fileDao.printAllFile();
+		return files;
+	}
+	@Override
+	public FolderDto itemTree() {
 		FolderDao folDao = new FolderDao();
+
 		homeFolder = folDao.selectHomeFolder();
+		
 		setTree(homeFolder);
 		return homeFolder;
 	}

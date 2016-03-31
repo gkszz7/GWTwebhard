@@ -7,18 +7,15 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class FolderDto extends ItemDto implements IsSerializable{
 	private int step;
 	private int folderType;
-	
+	public FolderDto() {
+		// TODO Auto-generated constructor stub
+	}
 	public FolderDto(int itemNum, String name, String date, int parentNum,
 			String userId, int companyNum, int step, int folderType) {
 		super(itemNum,name,date,parentNum,userId,companyNum);
 		this.step = step;
 		this.folderType = folderType;
 	}
-	
-	public FolderDto(){
-		
-	}
-
 	public int getStep() {
 		return step;
 	}

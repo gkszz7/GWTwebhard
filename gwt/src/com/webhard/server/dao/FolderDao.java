@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 import com.webhard.client.model.FileDto;
 import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.ItemDto;
@@ -649,5 +651,43 @@ public class FolderDao implements Serializable{
 		}
         
         return items;
+	}
+	public List<FolderDto> selectHomeFolderByList() {
+		Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<FolderDto> folders = new ArrayList<FolderDto>();
+        
+        try {
+			con = connection.conn();
+			String sql="select f.foldertype, f.step, i.itemNum, i.name, i.ITEM_CREATION_DATE, i.parentNum, i.userid, i.companyNum, i.type "
+					+ "from folder f, item i where i.itemNum = f.itemNum and i.itemNum = 78";
+			ps = con.prepareStatement(sql);
+			rs=ps.executeQuery();
+			
+			while(rs.next()){
+				FolderDto folder = new FolderDto();
+				folder.setFolderType(rs.getInt(1));
+				folder.setStep(rs.getInt(2));
+				folder.setItemNum(rs.getInt(3));
+				folder.setName(rs.getString(4));
+				folder.setDate(rs.getString(5));
+				folder.setParentNum(rs.getInt(6));
+				folder.setUserId(rs.getString(7));
+				folder.setCompanyNum(rs.getInt(8));
+				folder.setType(rs.getInt(9));
+				folders.add(folder);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			try {rs.close();} catch (Exception e) {e.printStackTrace();}
+			try {ps.close();} catch (Exception e) {e.printStackTrace();}
+			try {con.close();} catch (Exception e) {e.printStackTrace();}
+		}
+        
+        return folders;
 	}
 }

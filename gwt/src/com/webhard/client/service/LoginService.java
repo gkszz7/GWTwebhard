@@ -9,6 +9,8 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.client.ui.Tree;
 import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.FileDto;
+import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 
@@ -18,5 +20,6 @@ public interface LoginService extends RemoteService, IsSerializable{
 	HashMap<String, Object> login(String id,String pwd) throws IllegalArgumentException;
 	List<CompanyDto> comboList();
 	List<UserDto> userList();
-	ItemDto itemTree();
+	FolderDto itemTree();
+	List<FileDto> allFiles();
 }

@@ -6,11 +6,19 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -33,6 +41,7 @@ import com.webhard.client.service.AccessListServiceClientImpl;
 import com.webhard.client.service.CompanyServiceClientImpl;
 import com.webhard.client.service.MainServiceClientImpl;
 import com.webhard.client.service.UserListServiceClientImpl;
+import com.webhard.client.service.LoginServiceClientImpl.Images;
 
 public class MainPage extends Composite {
 	
@@ -417,7 +426,7 @@ public class MainPage extends Composite {
 					selectItemData = (ItemDto)selectItem.getUserObject();
 					
 					if(selectItem != null){
-						if(selectItemData.getCompanyNum() != 0 ){
+						if(selectItemData.getCompanyNum() != 0 || selectItemData.getItemNum() == homeNum){
 		                     if(selectItemData.getCompanyNum() != userDto.getCompanyNum() && !userDto.getUserId().equals("admin")){
 		                        Window.alert("타 회사는 열람 할 수 없습니다.");
 		                     }else{
@@ -428,6 +437,24 @@ public class MainPage extends Composite {
 				}
 				
 				
+			}
+		});
+		tree.addOpenHandler(new OpenHandler<TreeItem>() {
+			@Override
+			public void onOpen(OpenEvent<TreeItem> event) {
+				if(event.getTarget().getState()){
+					Images images = GWT.create(Images.class);
+					event.getTarget().setHTML(imageItemHTML(images.treeOpen(), event.getTarget().getText()));
+				}
+			}
+		});
+		tree.addCloseHandler(new CloseHandler<TreeItem>() {
+			@Override
+			public void onClose(CloseEvent<TreeItem> event) {
+				if(event.getTarget().getState()){
+					Images images = GWT.create(Images.class);
+					event.getTarget().setHTML(imageItemHTML(images.treeLeaf(), event.getTarget().getText()));
+				}
 			}
 		});
 		/************************************************************/
@@ -502,5 +529,11 @@ public class MainPage extends Composite {
 		CompanyList companyList = new CompanyList(compImpl, companys);
 		RootPanel.get().add(companyList);
 	}
-	
+	public SafeHtml imageItemHTML(ImageResource imageProto, String title) {
+	    SafeHtmlBuilder builder = new SafeHtmlBuilder();
+	    builder.append(AbstractImagePrototype.create(imageProto).getSafeHtml());
+	    builder.appendHtmlConstant(" ");
+	    builder.appendEscaped(title);
+	    return builder.toSafeHtml();
+}
 }
