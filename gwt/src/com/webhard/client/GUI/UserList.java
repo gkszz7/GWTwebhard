@@ -2,11 +2,14 @@ package com.webhard.client.GUI;
 
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -14,12 +17,14 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.UserDto;
+import com.webhard.client.service.LoginServiceClientImpl;
 import com.webhard.client.service.UserListServiceClientImpl;
 
 public class UserList extends Composite{
@@ -89,6 +94,14 @@ public class UserList extends Composite{
 				
 			}
 		});
+		Window.addWindowClosingHandler(new ClosingHandler() {
+		     @Override
+		      public void onWindowClosing(ClosingEvent event) {
+		    	 
+		    	
+		      }
+		    }); 
+		
 		Label lblNewLabel_1 = new Label("사용자 검색 :");
 		lblNewLabel_1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		absolutePanel.add(lblNewLabel_1, 182, 62);

@@ -7,6 +7,7 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -46,7 +47,7 @@ public class LoginUser extends Composite{
       this.serviceImpl.userList();
       this.serviceImpl.itemTree();
       dialogBox.setSize("463px", "511px");
-      
+      setupHistory();
       LayoutPanel layoutPanel = new LayoutPanel();
       layoutPanel.setStyleName("sendButton-new");
       this.dialogBox.add(layoutPanel);
@@ -153,5 +154,10 @@ public class LoginUser extends Composite{
       //EntryUser user = new EntryUser(entry, list, userList);
       RootPanel.get().add(entry.getEntryUser());
    }
- 
+   private void setupHistory() {
+       final String initToken = History.getToken();
+       if (initToken.length() == 0) {
+          History.newItem("login");      
+       }
+   }
 }

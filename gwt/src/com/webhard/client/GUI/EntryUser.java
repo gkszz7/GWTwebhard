@@ -139,6 +139,7 @@ public class EntryUser extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 				RootPanel.get().clear();
+				
 				LoginServiceClientImpl login = new LoginServiceClientImpl(GWT.getModuleBaseURL()+"login");
 				
 				RootPanel.get().add(login.getLoginUser());
