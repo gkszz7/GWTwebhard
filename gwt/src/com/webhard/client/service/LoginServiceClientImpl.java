@@ -5,9 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -24,7 +28,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	private List<CompanyDto> list;
 	private Tree tree;
 	private int homeFolderNum = 78;
-	
+	Images images = GWT.create(Images.class);
 	public LoginServiceClientImpl(String url) {
 		
 		
@@ -112,12 +116,13 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 		this.loginAsync.itemTree(new AsyncCallback<ItemDto>() {
 			@Override
 			public void onSuccess(ItemDto result) {
-				tree = new Tree();
+				
+				tree = new Tree(images);
 				TreeItem homeItem = new TreeItem();
 				homeItem.setText(result.getName());
 				homeItem.setUserObject(result);
 				getTree(homeItem);
-				
+				tree.addItem(homeItem);
 				loginuser.setTree(tree);
 			}
 			@Override
@@ -129,11 +134,11 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	public void getTree(TreeItem result){
 		
 		TreeItem item = result;
+		addImageItem(item, result.getText(), images.treeLeaf());
 		List<ItemDto> childNodes = new ArrayList<ItemDto>();
 		List<ItemDto> grandChildNodes = new ArrayList<ItemDto>();
 		ItemDto itemDto = (ItemDto)result.getUserObject();
 		childNodes = itemDto.getChild();
-		
 		
 		for(int i=0;i<childNodes.size();i++){
 			ItemDto childNode = childNodes.get(i);
@@ -168,4 +173,34 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	public LoginUser getLoginUser(){
 		return this.loginuser;
 	}
+	private TreeItem addImageItem(TreeItem root, String title,
+		      ImageResource imageProto) {
+		    TreeItem item = new TreeItem(imageItemHTML(imageProto, title));
+		    root.addItem(item);
+		    return item;
+		  }
+	 private SafeHtml imageItemHTML(ImageResource imageProto, String title) {
+		    SafeHtmlBuilder builder = new SafeHtmlBuilder();
+		    builder.append(AbstractImagePrototype.create(imageProto).getSafeHtml());
+		    builder.appendHtmlConstant(" ");
+		    builder.appendEscaped(title);
+		    return builder.toSafeHtml();
+	}
+	public interface Images extends Tree.Resources {
+		@Source("folder1.png")
+	    ImageResource drafts();
+		@Source("folder1.png")
+	    ImageResource home();
+		@Source("folder1.png")
+	    ImageResource inbox();
+		@Source("folder1.png")
+	    ImageResource sent();
+		@Source("folder1.png")
+	    ImageResource templates();
+		@Source("folder1.png")
+	    ImageResource trash();
+	    @Override
+	    @Source("folder1.png")
+	    ImageResource treeLeaf();
+	  }
 }

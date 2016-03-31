@@ -86,20 +86,20 @@ public class MainPage extends Composite {
 		horizontalSplitPanel.setLeftWidget(tree);
 		tree.setSize("313px", "628px");
 
-		if(userDto.getAccess() == 0){
-			for(int i=0;i<tree.getItem(0).getChildCount();i++){
-				TreeItem item = tree.getItem(0).getChild(i);
-				item.removeItems();
-			}			
-		}else{
-			for(int i=0;i<tree.getItem(0).getChildCount();i++){
-				TreeItem item = tree.getItem(0).getChild(i);
-				ItemDto itemDto = (ItemDto)item.getUserObject();
-				if((userDto.getCompanyNum() != itemDto.getCompanyNum()) && userDto.getAdmin() == 0){
-					item.removeItems();
-				}
-			}	
-		}
+//		if(userDto.getAccess() == 0){
+//			for(int i=0;i<tree.getItem(0).getChildCount();i++){
+//				TreeItem item = tree.getItem(0).getChild(i);
+//				item.removeItems();
+//			}			
+//		}else{
+//			for(int i=0;i<tree.getItem(0).getChildCount();i++){
+//				TreeItem item = tree.getItem(0).getChild(i);
+//				ItemDto itemDto = (ItemDto)item.getUserObject();
+//				if((userDto.getCompanyNum() != itemDto.getCompanyNum()) && userDto.getAdmin() == 0){
+//					item.removeItems();
+//				}
+//			}	
+//		}
 		MenuBar menuBar = new MenuBar(false);
 		menuBar.setStyleName("gwt-MenuBar");
 		absolutePanel.add(menuBar, 0, 0);
@@ -107,16 +107,20 @@ public class MainPage extends Composite {
 		
 		MenuBar menuBar_1 = new MenuBar(true);
 		final MenuItem folderMenu = new MenuItem("폴더", false, menuBar_1);
+		if(userDto.getAccess() == 0){
+			folderMenu.setScheduledCommand(new ScheduledCommand() {
+	            @Override
+	            public void execute() {
+	               if(userDto.getAccess() == 0){
+	                  folderMenu.setEnabled(false);
+	                  Window.alert("인증 후 이용 가능 합니다.");
+	               }else{
+	            	   
+	               }
+	            }
+	         });
+		}
 		
-		folderMenu.setScheduledCommand(new ScheduledCommand() {
-            @Override
-            public void execute() {
-               if(userDto.getAccess() == 0){
-                  folderMenu.setEnabled(false);
-                  Window.alert("인증 후 이용 가능 합니다.");
-               }
-            }
-         });
 		menuBar.addItem(folderMenu);
 		menuBar_1.addItem("폴더 생성", new ScheduledCommand() {
 			@Override
@@ -181,16 +185,17 @@ public class MainPage extends Composite {
 		
 		MenuBar menuBar_3 = new MenuBar(true);				
 		final MenuItem fileMenu = new MenuItem("파일", false, menuBar_3);
-		
-		fileMenu.setScheduledCommand(new ScheduledCommand() {
-            @Override
-            public void execute() {
-               if(userDto.getAccess() == 0){
-            	   fileMenu.setEnabled(false);
-                  Window.alert("인증 후 이용 가능 합니다.");
-               }
-            }
-         });
+		if(userDto.getAccess() == 0){
+			fileMenu.setScheduledCommand(new ScheduledCommand() {
+	            @Override
+	            public void execute() {
+	               if(userDto.getAccess() == 0){
+	            	   fileMenu.setEnabled(false);
+	                  Window.alert("인증 후 이용 가능 합니다.");
+	               }
+	            }
+	         });
+		}
 		
 		menuBar_3.addItem("파일 등록",new ScheduledCommand() {
 			@Override
