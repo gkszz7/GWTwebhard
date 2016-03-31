@@ -36,7 +36,7 @@ public class AccessList extends Composite{
 		absolutePanel = new AbsolutePanel();
 		initWidget(this.absolutePanel);
 		
-		absolutePanel.setStyleName("login");
+		absolutePanel.setStyleName("gwt-absolutePanel-new");
 		
 		absolutePanel.setSize("860px", "539px");
 		
@@ -50,8 +50,6 @@ public class AccessList extends Composite{
 			public void onClick(ClickEvent event) {
 				if(textBox.getText() != null){
 					if(comboBox.getSelectedIndex() == 1){
-						System.out.println(comboBox.getSelectedIndex());
-						System.out.println(textBox.getText());
 						serviceImpl.searchUserById(textBox.getText());
 					}else if(comboBox.getSelectedIndex() == 2){
 						serviceImpl.searchUserByName(textBox.getText());
@@ -90,6 +88,7 @@ public class AccessList extends Composite{
 		lblNewLabel_1.setSize("107px", "25px");
 		
 		AbsolutePanel absolutePanel_1 = new AbsolutePanel();
+		absolutePanel_1.setStyleName("gwt-absolutePanel-new");
 		absolutePanel.add(absolutePanel_1, 0, 143);
 		absolutePanel_1.setSize("860px", "396px");
 		
@@ -125,6 +124,7 @@ public class AccessList extends Composite{
 		absolutePanel_1.add(btnNewButton_4, 729, 355);
 		btnNewButton_4.setSize("85px", "27px");
 		
+		setStyleName("gwt-absolutePanel-new");
 	}
 	//인증대기자목록
 		public void AccessListTable(List<UserDto> AccessList) {

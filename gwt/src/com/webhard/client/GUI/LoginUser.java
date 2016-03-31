@@ -6,6 +6,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -21,6 +22,8 @@ import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.EntryServiceClientImpl;
 import com.webhard.client.service.LoginServiceClientImpl;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.dom.client.KeyDownEvent;
 
 public class LoginUser extends Composite{
     
@@ -33,6 +36,7 @@ public class LoginUser extends Composite{
    private List<UserDto> userList;
    
    public LoginUser(final LoginServiceClientImpl loginSerivceClientImpl) {
+      dialogBox.setStyleName("sendButton-new");
           
       dialogBox.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
       
@@ -41,17 +45,18 @@ public class LoginUser extends Composite{
       this.serviceImpl.comboList();
       this.serviceImpl.userList();
       this.serviceImpl.itemTree();
-      dialogBox.setSize("1330px", "1000px");
+      dialogBox.setSize("463px", "511px");
       
       LayoutPanel layoutPanel = new LayoutPanel();
+      layoutPanel.setStyleName("sendButton-new");
       this.dialogBox.add(layoutPanel);
-      layoutPanel.setSize("662px", "461px");
+      layoutPanel.setSize("605px", "509px");
       
       Label lblNewLabel = new Label("ID");
       lblNewLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
       layoutPanel.add(lblNewLabel);
       layoutPanel.setWidgetLeftWidth(lblNewLabel, 27.0, Unit.PX, 80.0, Unit.PX);
-      layoutPanel.setWidgetTopHeight(lblNewLabel, 162.0, Unit.PX, 34.0, Unit.PX);
+      layoutPanel.setWidgetTopHeight(lblNewLabel, 167.0, Unit.PX, 24.0, Unit.PX);
       
       textBox = new TextBox(); 
       layoutPanel.add(textBox);
@@ -63,7 +68,7 @@ public class LoginUser extends Composite{
       lblPw.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
       layoutPanel.add(lblPw);
       layoutPanel.setWidgetLeftWidth(lblPw, 27.0, Unit.PX, 80.0, Unit.PX);
-      layoutPanel.setWidgetBottomHeight(lblPw, 204.0, Unit.PX, 24.0, Unit.PX);
+      layoutPanel.setWidgetBottomHeight(lblPw, 245.0, Unit.PX, 24.0, Unit.PX);
       
       Label lblLogIn = new Label("LOG IN");
       lblLogIn.setStyleName("gwt-Title");
@@ -108,6 +113,23 @@ public class LoginUser extends Composite{
       layoutPanel.setWidgetTopHeight(userInsertBtn, 312.0, Unit.PX, 52.0, Unit.PX);
       
       passwordTextBox = new PasswordTextBox();
+      passwordTextBox.addKeyDownHandler(new KeyDownHandler() {
+    	  
+      	public void onKeyDown(KeyDownEvent event) {
+      		 if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+      			if(textBox.getText().length()>0 && passwordTextBox.getText().length()>0){
+                    String id = textBox.getText();
+                    String pwd = passwordTextBox.getText();
+                    serviceImpl.login(id, pwd, tree);
+                    
+                    }
+                    else{
+                       Window.alert("아이디 비밀번호를 입력해주세요");   
+                    }         
+               }
+      	}
+      });
+      
       layoutPanel.add(passwordTextBox);
       passwordTextBox.setSize("390px", "25px");
       layoutPanel.setWidgetLeftWidth(passwordTextBox, 125.0, Unit.PX, 397.0, Unit.PX);
