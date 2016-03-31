@@ -83,3 +83,12 @@ font-stretch: normal;
 	font-weight: bold;
 	border: 1px solid black;
 }
+.gwt-absolutePanel-new {
+	margin: auto;
+	border: 1px solid black;
+	text-align: center;
+}
+.sendButton-new {
+	margin: auto;
+	text-align: center;
+}

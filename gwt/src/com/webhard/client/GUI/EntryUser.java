@@ -37,6 +37,7 @@ public class EntryUser extends Composite{
 
 	
 	public EntryUser(final EntryServiceClientImpl serviceImp, List<CompanyDto> cDto, final List<UserDto> userList) {
+		vPanel.setStyleName("sendButton-new");
 		
 			
 		vPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
@@ -47,7 +48,7 @@ public class EntryUser extends Composite{
 		LayoutPanel layoutPanel = new LayoutPanel();
 
 		this.vPanel.add(layoutPanel);
-		layoutPanel.setSize("469px", "616px");
+		layoutPanel.setSize("528px", "616px");
 		
 
 		Label lblNewLabel = new Label("ID");
@@ -222,9 +223,7 @@ public class EntryUser extends Composite{
 							textBoxPhone.getText(), textBoxAddr.getText(), comboBox.getValue(comboBox.getSelectedIndex()));				
 				}
 			}
-		});
-		
-		
+		});		
 	}
 
 	public void setIdCheck(boolean check){

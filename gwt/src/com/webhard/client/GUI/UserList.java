@@ -39,7 +39,7 @@ public class UserList extends Composite{
 		absolutePanel = new AbsolutePanel();
 		initWidget(this.absolutePanel);
 		UserListTable(userList);
-		absolutePanel.setStyleName("login");
+		absolutePanel.setStyleName("gwt-absolutePanel-new");
 		
 		absolutePanel.setSize("860px", "539px");
 		
