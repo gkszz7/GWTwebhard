@@ -15,8 +15,14 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
@@ -43,7 +49,7 @@ import com.webhard.client.service.MainServiceClientImpl;
 import com.webhard.client.service.UserListServiceClientImpl;
 import com.webhard.client.service.LoginServiceClientImpl.Images;
 
-public class MainPage extends Composite {
+public class MainPage extends Composite{
 	
 	private HorizontalSplitPanel horizontalSplitPanel;
 	private final MainServiceClientImpl serviceImpl;
@@ -84,6 +90,7 @@ public class MainPage extends Composite {
 		this.serviceImpl.AccessList();
 		
 		this.tree = getTree;
+		setupHistory();
 		
 		CellTable<Object> cellTable = new CellTable<Object>();	
 		cellTable.setStyleName("sendButton-new");
@@ -267,7 +274,16 @@ public class MainPage extends Composite {
 			});
 
 		}
-				
+		
+		Window.addWindowClosingHandler(new ClosingHandler() {
+		     @Override
+		      public void onWindowClosing(ClosingEvent event) {
+		    	 
+		    	 
+		      }
+		    });
+		 
+		
 		Button btnNewButton = new Button("New button");
 		btnNewButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -536,4 +552,42 @@ public class MainPage extends Composite {
 	    builder.appendEscaped(title);
 	    return builder.toSafeHtml();
 }
+	private void setupHistory() {
+        final String initToken = History.getToken();
+        System.out.println(initToken);
+        if (initToken.length() == 0) {
+           History.newItem("main");          
+        }
+     // Add history listener
+        HandlerRegistration historyHandlerRegistration = History.addValueChangeHandler(new ValueChangeHandler() {
+            @Override
+            public void onValueChange(ValueChangeEvent event) {
+                String token = (String) event.getValue();
+                if (initToken.equals(token)) {           
+                    History.newItem(initToken);               
+                }
+            }
+        });
+        Window.addWindowClosingHandler(new ClosingHandler() {
+            boolean reloading = false;
+            
+            @Override
+            public void onWindowClosing(ClosingEvent event) {
+                if (!reloading) {
+                    String userAgent = Window.Navigator.getUserAgent();                            
+                    if (userAgent.contains("main")) {
+                        if (!Window.confirm("Do you really want to exit?")) {
+                            reloading = false;                          
+                            Window.Location.reload(); // For IE
+                            
+                        }
+                    }
+                    else {
+                    	System.out.println("aaaaaaaaaaaaaa");
+                        event.setMessage("My App"); // For other browser
+                    }
+                }
+            }
+        });
+	}
 }
