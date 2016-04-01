@@ -30,7 +30,7 @@ public class FileUpload extends HttpServlet {
 		String root = application.getRealPath("/WEB-INF/file/");
 		String tempPath = application.getRealPath("/WEB-INF/temp/");
 		File path = new File(root);
-		int itemnum = 0;
+		int itemnum = 0;  
 		int compnum = 0;
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		factory.setSizeThreshold(1024 * 1024 * 2);// 임시 파일 생성 여부 기준 설정(크기보다 클경우

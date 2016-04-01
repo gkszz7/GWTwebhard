@@ -517,7 +517,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	    });
 
 	   return downloadDialog;
-	}
+	}    
 	/*************************폴더 관련 다이얼로그 ****************/
 	public DialogBox createFolderBox(final int parentNum, final int companyNum){
 		folderBox = new DialogBox();
