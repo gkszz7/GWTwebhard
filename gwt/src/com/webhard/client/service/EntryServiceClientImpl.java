@@ -16,13 +16,11 @@ public class EntryServiceClientImpl implements EntryServiceClientInt {
 	
 	private EntryServiceAsync entryAsync;
 	private EntryUser entryUser;
-	
 	public EntryServiceClientImpl(String url, List<CompanyDto> list ,List<UserDto> userList) {
 		
 		this.entryAsync = GWT.create(EntryService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.entryAsync;
 		endPoint.setServiceEntryPoint(url);
-		
 		this.entryUser = new EntryUser(this,list, userList);
 	}
 	

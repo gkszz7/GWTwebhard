@@ -8,7 +8,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
@@ -29,9 +28,10 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	private LoginServiceAsync loginAsync;
 	private LoginUser loginuser;
 	private int check = 0;
-	private List<CompanyDto> list;
+	private List<CompanyDto> compList;
+	private List<UserDto> userList;
 	private Tree tree;
-	private int homeFolderNum = 140;
+	private int homeFolderNum = HomeNum.homeNum;
 	private List<FileDto> files;
 	Images images = GWT.create(Images.class);
 	public LoginServiceClientImpl(String url) {
@@ -87,7 +87,9 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 			
 			@Override
 			public void onSuccess(List<CompanyDto> result) {
+				compList=result;
 				loginuser.setComList(result);
+				
 			}
 			@Override
 			public void onFailure(Throwable caught) {
@@ -102,7 +104,9 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 			
 			@Override
 			public void onSuccess(List<UserDto> result) {
+				userList=result;
 				loginuser.setUserList(result);
+				
 			}
 			@Override
 			public void onFailure(Throwable caught) {
@@ -220,9 +224,6 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 		}
 	}
 	
-	public LoginUser getLoginUser(){
-		return this.loginuser;
-	}
 	public SafeHtml imageItemHTML(ImageResource imageProto, String title) {
 		    SafeHtmlBuilder builder = new SafeHtmlBuilder();
 		    builder.append(AbstractImagePrototype.create(imageProto).getSafeHtml());
@@ -249,5 +250,9 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	    @Override
 	    @Source("Open Folder-48.png")
 	    ImageResource treeOpen();
-	  }
+	}
+
+	public LoginUser getLoginUser(){
+		return this.loginuser;
+	}
 }

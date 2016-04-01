@@ -7,7 +7,6 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -23,8 +22,11 @@ import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.EntryServiceClientImpl;
 import com.webhard.client.service.LoginServiceClientImpl;
+import com.webhard.shared.AllImplClass;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 
 public class LoginUser extends Composite{
     
@@ -37,7 +39,6 @@ public class LoginUser extends Composite{
    private List<UserDto> userList;
    
    public LoginUser(final LoginServiceClientImpl loginSerivceClientImpl) {
-	  History.newItem("login");
       dialogBox.setStyleName("sendButton-new");
           
       dialogBox.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
@@ -48,7 +49,6 @@ public class LoginUser extends Composite{
       this.serviceImpl.userList();
       this.serviceImpl.itemTree();
       dialogBox.setSize("463px", "511px");
-      setupHistory();
       LayoutPanel layoutPanel = new LayoutPanel();
       layoutPanel.setStyleName("sendButton-new");
       this.dialogBox.add(layoutPanel);
@@ -155,10 +155,5 @@ public class LoginUser extends Composite{
       //EntryUser user = new EntryUser(entry, list, userList);
       RootPanel.get().add(entry.getEntryUser());
    }
-   private void setupHistory() {
-       final String initToken = History.getToken();
-       if (initToken.length() == 0) {
-          History.newItem("login");      
-       }
-   }
+
 }

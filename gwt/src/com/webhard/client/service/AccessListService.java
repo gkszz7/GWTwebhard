@@ -1,5 +1,6 @@
 package com.webhard.client.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -14,4 +15,6 @@ public interface AccessListService extends RemoteService{
 	List<UserDto> searchUserBycompany(String company);
 	List<UserDto> searchUserByPhone(String phone);
 	List<UserDto> searchUserById(String id);
+	HashMap<String, Object> goMain() throws IllegalArgumentException;
+	UserDto getUser();
 }

@@ -7,4 +7,5 @@ public interface AccessListServiceClientInt {
 	void searchUserBycompany(String company);
 	void searchUserByPhone(String phone);
 	void searchUserById(String id);
+	void goMain();
 }

@@ -10,5 +10,5 @@ public interface UserListServiceClientInt {
 	void searchUserById(String id);
 	void deleteUser(String id);
 	void UserList();
-	
+	void goMain();
 }

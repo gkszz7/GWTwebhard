@@ -20,7 +20,6 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -43,15 +42,17 @@ import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.sun.java.swing.plaf.windows.resources.windows;
 import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.FileDto;
 import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.AccessListServiceClientImpl;
 import com.webhard.client.service.CompanyServiceClientImpl;
+import com.webhard.client.service.EntryServiceClientImpl;
 import com.webhard.client.service.LoginServiceClientImpl;
 import com.webhard.client.service.LoginServiceClientImpl.Images;
 import com.webhard.client.service.MainServiceClientImpl;
 import com.webhard.client.service.UserListServiceClientImpl;
-import com.webhard.util.AllImplClass;
+import com.webhard.shared.AllImplClass;
 
 public class MainPage extends Composite {
 
@@ -70,18 +71,17 @@ public class MainPage extends Composite {
 	private long filesize;
 	private Boolean check;
 	private Tree tree;
-
 	private TreeItem selectItem;
 	private ItemDto selectItemData;
 	private ItemDto selected;
 	private FileUpload fileUpload;
+	private List<FileDto> files;
 
 	// 파일 리스트. 폴더 리스트
 
 	public MainPage(final MainServiceClientImpl mainServiceClientImpl,
 			Tree getTree, String compName, final int homeNum,
 			final UserDto userDto) {
-		History.newItem("Main");
 		absolutePanel = new AbsolutePanel();
 		absolutePanel.setStyleName("gwt-absolutePanel-new");
 		initWidget(this.absolutePanel);
@@ -95,8 +95,8 @@ public class MainPage extends Composite {
 		this.serviceImpl.UserList();
 		this.serviceImpl.compList();
 		this.serviceImpl.AccessList();
-		
 		this.tree = getTree;
+		this.serviceImpl.allFiles();
 //		setupHistory();
 		
 		CellTable<Object> cellTable = new CellTable<Object>();	
@@ -501,84 +501,20 @@ public class MainPage extends Composite {
 //	            
 //	        }
 //	    }));
-	    History.addValueChangeHandler(new ValueChangeHandler<String>()
-	    {
-
-	        @Override
-	        public void onValueChange(ValueChangeEvent<String> event){
-	            System.out.println("We handle ValueChangeEvent on History. Now token is " + event.getValue());
-	            System.out.println(History.getToken());
-	            AllImplClass all = new AllImplClass(History.getToken());
-	            all.hello();
-	            
-//	            if(History.getToken().equals("login")){
-//	            	LoginServiceClientImpl impl = new 
-//	            	RootPanel.get().clear();
-//		            RootPanel.get().add();
-//	            }
-//	            RootPanel.get().clear();
-//	            RootPanel.get().add();
-	        }
-	    });
-//		Event.addNativePreviewHandler(new Event.NativePreviewHandler() {
+//	    History.addValueChangeHandler(new ValueChangeHandler<String>()
+//	    {
 //
 //	        @Override
-//	        public void onPreviewNativeEvent(final NativePreviewEvent event) {
-//
-//	            if (event.getTypeInt() == Event.ONKEYDOWN) {
-//	                if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_BACKSPACE) {
-//	                    Element element = Element.as(event.getNativeEvent().getEventTarget());
-//
-//	                    String tagName = element.getTagName();
-//
-//	                    System.out.println(tagName);
-//
-//	                    // Add checks for other input controls
-//	                    if (!tagName.equalsIgnoreCase("INPUT") 
-//	                                 && !tagName.equalsIgnoreCase("TEXTAREA")) {
-//
-//	                        boolean result = Window.confirm("Are you sure?");
-//	                        if (!result) {
-//	                            event.cancel();
-//	                        }
-//	                    }
-//	                }
-//	            }
+//	        public void onValueChange(ValueChangeEvent<String> event){
+//	            AllImplClass impl = new AllImplClass();
+//	            impl.allImpl(History.getToken(), history.getCompanyList(), history.getUserListByEntry()
+//	            		, history.getTree(), history.getCompanyNameByMain(), history.getHomeNumByMain(), history.getUser(),history);
+//	        	
 //	        }
 //	    });
+
 	}
-//	public native void onBeforeUnload()/*-{
-//
-//    $wnd.onbeforeunload = function(e) {
-//        return 'Are you sure?';
-//    };
-//	}-*/;
-//	public native void call()/*-{
-//
-//    $wnd.onkeydown = GetChar;
-//
-//     function GetChar (event)
-//     {
-//        var key = event.keyCode;
-//
-//        var bb = event.target.nodeName;
-//
-//        if(key==8 && bb=="BODY")//checking keyCode of key for backspace
-//                {
-//                    var x= window.confirm("Are you sureyou want to leave the page");
-//
-//                    if (x==true)
-//                            {
-//                                window.history.back();
-//                            }
-//                    else if(x==false)
-//                            {
-//
-//                                return false;
-//                            }
-//                }
-//        }                   
-//}-*/;
+
 	public void selectUser(List<UserDto> UserList){
 		this.userList = UserList;
 	}
@@ -625,7 +561,7 @@ public class MainPage extends Composite {
 	public void AccessList(){
 		RootPanel.get().clear();
 		
-		AccessListServiceClientImpl AccessListImpl = new AccessListServiceClientImpl(GWT.getModuleBaseURL()+"AccessList");
+		AccessListServiceClientImpl AccessListImpl = new AccessListServiceClientImpl(GWT.getModuleBaseURL()+"AccessList",tree,files);
 		AccessList Accesslist = new AccessList(AccessListImpl, accessList);
 		RootPanel.get().add(Accesslist);
 	}
@@ -633,7 +569,7 @@ public class MainPage extends Composite {
 	public void enterUserList(){
 		RootPanel.get().clear();
 		
-		UserListServiceClientImpl userImpl = new UserListServiceClientImpl(GWT.getModuleBaseURL()+"UserList");
+		UserListServiceClientImpl userImpl = new UserListServiceClientImpl(GWT.getModuleBaseURL()+"UserList",tree,files);
 		UserList userlist = new UserList(userImpl, userList,companys);
 		RootPanel.get().add(userlist);
 
@@ -643,7 +579,7 @@ public class MainPage extends Composite {
 		
 		RootPanel.get().clear();
 		
-		CompanyServiceClientImpl compImpl = new CompanyServiceClientImpl(GWT.getModuleBaseURL()+"company",companys);
+		CompanyServiceClientImpl compImpl = new CompanyServiceClientImpl(GWT.getModuleBaseURL()+"company",companys,tree,files);
 		CompanyList companyList = new CompanyList(compImpl, companys);
 		RootPanel.get().add(companyList);
 	}
@@ -653,5 +589,8 @@ public class MainPage extends Composite {
 	    builder.appendHtmlConstant(" ");
 	    builder.appendEscaped(title);
 	    return builder.toSafeHtml();
+	}
+	public void setAllFiles(List<FileDto> file){
+		files=file;
 	}
 }

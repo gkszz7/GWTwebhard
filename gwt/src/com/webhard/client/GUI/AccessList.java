@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -30,7 +31,7 @@ public class AccessList extends Composite{
 	private CellTable<UserDto> cellTable_1;
 	private UserDto selected;
 	public AccessList(AccessListServiceClientImpl AccessListserviceImpl,final List<UserDto> AccessList){
-		
+		History.newItem("AccessList");
 		this.serviceImpl = AccessListserviceImpl;
 		AccessListTable(AccessList);
 		absolutePanel = new AbsolutePanel();
@@ -111,7 +112,7 @@ public class AccessList extends Composite{
 		});
 	
 		
-		absolutePanel_1.add(btnNewButton_3, 626, 355);
+		absolutePanel_1.add(btnNewButton_3, 513, 355);
 		btnNewButton_3.setSize("85px", "27px");
 		
 		Button btnNewButton_4 = new Button("New button");
@@ -121,9 +122,20 @@ public class AccessList extends Composite{
 				
 			}
 		});		
-		absolutePanel_1.add(btnNewButton_4, 729, 355);
+		absolutePanel_1.add(btnNewButton_4, 625, 355);
 		btnNewButton_4.setSize("85px", "27px");
 		
+		Button button = new Button("New button");
+		button.setText("HOME");
+		absolutePanel_1.add(button, 735, 355);
+		button.setSize("85px", "27px");
+		button.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				serviceImpl.goMain();
+			}
+		});
 		setStyleName("gwt-absolutePanel-new");
 	}
 	//인증대기자목록

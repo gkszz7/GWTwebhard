@@ -1,5 +1,6 @@
 package com.webhard.client.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -13,5 +14,7 @@ public interface AccessListServiceAsync {
 	void searchUserById(String id, AsyncCallback<List<UserDto>> callback);
 
 	void accessUser(String id, AsyncCallback<List<UserDto>> callback);
+	void goMain(AsyncCallback<HashMap<String, Object>> callback);
+	void getUser(AsyncCallback<UserDto> callback);
 
 }

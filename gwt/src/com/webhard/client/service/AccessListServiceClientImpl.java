@@ -1,5 +1,6 @@
 package com.webhard.client.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -7,21 +8,26 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Tree;
 import com.webhard.client.GUI.AccessList;
+import com.webhard.client.model.FileDto;
 import com.webhard.client.model.UserDto;
+import com.webhard.client.service.CompanyServiceClientImpl.Images;
 
 public class AccessListServiceClientImpl implements AccessListServiceClientInt{
 	
 	private AccessListServiceAsync AccessAsync;
 	private AccessList accessList;
 	private List<UserDto> AccessList;
-	
-	public AccessListServiceClientImpl(String url) {
+	private Tree tree;
+	private List<FileDto> files;
+	public AccessListServiceClientImpl(String url, Tree tree, List<FileDto> files) {
 		
 		this.AccessAsync = GWT.create(AccessListService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.AccessAsync;
 		endPoint.setServiceEntryPoint(url);
-		
+		this.tree=tree;
+		this.files=files;
 		this.accessList = new AccessList(this, AccessList);
 	}
 	@Override
@@ -32,7 +38,7 @@ public class AccessListServiceClientImpl implements AccessListServiceClientInt{
 			public void onSuccess(List<UserDto> result) {
 				RootPanel.get().clear();
 				
-				AccessListServiceClientImpl AccessListImpl = new AccessListServiceClientImpl(GWT.getModuleBaseURL()+"AccessList");
+				AccessListServiceClientImpl AccessListImpl = new AccessListServiceClientImpl(GWT.getModuleBaseURL()+"AccessList",tree,files);
 				AccessList Accesslist = new AccessList(AccessListImpl, result);
 				RootPanel.get().add(Accesslist);
 			}
@@ -53,7 +59,7 @@ public class AccessListServiceClientImpl implements AccessListServiceClientInt{
 			public void onSuccess(List<UserDto> result) {
 				RootPanel.get().clear();
 				
-				AccessListServiceClientImpl AccessListImpl = new AccessListServiceClientImpl(GWT.getModuleBaseURL()+"AccessList");
+				AccessListServiceClientImpl AccessListImpl = new AccessListServiceClientImpl(GWT.getModuleBaseURL()+"AccessList",tree,files);
 				AccessList Accesslist = new AccessList(AccessListImpl, result);
 				RootPanel.get().add(Accesslist);
 			}
@@ -74,7 +80,7 @@ public class AccessListServiceClientImpl implements AccessListServiceClientInt{
 			public void onSuccess(List<UserDto> result) {
 				RootPanel.get().clear();
 				
-				AccessListServiceClientImpl AccessListImpl = new AccessListServiceClientImpl(GWT.getModuleBaseURL()+"AccessList");
+				AccessListServiceClientImpl AccessListImpl = new AccessListServiceClientImpl(GWT.getModuleBaseURL()+"AccessList",tree,files);
 				AccessList Accesslist = new AccessList(AccessListImpl, result);
 				RootPanel.get().add(Accesslist);
 			}
@@ -95,7 +101,7 @@ public class AccessListServiceClientImpl implements AccessListServiceClientInt{
 			public void onSuccess(List<UserDto> result) {
 				RootPanel.get().clear();
 				
-				AccessListServiceClientImpl AccessListImpl = new AccessListServiceClientImpl(GWT.getModuleBaseURL()+"AccessList");
+				AccessListServiceClientImpl AccessListImpl = new AccessListServiceClientImpl(GWT.getModuleBaseURL()+"AccessList",tree,files);
 				AccessList Accesslist = new AccessList(AccessListImpl, result);
 				RootPanel.get().add(Accesslist);
 			}
@@ -117,7 +123,7 @@ public class AccessListServiceClientImpl implements AccessListServiceClientInt{
 				Window.alert("인증 되었습니다.");
 				RootPanel.get().clear();
 				
-				AccessListServiceClientImpl AccessListImpl = new AccessListServiceClientImpl(GWT.getModuleBaseURL()+"AccessList");
+				AccessListServiceClientImpl AccessListImpl = new AccessListServiceClientImpl(GWT.getModuleBaseURL()+"AccessList",tree,files);
 				AccessList Accesslist = new AccessList(AccessListImpl, result);
 				RootPanel.get().add(Accesslist);
 			}
@@ -129,7 +135,47 @@ public class AccessListServiceClientImpl implements AccessListServiceClientInt{
 			}
 		});
 	}
-	
+	@Override
+	public void goMain() {
+		this.AccessAsync.getUser(new AsyncCallback<UserDto>() {
+			
+			@Override
+			public void onSuccess(UserDto result) {
+				final UserDto user = result;
+				AccessAsync.goMain(new AsyncCallback<HashMap<String,Object>>() {
+					
+					@Override
+					public void onSuccess(HashMap<String, Object> result) {
+						String compName = (String)result.get("companyName");
+						int homeFolderNum = Integer.parseInt((String)result.get("homeFolderNum"));
+						UserDto userDto = (UserDto)result.get("userDto");
+						
+						RootPanel.get().clear();
+
+						RootPanel.get().clear();
+						
+						MainServiceClientImpl main = 
+								new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree,compName,homeFolderNum, user);
+						
+						RootPanel.get().add(main.getMainPage());
+						
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
 	public AccessList getAccessList(){
 		return this.accessList;
 	}

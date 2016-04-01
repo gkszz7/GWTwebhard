@@ -13,4 +13,5 @@ public interface CompanyServiceClientInt {
 	void searchCompByName(String name);
 	void searchCompByAddr(String addr);
 	void searchCompByPhone(String phone);
+	void goMain();
 }

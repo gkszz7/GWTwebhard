@@ -1,0 +1,2 @@
+serviceClass: com.webhard.client.service.AccessListService
+path: 976A9F0987E1445C3C7526059D216BC6.gwt.rpc

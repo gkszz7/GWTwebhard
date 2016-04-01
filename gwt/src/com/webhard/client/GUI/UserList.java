@@ -7,6 +7,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
@@ -39,7 +40,7 @@ public class UserList extends Composite{
 	private Button updateBtn,btnNewButton1,button;
 	
 	public UserList(final UserListServiceClientImpl userListServiceClientImpl,final List<UserDto> userList,final List<CompanyDto> compList){
-		
+		History.newItem("UserList");
 		this.userListServiceClientImpl = userListServiceClientImpl;
 		absolutePanel = new AbsolutePanel();
 		initWidget(this.absolutePanel);
@@ -224,7 +225,7 @@ public class UserList extends Composite{
 			
 		/************************************************/
 		
-		absolutePanel_1.add(updateBtn, 626, 355);
+		absolutePanel_1.add(updateBtn, 515, 355);
 		updateBtn.setSize("85px", "27px");
 		
 		Button deleteBtn = new Button("New button");
@@ -240,9 +241,20 @@ public class UserList extends Composite{
 			}
 		});
 		deleteBtn.setText("삭제");
-		absolutePanel_1.add(deleteBtn, 729, 355);
+		absolutePanel_1.add(deleteBtn, 622, 355);
 		deleteBtn.setSize("85px", "27px");
 		
+		Button button_1 = new Button("New button");
+		button_1.setText("HOME");
+		absolutePanel_1.add(button_1, 727, 355);
+		button_1.setSize("85px", "27px");
+		button_1.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				userListServiceClientImpl.goMain();
+			}
+		});
 	}
 		
 	//사용자목록

@@ -1,15 +1,21 @@
 package com.webhard.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.FolderDto;
 import com.webhard.client.model.ItemDto;
+import com.webhard.client.model.UserDto;
 import com.webhard.client.service.CompanyService;
 import com.webhard.server.dao.CompanyDao;
 import com.webhard.server.dao.FolderDao;
+import com.webhard.server.dao.UserDao;
 
 
 /**
@@ -110,5 +116,33 @@ public class CompanyServiceImpl extends RemoteServiceServlet implements CompanyS
 			dao.deleteFolder(selectNum);
 
 		}
+	}
+	@Override
+	public HashMap<String, Object> goMain() {
+		UserDao userDao = new UserDao();
+		FolderDao folDao = new FolderDao();
+		UserDto userDto = new UserDto();
+		
+		int homeNum = folDao.selectHomeFolder().getItemNum();
+		String companyName = null;
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+	    
+		int compNum = userDao.selectcompany(userDto.getUserId());
+		companyName = userDao.selectcompanyname(compNum);
+		String homeFolderNum = Integer.toString(homeNum);
+		
+		map.put("companyName", companyName);
+	    map.put("homeFolderNum", homeFolderNum);
+		return map;
+	}
+	@Override
+	public UserDto getUser() {
+		UserDto userDto = new UserDto();
+		HttpServletRequest httpServletRequest = this.getThreadLocalRequest();
+	    HttpSession session = httpServletRequest.getSession(true);
+	    
+	    userDto = (UserDto)session.getAttribute("user");
+		return userDto;
 	}
 }

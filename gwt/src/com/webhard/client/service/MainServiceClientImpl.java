@@ -14,7 +14,6 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
@@ -22,7 +21,6 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
-
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
@@ -33,7 +31,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.webhard.client.GUI.MainPage;
 import com.webhard.client.model.CompanyDto;
@@ -59,6 +56,10 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	Images images = GWT.create(Images.class);
 	private List<FileDto> files;
 	
+	public MainServiceClientImpl() {
+		
+	}
+	
 	public MainServiceClientImpl(String url, Tree getTree, String compName, int homeNum , UserDto userDto) {
 		
 		
@@ -70,6 +71,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		this.tree = getTree;
 		this.userDto = userDto;
 		this.main = new MainPage(this, getTree, compName, homeNum, userDto);
+		
 	}
 
 	@Override
@@ -167,7 +169,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				RootPanel.get().clear();
 
 				MainServiceClientImpl main = 
-						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto );
 
 				RootPanel.get().add(main.getMainPage());
 			}
@@ -194,7 +196,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				RootPanel.get().clear();
 
 				MainServiceClientImpl main = 
-						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto );
 
 				RootPanel.get().add(main.getMainPage());
 			}
@@ -231,7 +233,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				RootPanel.get().clear();
 
 				MainServiceClientImpl main = 
-						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto );
 
 				RootPanel.get().add(main.getMainPage());
 			}
@@ -249,6 +251,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 			@Override
 			public void onSuccess(List<FileDto> result) {
 				files = result;
+				main.setAllFiles(files);
 			}
 			@Override
 			public void onFailure(Throwable caught) {
