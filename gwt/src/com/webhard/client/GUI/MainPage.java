@@ -12,17 +12,14 @@ import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.ClosingEvent;
-import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
@@ -30,6 +27,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -45,9 +43,10 @@ import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.AccessListServiceClientImpl;
 import com.webhard.client.service.CompanyServiceClientImpl;
+import com.webhard.client.service.LoginServiceClientImpl;
+import com.webhard.client.service.LoginServiceClientImpl.Images;
 import com.webhard.client.service.MainServiceClientImpl;
 import com.webhard.client.service.UserListServiceClientImpl;
-import com.webhard.client.service.LoginServiceClientImpl.Images;
 
 public class MainPage extends Composite{
 	
@@ -74,7 +73,7 @@ public class MainPage extends Composite{
 	//파일 리스트. 폴더 리스트
 	
 	public MainPage(final MainServiceClientImpl mainServiceClientImpl, Tree getTree, String compName, final int homeNum, final UserDto userDto) {
-
+		History.newItem("Main");
 		absolutePanel = new AbsolutePanel();
 		absolutePanel.setStyleName("gwt-absolutePanel-new");
 		initWidget(this.absolutePanel);
@@ -90,7 +89,7 @@ public class MainPage extends Composite{
 		this.serviceImpl.AccessList();
 		
 		this.tree = getTree;
-		setupHistory();
+//		setupHistory();
 		
 		CellTable<Object> cellTable = new CellTable<Object>();	
 		cellTable.setStyleName("sendButton-new");
@@ -99,20 +98,20 @@ public class MainPage extends Composite{
 		horizontalSplitPanel.setLeftWidget(tree);
 		tree.setSize("313px", "628px");
 		
-//		if(userDto.getAccess() == 0){
-//			for(int i=0;i<tree.getItem(0).getChildCount();i++){
-//				TreeItem item = tree.getItem(0).getChild(i);
-//				item.removeItems();
-//			}			
-//		}else{
-//			for(int i=0;i<tree.getItem(0).getChildCount();i++){
-//				TreeItem item = tree.getItem(0).getChild(i);
-//				ItemDto itemDto = (ItemDto)item.getUserObject();
-//				if((userDto.getCompanyNum() != itemDto.getCompanyNum()) && userDto.getAdmin() == 0){
-//					item.removeItems();
-//				}
-//			}	
-//		}
+		if(userDto.getAccess() == 0){
+			for(int i=0;i<tree.getItem(0).getChildCount();i++){
+				TreeItem item = tree.getItem(0).getChild(i);
+				item.removeItems();
+			}			
+		}else{
+			for(int i=0;i<tree.getItem(0).getChildCount();i++){
+				TreeItem item = tree.getItem(0).getChild(i);
+				ItemDto itemDto = (ItemDto)item.getUserObject();
+				if((userDto.getCompanyNum() != itemDto.getCompanyNum()) && userDto.getAdmin() == 0){
+					item.removeItems();
+				}
+			}	
+		}
 		MenuBar menuBar = new MenuBar(false);
 		menuBar.setStyleName("gwt-MenuBar");
 		absolutePanel.add(menuBar, 0, 0);
@@ -274,16 +273,6 @@ public class MainPage extends Composite{
 			});
 
 		}
-		
-		Window.addWindowClosingHandler(new ClosingHandler() {
-		     @Override
-		      public void onWindowClosing(ClosingEvent event) {
-		    	 
-		    	 
-		      }
-		    });
-		 
-		
 		Button btnNewButton = new Button("New button");
 		btnNewButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -442,12 +431,14 @@ public class MainPage extends Composite{
 					selectItemData = (ItemDto)selectItem.getUserObject();
 					
 					if(selectItem != null){
-						if(selectItemData.getCompanyNum() != 0 || selectItemData.getItemNum() == homeNum){
+						if(selectItemData.getCompanyNum() != 0){
 		                     if(selectItemData.getCompanyNum() != userDto.getCompanyNum() && !userDto.getUserId().equals("admin")){
 		                        Window.alert("타 회사는 열람 할 수 없습니다.");
 		                     }else{
 		                        serviceImpl.ItemInTable(selectItemData.getItemNum());
 		                     }
+		                }else{
+		                	serviceImpl.ItemInTable(selectItemData.getItemNum());
 		                }
 					}
 				}
@@ -465,17 +456,110 @@ public class MainPage extends Composite{
 			}
 		});
 		tree.addCloseHandler(new CloseHandler<TreeItem>() {
+			
 			@Override
 			public void onClose(CloseEvent<TreeItem> event) {
-				if(event.getTarget().getState()){
-					Images images = GWT.create(Images.class);
-					event.getTarget().setHTML(imageItemHTML(images.treeLeaf(), event.getTarget().getText()));
-				}
+				Images images = GWT.create(Images.class);
+				event.getTarget().setHTML(imageItemHTML(images.treeLeaf(), event.getTarget().getText()));
 			}
 		});
 		/************************************************************/
-			
+		
+//		History.newItem("A");
+//	    History.newItem("B");
+//	    History.newItem("C");
+//	    RootPanel.get().add(new Button("back", new ClickHandler()
+//	    {
+//
+//	        @Override
+//	        public void onClick(
+//	            ClickEvent event)
+//	        {
+//	            System.out.println("After back click token is " + History.getToken());
+//	            
+//	           // History.back();
+//	            RootPanel.get().clear();
+//	            LoginServiceClientImpl login = new LoginServiceClientImpl(GWT.getModuleBaseURL()+ History.getToken());
+//	    		
+//	    		RootPanel.get().add(login.getLoginUser());
+//	            
+//	        }
+//	    }));
+	    History.addValueChangeHandler(new ValueChangeHandler<String>()
+	    {
+
+	        @Override
+	        public void onValueChange(ValueChangeEvent<String> event){
+	            System.out.println("We handle ValueChangeEvent on History. Now token is " + event.getValue());
+	            System.out.println(History.getToken());
+//	            if(History.getToken().equals("login")){
+//	            	LoginServiceClientImpl impl = new 
+//	            	RootPanel.get().clear();
+//		            RootPanel.get().add();
+//	            }
+//	            RootPanel.get().clear();
+//	            RootPanel.get().add();
+	        }
+	    });
+//		Event.addNativePreviewHandler(new Event.NativePreviewHandler() {
+//
+//	        @Override
+//	        public void onPreviewNativeEvent(final NativePreviewEvent event) {
+//
+//	            if (event.getTypeInt() == Event.ONKEYDOWN) {
+//	                if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_BACKSPACE) {
+//	                    Element element = Element.as(event.getNativeEvent().getEventTarget());
+//
+//	                    String tagName = element.getTagName();
+//
+//	                    System.out.println(tagName);
+//
+//	                    // Add checks for other input controls
+//	                    if (!tagName.equalsIgnoreCase("INPUT") 
+//	                                 && !tagName.equalsIgnoreCase("TEXTAREA")) {
+//
+//	                        boolean result = Window.confirm("Are you sure?");
+//	                        if (!result) {
+//	                            event.cancel();
+//	                        }
+//	                    }
+//	                }
+//	            }
+//	        }
+//	    });
 	}
+//	public native void onBeforeUnload()/*-{
+//
+//    $wnd.onbeforeunload = function(e) {
+//        return 'Are you sure?';
+//    };
+//	}-*/;
+//	public native void call()/*-{
+//
+//    $wnd.onkeydown = GetChar;
+//
+//     function GetChar (event)
+//     {
+//        var key = event.keyCode;
+//
+//        var bb = event.target.nodeName;
+//
+//        if(key==8 && bb=="BODY")//checking keyCode of key for backspace
+//                {
+//                    var x= window.confirm("Are you sureyou want to leave the page");
+//
+//                    if (x==true)
+//                            {
+//                                window.history.back();
+//                            }
+//                    else if(x==false)
+//                            {
+//
+//                                return false;
+//                            }
+//                }
+//        }                   
+//}-*/;
 	public void selectUser(List<UserDto> UserList){
 		this.userList = UserList;
 	}
@@ -506,7 +590,6 @@ public class MainPage extends Composite{
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				selected = selectionModel.getSelectedObject();
-				
 			}
 		});
 	}
@@ -551,43 +634,5 @@ public class MainPage extends Composite{
 	    builder.appendHtmlConstant(" ");
 	    builder.appendEscaped(title);
 	    return builder.toSafeHtml();
-}
-	private void setupHistory() {
-        final String initToken = History.getToken();
-        System.out.println(initToken);
-        if (initToken.length() == 0) {
-           History.newItem("main");          
-        }
-     // Add history listener
-        HandlerRegistration historyHandlerRegistration = History.addValueChangeHandler(new ValueChangeHandler() {
-            @Override
-            public void onValueChange(ValueChangeEvent event) {
-                String token = (String) event.getValue();
-                if (initToken.equals(token)) {           
-                    History.newItem(initToken);               
-                }
-            }
-        });
-        Window.addWindowClosingHandler(new ClosingHandler() {
-            boolean reloading = false;
-            
-            @Override
-            public void onWindowClosing(ClosingEvent event) {
-                if (!reloading) {
-                    String userAgent = Window.Navigator.getUserAgent();                            
-                    if (userAgent.contains("main")) {
-                        if (!Window.confirm("Do you really want to exit?")) {
-                            reloading = false;                          
-                            Window.Location.reload(); // For IE
-                            
-                        }
-                    }
-                    else {
-                    	System.out.println("aaaaaaaaaaaaaa");
-                        event.setMessage("My App"); // For other browser
-                    }
-                }
-            }
-        });
 	}
 }

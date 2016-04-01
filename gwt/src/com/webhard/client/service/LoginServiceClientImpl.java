@@ -8,6 +8,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
@@ -34,13 +35,9 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	private List<FileDto> files;
 	Images images = GWT.create(Images.class);
 	public LoginServiceClientImpl(String url) {
-		
-		
-		
 		this.loginAsync = GWT.create(LoginService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget)this.loginAsync;
 		endPoint.setServiceEntryPoint(url);
-		
 		this.loginuser = new LoginUser(this);
 	}
 
@@ -130,6 +127,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 						homeItem.setText(homeFolder.getName());
 						homeItem.setUserObject(homeFolder);
 						getTree(homeItem);
+						homeItem.setHTML(imageItemHTML(images.treeOpen(), homeItem.getText()));
 						loginuser.setTree(tree);
 					}
 					@Override

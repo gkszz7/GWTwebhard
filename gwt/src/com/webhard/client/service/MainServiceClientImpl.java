@@ -7,27 +7,26 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.FileUpload;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
-import com.google.gwt.view.client.SelectionChangeEvent.Handler;
-import com.webhard.client.GUI.LoginUser;
 import com.webhard.client.GUI.MainPage;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.FileDto;
@@ -49,9 +48,12 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	private List<FolderDto> folderList;
 	private List<FileDto> fileList;
 	private ItemDto selected;
+	Images images = GWT.create(Images.class);
+	private List<FileDto> files;
 	
 	public MainServiceClientImpl(String url, Tree getTree, String compName, int homeNum , UserDto userDto) {
-
+		
+		
 		this.mainAsync = GWT.create(MainService.class);
 		ServiceDefTarget endPoint = (ServiceDefTarget) this.mainAsync;
 		endPoint.setServiceEntryPoint(url);
@@ -92,6 +94,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 						homeItem.setText(result.getName());
 						homeItem.setUserObject(result);
 						getTree(homeItem);
+						homeItem.setHTML(imageItemHTML(images.treeOpen(), homeItem.getText()));
 						
 						RootPanel.get().clear();
 
@@ -151,6 +154,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				homeItem.setText(result.getName());
 				homeItem.setUserObject(result);
 				getTree(homeItem);
+				homeItem.setHTML(imageItemHTML(images.treeOpen(), homeItem.getText()));
 				
 				RootPanel.get().clear();
 
@@ -177,6 +181,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				homeItem.setText(result.getName());
 				homeItem.setUserObject(result);
 				getTree(homeItem);
+				homeItem.setHTML(imageItemHTML(images.treeOpen(), homeItem.getText()));
 				
 				RootPanel.get().clear();
 
@@ -213,6 +218,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				homeItem.setUserObject(result);
 				homeItem.setState(true);
 				getTree(homeItem);
+				homeItem.setHTML(imageItemHTML(images.treeOpen(), homeItem.getText()));
 				
 				RootPanel.get().clear();
 
@@ -269,17 +275,61 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				for(int j=0; j<grandChildNodes.size(); j++){
 					
 					getTree(childItem);
+					if(childNode.getType() == 0){
+						childItem.setHTML(imageItemHTML(images.treeLeaf(), childItem.getText()));
+					}else{
+						for(int a=0;a<files.size();a++){
+							if(childNode.getItemNum() == files.get(a).getItemNum()){
+								if(files.get(a).getFileType().equals("pptx")){
+									childItem.setHTML(imageItemHTML(images.ppt(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("txt")){
+									childItem.setHTML(imageItemHTML(images.text(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("xlsx")){
+									childItem.setHTML(imageItemHTML(images.excel(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("zip")){
+									childItem.setHTML(imageItemHTML(images.zip(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("mp3")){
+									childItem.setHTML(imageItemHTML(images.mp3(), childItem.getText()));
+								}else{
+									childItem.setHTML(imageItemHTML(images.files(), childItem.getText()));
+								}
+							}
+						}
+					}
 					item.addItem(childItem);
+					break;
 				}
 			}else{
 				if(itemDto.getItemNum() == homeFolNum || childItem.getChildCount() == 0){
+					if(childNode.getType() == 0){
+						childItem.setHTML(imageItemHTML(images.treeLeaf(), childItem.getText()));
+					}else{
+						for(int a=0;a<files.size();a++){
+							if(childNode.getItemNum() == files.get(a).getItemNum()){
+								if(files.get(a).getFileType().equals("pptx")){
+									childItem.setHTML(imageItemHTML(images.ppt(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("txt")){
+									childItem.setHTML(imageItemHTML(images.text(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("xlsx")){
+									childItem.setHTML(imageItemHTML(images.excel(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("zip")){
+									childItem.setHTML(imageItemHTML(images.zip(), childItem.getText()));
+								}else if(files.get(a).getFileType().equals("mp3")){
+									childItem.setHTML(imageItemHTML(images.mp3(), childItem.getText()));
+								}else{
+									childItem.setHTML(imageItemHTML(images.files(), childItem.getText()));
+								}
+							}
+						}
+					}
 					item.addItem(childItem);
 				}
 			}
 			
 		}
 		tree.addItem(item);
-		if(((ItemDto)item.getUserObject()).getItemNum() ==homeFolNum){
+		
+		if(((ItemDto)item.getUserObject()).getItemNum() == homeFolNum){
 			item.setState(true);
 		}
 	}
@@ -480,11 +530,6 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 
 	}
 	/***********************************************************/
-	public MainPage getMainPage() {
-
-		return this.main;
-	}
-
 	@Override
 	public void logout() {
 		this.mainAsync.logout(new AsyncCallback<Void>() {
@@ -505,5 +550,39 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				Window.alert("Error");
 			}
 		});
+	}
+	
+	/*********************트리 아이콘 생성 ************************/
+	
+	public SafeHtml imageItemHTML(ImageResource imageProto, String title) {
+	    SafeHtmlBuilder builder = new SafeHtmlBuilder();
+	    builder.append(AbstractImagePrototype.create(imageProto).getSafeHtml());
+	    builder.appendHtmlConstant(" ");
+	    builder.appendEscaped(title);
+	    return builder.toSafeHtml();
+	}
+	public interface Images extends Tree.Resources {
+		@Source("Folder-48.png")
+	    ImageResource ppt();
+		@Source("Folder-48.png")
+	    ImageResource excel();
+		@Source("Folder-48.png")
+	    ImageResource text();
+		@Source("Folder-48.png")
+	    ImageResource mp3();
+		@Source("Folder-48.png")
+	    ImageResource zip();
+		@Source("Folder-48.png")
+	    ImageResource files();
+	    @Override
+	    @Source("Folder-48.png")
+	    ImageResource treeLeaf();
+	    @Override
+	    @Source("Open Folder-48.png")
+	    ImageResource treeOpen();
+	  }
+	public MainPage getMainPage() {
+
+		return this.main;
 	}
 }
