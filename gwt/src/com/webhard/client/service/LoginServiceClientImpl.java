@@ -30,7 +30,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	private int check = 0;
 	private List<CompanyDto> list;
 	private Tree tree;
-	private int homeFolderNum = 78;
+	private int homeFolderNum = 140;
 	private List<FileDto> files;
 	Images images = GWT.create(Images.class);
 	public LoginServiceClientImpl(String url) {
@@ -130,6 +130,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 						homeItem.setText(homeFolder.getName());
 						homeItem.setUserObject(homeFolder);
 						getTree(homeItem);
+						homeItem.setHTML(imageItemHTML(images.treeOpen(), homeItem.getText()));
 						loginuser.setTree(tree);
 					}
 					@Override
@@ -233,15 +234,15 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 		    return builder.toSafeHtml();
 	}
 	public interface Images extends Tree.Resources {
-		@Source("Folder-48.png")
+		@Source("MS PowerPoint.png")
 	    ImageResource ppt();
-		@Source("Folder-48.png")
+		@Source("MS Excel.png")
 	    ImageResource excel();
-		@Source("Folder-48.png")
+		@Source("Text Box.png")
 	    ImageResource text();
-		@Source("Folder-48.png")
+		@Source("MP3.png")
 	    ImageResource mp3();
-		@Source("Folder-48.png")
+		@Source("ZIP.png")
 	    ImageResource zip();
 		@Source("Folder-48.png")
 	    ImageResource files();

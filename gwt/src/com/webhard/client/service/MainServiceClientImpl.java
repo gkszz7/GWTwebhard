@@ -18,16 +18,16 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FileUpload;
-import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
-import com.google.gwt.view.client.SelectionChangeEvent.Handler;
-import com.webhard.client.GUI.LoginUser;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.webhard.client.GUI.MainPage;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.FileDto;
@@ -49,6 +49,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	private List<FolderDto> folderList;
 	private List<FileDto> fileList;
 	private ItemDto selected;
+	private List<FileDto> files;
 	
 	public MainServiceClientImpl(String url, Tree getTree, String compName, int homeNum , UserDto userDto) {
 
@@ -228,7 +229,19 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 			}
 		});
 	}
-
+	@Override
+	public void allFiles() {
+		this.mainAsync.allFiles(new AsyncCallback<List<FileDto>>() {
+			
+			@Override
+			public void onSuccess(List<FileDto> result) {
+				files = result;
+			}
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+		});
+	}
 	@Override
 	public void ItemInTable(int itemNum) {
 		this.mainAsync.ItemInTable(itemNum, new AsyncCallback<HashMap<String,Object>>() {
@@ -285,56 +298,90 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	}
 	/**********************************************************/
 	/************************파일 업로드 다이얼로그*******************/
-/*	public DialogBox fileUpload(){
+	
+	public DialogBox fileUpload(int itemnum, int comnum){
+		
 		FileDialog = new DialogBox();
-
-		AbsolutePanel absolutePanel = new AbsolutePanel();
-		FileDialog.setWidget(absolutePanel);
-		absolutePanel.setSize("371px", "287px");
-
-		HTML html = new HTML("FileUpload");
-		absolutePanel.add(html, 10, 10);
-		html.setSize("300px", "20px");
-
-		final FileUpload fileUpload = new FileUpload();
-		fileUpload.ensureDebugId("cwFileUpload");
-		absolutePanel.add(fileUpload, 10, 107);
-		fileUpload.setSize("349px", "25px");
-
-		HTML html_1 = new HTML("<br>");
-		absolutePanel.add(html_1, 10, 155);
-		html_1.setSize("300px", "20px");
 		
-		Button button = new Button("FileUpload");
-		button.addClickHandler(new ClickHandler() {
-			
-			public void onClick(ClickEvent event) {
-				String filename = fileUpload.getFilename();
-				if (filename.length() == 0) {
-					Window.alert("Error");
-				} else {
-					Window.alert("Success");
-				}
-			}
-		});
-		absolutePanel.add(button, 10, 249);
-		button.setSize("85px", "25px");
-		
-		Button button_1 = new Button("Cancel");
-		button_1.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				FileDialog.hide();
-			}
-		});
-		absolutePanel.add(button_1, 121, 249);
-		button_1.setSize("64px", "25px");
+		final FormPanel form = new FormPanel();
+	    form.setAction(GWT.getModuleBaseURL()+"fileupload");
 
-		return FileDialog;
-	}*/
-	/**********************************************************/
+	    // Because we're going to add a FileUpload widget, we'll need to set the
+	    // form to use the POST method, and multipart MIME encoding.
+	    form.setEncoding(FormPanel.ENCODING_MULTIPART);
+	    form.setMethod(FormPanel.METHOD_POST);
+
+	    // Create a panel to hold all of the form widgets.
+	    VerticalPanel panel = new VerticalPanel();
+	    form.setWidget(panel);
+
+	    TextBox inum = new TextBox();
+	    String Item = Integer.toString(itemnum);
+	    inum.setName("title");
+	    inum.setText(Item);
+	    inum.setVisible(false);
+	    panel.add(inum);
+	   
+	    TextBox cnum = new TextBox();
+	    String compnum = Integer.toString(comnum);
+	    cnum.setName("title1");
+	    cnum.setText(compnum);
+	    cnum.setVisible(false);
+	    panel.add(cnum);
+	    
+	    FileDialog.setWidget(form); 
+	    // Create a FileUpload widget.
+	    final FileUpload upload = new FileUpload();
+	    upload.setName("uploadFormElement");
+	    panel.add(upload);
+
+	    // Add a 'submit' button.
+	    panel.add(new Button("Submit", new ClickHandler() {
+	      public void onClick(ClickEvent event) {
+	        form.submit();
+	      }
+	    }));
+
+	    // Add an event handler to the form.
+	    form.addSubmitHandler(new FormPanel.SubmitHandler() {	     
+		@Override
+		public void onSubmit(SubmitEvent event) {
+			 // This event is fired just before the form is submitted. We can take
+	        // this opportunity to perform validation.
+	        if (upload.getFilename().length() == 0) {
+	          Window.alert("파일을 선택해주기바랍니다.");
+	          event.cancel();
+	          
+	        }
+		}
+	    });
+	    form.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {	    
+		@Override
+		public void onSubmitComplete(SubmitCompleteEvent event) {
+			 // When the form submission is successfully completed, this event is
+	        // fired. Assuming the service returned a response of type text/html,
+	        // we can get the result text here (see the FormPanel documentation for
+	        // further explanation).
+	        Window.alert("등록 완료");
+	        FileDialog.hide();
+	       /* tree = new Tree();
+			TreeItem homeItem = new TreeItem();
+			homeItem.setText(result.getName());
+			homeItem.setUserObject(result);
+			getTree(homeItem);
+			
+			RootPanel.get().clear();
+
+			MainServiceClientImpl main = 
+					new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
+
+			RootPanel.get().add(main.getMainPage());*/
+	        
+		}
+	    });
+
+	   return FileDialog;
+	  }
 	
 	/*************************폴더 관련 다이얼로그 ****************/
 	public DialogBox createFolderBox(final int parentNum, final int companyNum){

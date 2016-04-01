@@ -25,4 +25,5 @@ public interface MainService extends RemoteService{
 	ItemDto deleteFolder(int itemNum);
 	HashMap<String, Object> ItemInTable(int itemNum);	
 	void logout();
+	List<FileDto> allFiles();
 }
