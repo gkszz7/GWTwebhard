@@ -227,6 +227,7 @@ public class CompanyList extends Composite {
 			}
 		});
 		/************************************************/
+		
 	}
 	//회사목록
 	public void companyTable(List<CompanyDto> companys) {

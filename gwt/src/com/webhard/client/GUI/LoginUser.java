@@ -37,6 +37,7 @@ public class LoginUser extends Composite{
    private List<UserDto> userList;
    
    public LoginUser(final LoginServiceClientImpl loginSerivceClientImpl) {
+	  History.newItem("login");
       dialogBox.setStyleName("sendButton-new");
           
       dialogBox.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);

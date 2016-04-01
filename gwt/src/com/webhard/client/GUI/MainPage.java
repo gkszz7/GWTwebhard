@@ -14,17 +14,14 @@ import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.ClosingEvent;
-import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
@@ -33,6 +30,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -49,9 +47,10 @@ import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.client.service.AccessListServiceClientImpl;
 import com.webhard.client.service.CompanyServiceClientImpl;
+import com.webhard.client.service.LoginServiceClientImpl;
+import com.webhard.client.service.LoginServiceClientImpl.Images;
 import com.webhard.client.service.MainServiceClientImpl;
 import com.webhard.client.service.UserListServiceClientImpl;
-import com.webhard.client.service.LoginServiceClientImpl.Images;
 
 public class MainPage extends Composite {
 
@@ -81,7 +80,7 @@ public class MainPage extends Composite {
 	public MainPage(final MainServiceClientImpl mainServiceClientImpl,
 			Tree getTree, String compName, final int homeNum,
 			final UserDto userDto) {
-
+		History.newItem("Main");
 		absolutePanel = new AbsolutePanel();
 		absolutePanel.setStyleName("gwt-absolutePanel-new");
 		initWidget(this.absolutePanel);
@@ -105,21 +104,20 @@ public class MainPage extends Composite {
 		cellTable.setSize("767px", "100%");
 		horizontalSplitPanel.setLeftWidget(tree);
 		tree.setSize("313px", "628px");
-
-		if (userDto.getAccess() == 0) {
-			for (int i = 0; i < tree.getItem(0).getChildCount(); i++) {
+		
+		if(userDto.getAccess() == 0){
+			for(int i=0;i<tree.getItem(0).getChildCount();i++){
 				TreeItem item = tree.getItem(0).getChild(i);
 				item.removeItems();
-			}
-		} else {
-			for (int i = 0; i < tree.getItem(0).getChildCount(); i++) {
+			}			
+		}else{
+			for(int i=0;i<tree.getItem(0).getChildCount();i++){
 				TreeItem item = tree.getItem(0).getChild(i);
-				ItemDto itemDto = (ItemDto) item.getUserObject();
-				if ((userDto.getCompanyNum() != itemDto.getCompanyNum())
-						&& userDto.getAdmin() == 0) {
+				ItemDto itemDto = (ItemDto)item.getUserObject();
+				if((userDto.getCompanyNum() != itemDto.getCompanyNum()) && userDto.getAdmin() == 0){
 					item.removeItems();
 				}
-			}
+			}	
 		}
 		MenuBar menuBar = new MenuBar(false);
 		menuBar.setStyleName("gwt-MenuBar");
@@ -447,20 +445,16 @@ public class MainPage extends Composite {
 
 					if (selectItem != null) {
 						if (selectItemData.getCompanyNum() != 0) {
-							if (selectItemData.getCompanyNum() != userDto
-									.getCompanyNum()
-									&& !userDto.getUserId().equals("admin")) {
+							if (selectItemData.getCompanyNum() != userDto.getCompanyNum()&& !userDto.getUserId().equals("admin")) {
 								Window.alert("타 회사는 열람 할 수 없습니다.");
 							} else {
-								serviceImpl.ItemInTable(selectItemData
-										.getItemNum());
+								serviceImpl.ItemInTable(selectItemData.getItemNum());
 							}
 						} else {
 							serviceImpl.ItemInTable(selectItemData.getItemNum());
 						}
 					}
 				}
-
 			}
 		});
 		tree.addOpenHandler(new OpenHandler<TreeItem>() {
@@ -475,12 +469,11 @@ public class MainPage extends Composite {
 			}
 		});
 		tree.addCloseHandler(new CloseHandler<TreeItem>() {
+			
 			@Override
 			public void onClose(CloseEvent<TreeItem> event) {
 				Images images = GWT.create(Images.class);
-				event.getTarget().setHTML(
-						imageItemHTML(images.treeLeaf(), event.getTarget()
-								.getText()));
+				event.getTarget().setHTML(imageItemHTML(images.treeLeaf(), event.getTarget().getText()));
 			}
 		});
 		/************************************************************/
