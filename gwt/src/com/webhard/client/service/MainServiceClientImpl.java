@@ -443,6 +443,87 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	   return FileDialog;
 	  }
 	
+	public DialogBox filedownload(int itemnum, String comnum){
+		
+		final DialogBox downloadDialog = new DialogBox();
+		
+		final FormPanel form = new FormPanel();
+	    form.setAction(GWT.getModuleBaseURL()+"filedownload");
+
+	    // Because we're going to add a FileUpload widget, we'll need to set the
+	    // form to use the POST method, and multipart MIME encoding.
+	    form.setEncoding(FormPanel.ENCODING_MULTIPART);
+	    form.setMethod(FormPanel.METHOD_POST);
+
+	    // Create a panel to hold all of the form widgets.
+	    VerticalPanel panel = new VerticalPanel();
+	    form.setWidget(panel);
+		   
+	    TextBox cnum = new TextBox();
+	    cnum.setName("title1");
+	    String Item = Integer.toString(itemnum);
+	    cnum.setText(Item);
+	    cnum.setVisible(false);
+	    panel.add(cnum);
+	    
+	    downloadDialog.setWidget(form); 
+	    // Create a FileUpload widget.
+	  
+	    
+	    final TextBox inum = new TextBox();
+	    inum.setEnabled(false);
+	    inum.setName("title");
+	    inum.setText(comnum);
+	    panel.add(inum);
+
+
+	    // Add a 'submit' button.
+	    panel.add(new Button("다운로드", new ClickHandler() {
+	      public void onClick(ClickEvent event) {
+	        form.submit();
+	      }
+	    }));
+
+	    // Add an event handler to the form.
+	    form.addSubmitHandler(new FormPanel.SubmitHandler() {	     
+		@Override
+		public void onSubmit(SubmitEvent event) {
+			 // This event is fired just before the form is submitted. We can take
+	        // this opportunity to perform validation.
+	        if (inum.getText().length() == 0) {
+	          Window.alert("파일을 선택해주기바랍니다.");
+	          event.cancel();
+	          
+	        }
+		}
+	    });
+	    form.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {	    
+		@Override
+		public void onSubmitComplete(SubmitCompleteEvent event) {
+			 // When the form submission is successfully completed, this event is
+	        // fired. Assuming the service returned a response of type text/html,
+	        // we can get the result text here (see the FormPanel documentation for
+	        // further explanation).
+	        Window.alert("등록 완료");
+	        downloadDialog.hide();
+	       /* tree = new Tree();
+			TreeItem homeItem = new TreeItem();
+			homeItem.setText(result.getName());
+			homeItem.setUserObject(result);
+			getTree(homeItem);
+			
+			RootPanel.get().clear();
+
+			MainServiceClientImpl main = 
+					new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
+
+			RootPanel.get().add(main.getMainPage());*/
+	        
+		}
+	    });
+
+	   return downloadDialog;
+	}
 	/*************************폴더 관련 다이얼로그 ****************/
 	public DialogBox createFolderBox(final int parentNum, final int companyNum){
 		folderBox = new DialogBox();

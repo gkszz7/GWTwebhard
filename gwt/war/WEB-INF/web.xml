@@ -6,6 +6,15 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
+ <servlet>
+    <servlet-name>DownloadServlet</servlet-name>
+    <servlet-class>com.webhard.server.DownloadServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+  <servlet-name>DownloadServlet</servlet-name>
+  <url-pattern>/gwt/filedownload</url-pattern>
+</servlet-mapping>
+
   <servlet>
     <servlet-name>fileUploaderServlet</servlet-name>
     <servlet-class>com.webhard.server.FileUpload</servlet-class>

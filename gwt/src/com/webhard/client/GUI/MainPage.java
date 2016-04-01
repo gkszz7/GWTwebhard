@@ -224,7 +224,25 @@ public class MainPage extends Composite {
 				int check = selectItemData.getType();
 				if (selectItemData.getItemNum() != homeNum) {
 						if (check == 0) {
-							FileDialog = serviceImpl.fileUpload(selectItemData.getItemNum(),selectItemData.getCompanyNum());
+							DialogBox FileDialog = serviceImpl.fileUpload(selectItemData.getItemNum(),selectItemData.getCompanyNum());
+							FileDialog.center();
+						} else {
+							Window.alert("파일입니다.");
+						}
+				} else {
+					Window.alert("HOME폴더는 사용할수없습니다.");
+				}
+			}
+		});
+		
+		
+		menuBar_3.addItem("파일 다운로드", new ScheduledCommand() {
+			@Override
+			public void execute() {
+				int check = selectItemData.getType();
+				if (selectItemData.getItemNum() != homeNum) {
+						if (check == 1) {
+							DialogBox FileDialog = serviceImpl.filedownload(selectItemData.getItemNum(),selectItemData.getName());
 							FileDialog.center();
 						} else {
 							Window.alert("파일입니다.");
