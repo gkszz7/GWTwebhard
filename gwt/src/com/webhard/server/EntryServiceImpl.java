@@ -18,7 +18,7 @@ public class EntryServiceImpl extends RemoteServiceServlet implements EntryServi
 
 	@Override
 	public boolean IdCheck(String id) {
-		
+		     
 		boolean checkId = false;
 		boolean check = false;
 		UserDao uDao = new UserDao();
