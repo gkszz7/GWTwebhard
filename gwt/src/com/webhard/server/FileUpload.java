@@ -21,7 +21,7 @@ import com.webhard.client.model.FileDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.server.dao.FileDao;
 
-public class FileUpload extends HttpServlet {
+public class FileUpload extends HttpServlet {     
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
