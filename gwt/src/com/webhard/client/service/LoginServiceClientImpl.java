@@ -31,7 +31,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 	private int check = 0;
 	private List<CompanyDto> list;
 	private Tree tree;
-	private int homeFolderNum = 78;
+	private int homeFolderNum = 140;
 	private List<FileDto> files;
 	Images images = GWT.create(Images.class);
 	public LoginServiceClientImpl(String url) {

@@ -18,4 +18,5 @@ public interface MainServiceClientInt {
 	void deleteFolder(int itemNum);
 	void ItemInTable(int itemNum);
 	void logout();
+	void allFiles();
 }

@@ -126,7 +126,13 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		map.put("itemList", itemList);
 		return map;
 	}
-	
+	@Override
+	public List<FileDto> allFiles() {
+		FileDao dao = new FileDao();
+		List<FileDto> dto = new ArrayList<FileDto>();
+		dto = dao.printAllFile();
+		return dto;
+	}
 	
 	public void setTree(ItemDto cycle) {
 
