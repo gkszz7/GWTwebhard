@@ -70,6 +70,7 @@ public class FileUpload extends HttpServlet {
 						
 						int filesizes =(int)item.getSize();
 						String filesize = Integer.toString(filesizes);
+						
 						int index = fileName.lastIndexOf(".");
 						int index1 = fileName.lastIndexOf("\\");
 						
@@ -103,17 +104,16 @@ public class FileUpload extends HttpServlet {
 	              break;
 	        }
 
-	        return name + "_" + index + ext;
+	        return name + "_" + index;
 	    }
 	   
 	   //textfile.txt -> jengaekjrngkajnbgbeabeu.txt 같은이름파일이 들어왔을때 파일이름중복 안되게2
 	   public static String getUniqueFileName(String fileName)
 	    {   
-	        String ext =
-	            fileName.substring(fileName.lastIndexOf("."));
-	        
-	        String name = UUID.randomUUID().toString();
+	        int index1 = fileName.lastIndexOf("\\");
+	        String name = fileName.substring(index1+1);
+	        //String name = UUID.randomUUID().toString();
 
-	        return name + ext;
+	        return name;
 	    }
 }
