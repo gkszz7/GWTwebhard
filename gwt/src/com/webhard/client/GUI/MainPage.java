@@ -510,6 +510,7 @@ public class MainPage extends Composite {
 	            System.out.println(History.getToken());
 	            AllImplClass all = new AllImplClass(History.getToken());
 	            all.hello();
+	            
 //	            if(History.getToken().equals("login")){
 //	            	LoginServiceClientImpl impl = new 
 //	            	RootPanel.get().clear();
