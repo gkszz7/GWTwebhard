@@ -47,6 +47,7 @@ import com.webhard.client.service.LoginServiceClientImpl;
 import com.webhard.client.service.LoginServiceClientImpl.Images;
 import com.webhard.client.service.MainServiceClientImpl;
 import com.webhard.client.service.UserListServiceClientImpl;
+import com.webhard.util.AllImplClass;
 
 public class MainPage extends Composite{
 	
@@ -492,6 +493,8 @@ public class MainPage extends Composite{
 	        public void onValueChange(ValueChangeEvent<String> event){
 	            System.out.println("We handle ValueChangeEvent on History. Now token is " + event.getValue());
 	            System.out.println(History.getToken());
+	            AllImplClass all = new AllImplClass(History.getToken());
+	            all.hello();
 //	            if(History.getToken().equals("login")){
 //	            	LoginServiceClientImpl impl = new 
 //	            	RootPanel.get().clear();
