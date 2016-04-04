@@ -754,4 +754,44 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 
 		return this.main;
 	}
+
+	@Override
+	public void deletefile(int itemNum) {
+		this.mainAsync.deletefile(itemNum, new AsyncCallback<ItemDto>() {
+			
+			@Override
+			public void onSuccess(ItemDto result) {
+				Window.alert("파일이 삭제되었습니다.");
+				
+				tree = new Tree(){
+					@Override
+					public void onBrowserEvent(Event event) {
+						if(DOM.eventGetType(event) == event.ONCONTEXTMENU){
+							
+						}
+						super.onBrowserEvent(event);
+					}
+				};
+				TreeItem homeItem = new TreeItem();
+				homeItem.setText(result.getName());
+				homeItem.setUserObject(result);
+				homeItem.setState(true);
+				getTree(homeItem);
+				homeItem.setHTML(imageItemHTML(images.treeOpen(), homeItem.getText()));
+				
+				RootPanel.get().clear();
+
+				MainServiceClientImpl main = 
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
+
+				RootPanel.get().add(main.getMainPage());			
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});	
+	}
 }

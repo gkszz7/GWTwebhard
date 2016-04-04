@@ -99,6 +99,7 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 	}
 	@Override
 	public ItemDto deleteFolder(int itemNum) {
+		
 		FolderDao dao = new FolderDao();
 		parentNum = itemNum;
 		delete(itemNum);
@@ -226,5 +227,17 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 		HttpServletRequest httpServletRequest = this.getThreadLocalRequest();
 	    HttpSession session = httpServletRequest.getSession(true);
 	    session.removeAttribute("user");
+	}
+
+	@Override
+	public ItemDto deletefile(int itemNum) {
+		FolderDao dao = new FolderDao();
+		FileDao fdao = new FileDao();
+		fdao.deleteFile(itemNum);
+		
+		homeFolder = dao.selectHomeFolder();
+		setTree(homeFolder);
+		return homeFolder;
+		
 	}
 }

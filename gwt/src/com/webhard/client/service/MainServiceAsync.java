@@ -24,4 +24,5 @@ public interface MainServiceAsync {
 	void ItemInTable(int itemNum, AsyncCallback<HashMap<String, Object>> callback);
 	void logout(AsyncCallback<Void> callback);
 	void allFiles(AsyncCallback<List<FileDto>> callback);
+	void deletefile(int itemNum, AsyncCallback<ItemDto> callback);
 }
