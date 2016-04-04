@@ -8,6 +8,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -305,13 +306,28 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	    final FileUpload upload = new FileUpload();
 	    upload.setName("uploadFormElement");
 	    panel.add(upload);
-
-	    // Add a 'submit' button.
-	    panel.add(new Button("Submit", new ClickHandler() {
-	      public void onClick(ClickEvent event) {
-	        form.submit();
-	      }
-	    }));
+	    
+	    AbsolutePanel absolutePanel = new AbsolutePanel();
+	    panel.add(absolutePanel);
+	    
+	        // Add a 'submit' button.
+	        Button button = new Button("Submit", new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	            form.submit();
+	          }
+	        });
+	        absolutePanel.add(button);
+	        
+	        Button btnNewButton = new Button("New button");
+	        btnNewButton.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					FileDialog.hide();
+				}
+			});
+	        btnNewButton.setText("취소");
+	        absolutePanel.add(btnNewButton);
 
 	    // Add an event handler to the form.
 	    form.addSubmitHandler(new FormPanel.SubmitHandler() {	     
@@ -392,6 +408,12 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	    String Item = Integer.toString(itemnum);
 	    cnum.setText(Item);
 	    cnum.setVisible(false);
+	    
+	    Label label = new Label("파일 경로");
+	    panel.add(label);
+	    panel.add(cnum);
+	    cnum.setWidth("231px");
+	    
 	    panel.add(cnum);
 	    
 	    downloadDialog.setWidget(form); 
@@ -403,14 +425,29 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	    inum.setName("title");
 	    inum.setText(comnum);
 	    panel.add(inum);
-
-
-	    // Add a 'submit' button.
-	    panel.add(new Button("다운로드", new ClickHandler() {
-	      public void onClick(ClickEvent event) {
-	        form.submit();
-	      }
-	    }));
+	    
+	    AbsolutePanel absolutePanel = new AbsolutePanel();
+	    panel.add(absolutePanel);
+	    
+	    
+	        // Add a 'submit' button.
+	        Button button = new Button("다운로드", new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	            form.submit();
+	          }
+	        });
+	        absolutePanel.add(button);
+	        
+	        Button btnNewButton = new Button("New button");
+	        btnNewButton.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					downloadDialog.hide();
+				}
+			});
+	        btnNewButton.setText("취소");
+	        absolutePanel.add(btnNewButton, 78, 0);	       
 
 	    // Add an event handler to the form.
 	    form.addSubmitHandler(new FormPanel.SubmitHandler() {	     
@@ -699,17 +736,17 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	    return builder.toSafeHtml();
 	}
 	public interface Images extends Tree.Resources {
-		@Source("Folder-48.png")
+		@Source("MS PowerPoint.png")
 	    ImageResource ppt();
-		@Source("Folder-48.png")
+		@Source("MS Excel.png")
 	    ImageResource excel();
-		@Source("Folder-48.png")
+		@Source("Text Box.png")
 	    ImageResource text();
-		@Source("Folder-48.png")
+		@Source("MP3.png")
 	    ImageResource mp3();
-		@Source("Folder-48.png")
+		@Source("ZIP.png")
 	    ImageResource zip();
-		@Source("Folder-48.png")
+		@Source("files.png")
 	    ImageResource files();
 	    @Override
 	    @Source("Folder-48.png")
@@ -721,5 +758,45 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	public MainPage getMainPage() {
 
 		return this.main;
+	}
+
+	@Override
+	public void deletefile(int itemNum) {
+		this.mainAsync.deletefile(itemNum, new AsyncCallback<ItemDto>() {
+			
+			@Override
+			public void onSuccess(ItemDto result) {
+				Window.alert("파일이 삭제되었습니다.");
+				
+				tree = new Tree(){
+					@Override
+					public void onBrowserEvent(Event event) {
+						if(DOM.eventGetType(event) == event.ONCONTEXTMENU){
+							
+						}
+						super.onBrowserEvent(event);
+					}
+				};
+				TreeItem homeItem = new TreeItem();
+				homeItem.setText(result.getName());
+				homeItem.setUserObject(result);
+				homeItem.setState(true);
+				getTree(homeItem);
+				homeItem.setHTML(imageItemHTML(images.treeOpen(), homeItem.getText()));
+				
+				RootPanel.get().clear();
+
+				MainServiceClientImpl main = 
+						new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
+
+				RootPanel.get().add(main.getMainPage());			
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});	
 	}
 }

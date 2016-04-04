@@ -27,4 +27,5 @@ public interface MainService extends RemoteService{
 	void logout();
 	List<FileDto> allFiles();
 	ItemDto homeFolder();
+	ItemDto deletefile(int itemNum);
 }

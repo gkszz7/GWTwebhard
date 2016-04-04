@@ -232,17 +232,17 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 		    return builder.toSafeHtml();
 	}
 	public interface Images extends Tree.Resources {
-		@Source("Folder-48.png")
+		@Source("MS PowerPoint.png")
 	    ImageResource ppt();
-		@Source("Folder-48.png")
+		@Source("MS Excel.png")
 	    ImageResource excel();
-		@Source("Folder-48.png")
+		@Source("Text Box.png")
 	    ImageResource text();
-		@Source("Folder-48.png")
+		@Source("MP3.png")
 	    ImageResource mp3();
-		@Source("Folder-48.png")
+		@Source("ZIP.png")
 	    ImageResource zip();
-		@Source("Folder-48.png")
+		@Source("files.png")
 	    ImageResource files();
 	    @Override
 	    @Source("Folder-48.png")

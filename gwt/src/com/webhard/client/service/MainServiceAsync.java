@@ -25,4 +25,5 @@ public interface MainServiceAsync {
 	void logout(AsyncCallback<Void> callback);
 	void allFiles(AsyncCallback<List<FileDto>> callback);
 	void homeFolder(AsyncCallback<ItemDto> callback);
+	void deletefile(int itemNum, AsyncCallback<ItemDto> callback);
 }

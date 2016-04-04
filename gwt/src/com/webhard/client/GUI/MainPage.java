@@ -284,7 +284,24 @@ public class MainPage extends Composite {
 //				}
 			}
 		});
-		
+		menuBar_3.addItem("파일 삭제", new ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				int check = selectItemData.getType();
+				if (selectItemData.getItemNum() != homeNum) {
+						if (check == 1) {
+							if (Window.confirm("삭제 하시겠습니까?")) {
+								serviceImpl.deletefile(selectItemData.getItemNum());		
+						}				
+						} else {
+							Window.alert("폴더입니다.");
+						}
+				} else {
+					Window.alert("HOME폴더는 사용할수없습니다.");
+				}
+			}
+		});
 		
 		menuBar_3.addItem("다운로드", new ScheduledCommand() {
 			@Override
