@@ -73,7 +73,6 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		this.main = new MainPage(this, getTree, compName, homeNum, userDto);
 		
 	}
-
 	@Override
 	public void compList() {
 
@@ -214,15 +213,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 			public void onSuccess(ItemDto result) {
 				Window.alert("폴더가 삭제되었습니다.");
 				
-				tree = new Tree(){
-					@Override
-					public void onBrowserEvent(Event event) {
-						if(DOM.eventGetType(event) == event.ONCONTEXTMENU){
-							
-						}
-						super.onBrowserEvent(event);
-					}
-				};
+				tree = new Tree();
 				TreeItem homeItem = new TreeItem();
 				homeItem.setText(result.getName());
 				homeItem.setUserObject(result);
@@ -276,6 +267,180 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 			public void onFailure(Throwable caught) {
 			}
 		});
+	}
+	/************************파일 업로드 다이얼로그*******************/
+	
+	public DialogBox fileUpload(int itemnum, int comnum){
+		
+		FileDialog = new DialogBox();
+		
+		final FormPanel form = new FormPanel();
+	    form.setAction(GWT.getModuleBaseURL()+"fileupload");
+
+	    // Because we're going to add a FileUpload widget, we'll need to set the
+	    // form to use the POST method, and multipart MIME encoding.
+	    form.setEncoding(FormPanel.ENCODING_MULTIPART);
+	    form.setMethod(FormPanel.METHOD_POST);
+
+	    // Create a panel to hold all of the form widgets.
+	    VerticalPanel panel = new VerticalPanel();
+	    form.setWidget(panel);
+
+	    TextBox inum = new TextBox();
+	    String Item = Integer.toString(itemnum);
+	    inum.setName("title");
+	    inum.setText(Item);
+	    inum.setVisible(false);
+	    panel.add(inum);
+	   
+	    TextBox cnum = new TextBox();
+	    String compnum = Integer.toString(comnum);
+	    cnum.setName("title1");
+	    cnum.setText(compnum);
+	    cnum.setVisible(false);
+	    panel.add(cnum);
+	    
+	    FileDialog.setWidget(form); 
+	    // Create a FileUpload widget.
+	    final FileUpload upload = new FileUpload();
+	    upload.setName("uploadFormElement");
+	    panel.add(upload);
+
+	    // Add a 'submit' button.
+	    panel.add(new Button("Submit", new ClickHandler() {
+	      public void onClick(ClickEvent event) {
+	        form.submit();
+	      }
+	    }));
+
+	    // Add an event handler to the form.
+	    form.addSubmitHandler(new FormPanel.SubmitHandler() {	     
+		@Override
+		public void onSubmit(SubmitEvent event) {
+			 // This event is fired just before the form is submitted. We can take
+	        // this opportunity to perform validation.
+	        if (upload.getFilename().length() == 0) {
+	          Window.alert("파일을 선택해주세요.");
+	          event.cancel();
+	          
+	        }
+		}
+	    });
+	    form.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {	    
+		@Override
+		public void onSubmitComplete(SubmitCompleteEvent event) {
+			 // When the form submission is successfully completed, this event is
+	        // fired. Assuming the service returned a response of type text/html,
+	        // we can get the result text here (see the FormPanel documentation for
+	        // further explanation).
+			mainAsync.homeFolder(new AsyncCallback<ItemDto>() {
+				@Override
+				public void onSuccess(final ItemDto resultHome) {
+					mainAsync.allFiles(new AsyncCallback<List<FileDto>>() {
+						@Override
+						public void onSuccess(List<FileDto> result) {
+							files = result;
+							Window.alert("등록 완료");
+					        FileDialog.hide();
+					        tree = new Tree();
+							TreeItem homeItem = new TreeItem();
+							homeItem.setText(resultHome.getName());
+							homeItem.setUserObject(resultHome);
+							getTree(homeItem);
+							homeItem.setHTML(imageItemHTML(images.treeOpen(), homeItem.getText()));
+							
+							RootPanel.get().clear();
+
+							MainServiceClientImpl main = 
+									new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto );
+
+							RootPanel.get().add(main.getMainPage());
+						}
+						@Override
+						public void onFailure(Throwable caught) {
+						}
+					});
+				}
+				@Override
+				public void onFailure(Throwable caught) {
+				}
+			});
+		}
+	    });
+
+	   return FileDialog;
+	}
+	
+	public DialogBox filedownload(int itemnum, String comnum){
+		
+		final DialogBox downloadDialog = new DialogBox();
+		
+		final FormPanel form = new FormPanel();
+	    form.setAction(GWT.getModuleBaseURL()+"filedownload");
+
+	    // Because we're going to add a FileUpload widget, we'll need to set the
+	    // form to use the POST method, and multipart MIME encoding.
+	    form.setEncoding(FormPanel.ENCODING_MULTIPART);
+	    form.setMethod(FormPanel.METHOD_POST);
+
+	    // Create a panel to hold all of the form widgets.
+	    VerticalPanel panel = new VerticalPanel();
+	    form.setWidget(panel);
+		   
+	    TextBox cnum = new TextBox();
+	    cnum.setName("title1");
+	    String Item = Integer.toString(itemnum);
+	    cnum.setText(Item);
+	    cnum.setVisible(false);
+	    panel.add(cnum);
+	    
+	    downloadDialog.setWidget(form); 
+	    // Create a FileUpload widget.
+	  
+	    
+	    final TextBox inum = new TextBox();
+	    inum.setEnabled(false);
+	    inum.setName("title");
+	    inum.setText(comnum);
+	    panel.add(inum);
+
+
+	    // Add a 'submit' button.
+	    panel.add(new Button("다운로드", new ClickHandler() {
+	      public void onClick(ClickEvent event) {
+	        form.submit();
+	      }
+	    }));
+
+	    // Add an event handler to the form.
+	    form.addSubmitHandler(new FormPanel.SubmitHandler() {	     
+		@Override
+		public void onSubmit(SubmitEvent event) {
+			 // This event is fired just before the form is submitted. We can take
+	        // this opportunity to perform validation.
+	        if (inum.getText().length() == 0) {
+	          Window.alert("파일을 선택해주기바랍니다.");
+	          event.cancel();
+	          
+	        }
+		}
+	    });
+	    form.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+	    	
+		@Override
+		public void onSubmitComplete(SubmitCompleteEvent event) {
+			 // When the form submission is successfully completed, this event is
+	        // fired. Assuming the service returned a response of type text/html,
+	        // we can get the result text here (see the FormPanel documentation for
+	        // further explanation).
+
+	        Window.alert("다운로드 완료");
+	        downloadDialog.hide();
+	           
+		}
+	    });
+
+	   return downloadDialog;
 	}
 	/*************************트리 생성***********************/
 	public void getTree(TreeItem result){
@@ -357,173 +522,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		}
 	}
 	/**********************************************************/
-	/************************파일 업로드 다이얼로그*******************/
-	
-	public DialogBox fileUpload(int itemnum, int comnum){
-		
-		FileDialog = new DialogBox();
-		
-		final FormPanel form = new FormPanel();
-	    form.setAction(GWT.getModuleBaseURL()+"fileupload");
-
-	    // Because we're going to add a FileUpload widget, we'll need to set the
-	    // form to use the POST method, and multipart MIME encoding.
-	    form.setEncoding(FormPanel.ENCODING_MULTIPART);
-	    form.setMethod(FormPanel.METHOD_POST);
-
-	    // Create a panel to hold all of the form widgets.
-	    VerticalPanel panel = new VerticalPanel();
-	    form.setWidget(panel);
-
-	    TextBox inum = new TextBox();
-	    String Item = Integer.toString(itemnum);
-	    inum.setName("title");
-	    inum.setText(Item);
-	    inum.setVisible(false);
-	    panel.add(inum);
-	   
-	    TextBox cnum = new TextBox();
-	    String compnum = Integer.toString(comnum);
-	    cnum.setName("title1");
-	    cnum.setText(compnum);
-	    cnum.setVisible(false);
-	    panel.add(cnum);
 	    
-	    FileDialog.setWidget(form); 
-	    // Create a FileUpload widget.
-	    final FileUpload upload = new FileUpload();
-	    upload.setName("uploadFormElement");
-	    panel.add(upload);
-
-	    // Add a 'submit' button.
-	    panel.add(new Button("Submit", new ClickHandler() {
-	      public void onClick(ClickEvent event) {
-	        form.submit();
-	      }
-	    }));
-
-	    // Add an event handler to the form.
-	    form.addSubmitHandler(new FormPanel.SubmitHandler() {	     
-		@Override
-		public void onSubmit(SubmitEvent event) {
-			 // This event is fired just before the form is submitted. We can take
-	        // this opportunity to perform validation.
-	        if (upload.getFilename().length() == 0) {
-	          Window.alert("파일을 선택해주기바랍니다.");
-	          event.cancel();
-	          
-	        }
-		}
-	    });
-	    form.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {	    
-		@Override
-		public void onSubmitComplete(SubmitCompleteEvent event) {
-			 // When the form submission is successfully completed, this event is
-	        // fired. Assuming the service returned a response of type text/html,
-	        // we can get the result text here (see the FormPanel documentation for
-	        // further explanation).
-	        Window.alert("등록 완료");
-	        FileDialog.hide();
-	       /* tree = new Tree();
-			TreeItem homeItem = new TreeItem();
-			homeItem.setText(result.getName());
-			homeItem.setUserObject(result);
-			getTree(homeItem);
-			
-			RootPanel.get().clear();
-
-			MainServiceClientImpl main = 
-					new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
-
-			RootPanel.get().add(main.getMainPage());*/
-	        
-		}
-	    });
-
-	   return FileDialog;
-	  }
-	
-	public DialogBox filedownload(int itemnum, String comnum){
-		
-		final DialogBox downloadDialog = new DialogBox();
-		
-		final FormPanel form = new FormPanel();
-	    form.setAction(GWT.getModuleBaseURL()+"filedownload");
-
-	    // Because we're going to add a FileUpload widget, we'll need to set the
-	    // form to use the POST method, and multipart MIME encoding.
-	    form.setEncoding(FormPanel.ENCODING_MULTIPART);
-	    form.setMethod(FormPanel.METHOD_POST);
-
-	    // Create a panel to hold all of the form widgets.
-	    VerticalPanel panel = new VerticalPanel();
-	    form.setWidget(panel);
-		   
-	    TextBox cnum = new TextBox();
-	    cnum.setName("title1");
-	    String Item = Integer.toString(itemnum);
-	    cnum.setText(Item);
-	    cnum.setVisible(false);
-	    panel.add(cnum);
-	    
-	    downloadDialog.setWidget(form); 
-	    // Create a FileUpload widget.
-	  
-	    
-	    final TextBox inum = new TextBox();
-	    inum.setEnabled(false);
-	    inum.setName("title");
-	    inum.setText(comnum);
-	    panel.add(inum);
-
-
-	    // Add a 'submit' button.
-	    panel.add(new Button("다운로드", new ClickHandler() {
-	      public void onClick(ClickEvent event) {
-	        form.submit();
-	      }
-	    }));
-
-	    // Add an event handler to the form.
-	    form.addSubmitHandler(new FormPanel.SubmitHandler() {	     
-		@Override
-		public void onSubmit(SubmitEvent event) {
-			 // This event is fired just before the form is submitted. We can take
-	        // this opportunity to perform validation.
-	        if (inum.getText().length() == 0) {
-	          Window.alert("파일을 선택해주기바랍니다.");
-	          event.cancel();
-	          
-	        }
-		}
-	    });
-	    form.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {	    
-		@Override
-		public void onSubmitComplete(SubmitCompleteEvent event) {
-			 // When the form submission is successfully completed, this event is
-	        // fired. Assuming the service returned a response of type text/html,
-	        // we can get the result text here (see the FormPanel documentation for
-	        // further explanation).
-	        Window.alert("등록 완료");
-	        downloadDialog.hide();
-	       /* tree = new Tree();
-			TreeItem homeItem = new TreeItem();
-			homeItem.setText(result.getName());
-			homeItem.setUserObject(result);
-			getTree(homeItem);
-			
-			RootPanel.get().clear();
-
-			MainServiceClientImpl main = 
-					new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, companyName, homeFolNum, userDto);
-
-			RootPanel.get().add(main.getMainPage());*/
-	        
-		}
-	    });
-
-	   return downloadDialog;
-	}    
 	/*************************폴더 관련 다이얼로그 ****************/
 	public DialogBox createFolderBox(final int parentNum, final int companyNum){
 		folderBox = new DialogBox();
@@ -621,9 +620,9 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		cellTable = new CellTable<ItemDto>();
 		cellTable.setSkipRowHoverCheck(true);
 		cellTable.setSize("661px", "221px");
-		 if(items != null){
-		companylistByCom(items);
-		 }
+		if(items != null){
+			 companylistByCom(items);
+		}
 	}
 
 	public void companylistByCom(final List<ItemDto> items) {

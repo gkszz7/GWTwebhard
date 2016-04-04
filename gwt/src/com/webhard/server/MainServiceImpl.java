@@ -227,4 +227,11 @@ public class MainServiceImpl extends RemoteServiceServlet implements MainService
 	    HttpSession session = httpServletRequest.getSession(true);
 	    session.removeAttribute("user");
 	}
+	@Override
+	public ItemDto homeFolder() {
+		FolderDao dao = new FolderDao();
+		homeFolder = dao.selectHomeFolder();
+		setTree(homeFolder);
+		return homeFolder;
+	}
 }

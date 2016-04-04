@@ -18,8 +18,11 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.webhard.client.model.FileDto;
+import com.webhard.client.model.FolderDto;
+import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 import com.webhard.server.dao.FileDao;
+import com.webhard.server.dao.FolderDao;
 
 public class FileUpload extends HttpServlet {     
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -53,11 +56,9 @@ public class FileUpload extends HttpServlet {
 				if (item.isFormField()) { // 폼데이터인 경우 (파일이 아닌경우)
 					if (item.getFieldName().equals("title")) {
 						itemnum = Integer.parseInt(item.getString());
-						System.out.println("a"+itemnum);
 					}
 					if(item.getFieldName().equals("title1")){
 						compnum = Integer.parseInt(item.getString());
-						System.out.println("a"+compnum);
 					}
 				} else { // 파일인 경우
 					if (item.getSize() > 0) { // 파일의 내용이 있는 경우
@@ -79,10 +80,9 @@ public class FileUpload extends HttpServlet {
 						
 						// 파일 저장
 						FileDao dao = new FileDao();
-						dao.addNewFile(name, itemnum, ((UserDto) session.getAttribute("user")).getUserId(), compnum, fileName,filesize, FileType);
-						
-					}
+						dao.addNewFile(name, itemnum, ((UserDto) session.getAttribute("user")).getUserId(), compnum, fileName,filesize, FileType);					}
 				}
+				
 			}
 		} catch (Exception e) {
 

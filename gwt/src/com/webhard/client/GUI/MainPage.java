@@ -87,7 +87,7 @@ public class MainPage extends Composite {
 		initWidget(this.absolutePanel);
 		absolutePanel.setSize("1121px", "760px");
 		horizontalSplitPanel = new HorizontalSplitPanel();
-		horizontalSplitPanel.setStyleName("gwt-Label-new");
+		horizontalSplitPanel.setStyleName("gwt-horizontalSplitPanel");
 		horizontalSplitPanel.setSplitPosition("30%");
 		this.absolutePanel.add(horizontalSplitPanel, 0, 51);
 		horizontalSplitPanel.setSize("1131px", "631px");
@@ -100,9 +100,9 @@ public class MainPage extends Composite {
 //		setupHistory();
 		
 		CellTable<Object> cellTable = new CellTable<Object>();	
-		cellTable.setStyleName("sendButton-new");
+		cellTable.setStyleName("cellTableWidget");
 		horizontalSplitPanel.setRightWidget(cellTable);
-		cellTable.setSize("767px", "100%");
+		cellTable.setSize("767px", "254px");
 		horizontalSplitPanel.setLeftWidget(tree);
 		tree.setSize("313px", "628px");
 		
@@ -123,7 +123,7 @@ public class MainPage extends Composite {
 		MenuBar menuBar = new MenuBar(false);
 		menuBar.setStyleName("gwt-MenuBar");
 		absolutePanel.add(menuBar, 0, 0);
-		menuBar.setSize("1119px", "40px");
+		menuBar.setSize("1119px", "43px");
 		
 		MenuBar menuBar_1 = new MenuBar(true);
 		final MenuItem folderMenu = new MenuItem("폴더", false, menuBar_1);
@@ -148,10 +148,19 @@ public class MainPage extends Composite {
 				if (selectItemData != null) {
 					if (selectItemData.getType() == 0) {
 						if (selectItemData.getItemNum() != homeNum) {
-							createFolder = serviceImpl.createFolderBox(getSelectNode().getItemNum(),getSelectNode().getCompanyNum());
-							createFolder.center();
+							if(selectItemData.getCompanyNum() == userDto.getCompanyNum() || userDto.getAdmin() == 1){
+								createFolder = serviceImpl.createFolderBox(getSelectNode().getItemNum(),getSelectNode().getCompanyNum());
+								createFolder.center();
+							}else{
+								if(selectItemData.getCompanyNum() == 0 && selectItemData.getParentNum() == homeNum){
+									createFolder = serviceImpl.createFolderBox(getSelectNode().getItemNum(),getSelectNode().getCompanyNum());
+									createFolder.center();
+								}else{
+									Window.alert("타 회사는 이용 할 수 없습니다.");
+								}
+							}
 						}else{
-							Window.alert("HOME폴더는 사용할수없습니다.");
+							Window.alert("HOME폴더는 사용 할 수 없습니다.");
 						}
 					}else{
 						Window.alert("폴더를 선택해주세요.");
@@ -167,11 +176,20 @@ public class MainPage extends Composite {
 			public void execute() {
 				if(selectItemData != null){
 					if(selectItemData.getType() == 0){
-						if(selectItemData.getItemNum() != homeNum){
-						editFolder = serviceImpl.updateFolderBox(getSelectNode().getItemNum());
-						editFolder.center();
+						if(selectItemData.getItemNum() != homeNum && selectItemData.getParentNum() !=homeNum){
+							if(selectItemData.getCompanyNum() == userDto.getCompanyNum() || userDto.getAdmin() == 1){
+								editFolder = serviceImpl.updateFolderBox(getSelectNode().getItemNum());
+								editFolder.center();
+							}else{
+								if(selectItemData.getCompanyNum() == 0 && selectItemData.getParentNum() == homeNum){
+									createFolder = serviceImpl.createFolderBox(getSelectNode().getItemNum(),getSelectNode().getCompanyNum());
+									createFolder.center();
+								}else{
+									Window.alert("타 회사는 이용 할 수 없습니다.");
+								}
+							}
 						}else{
-							Window.alert("HOME폴더는 사용할수없습니다.");
+							Window.alert("수정 할 수 없습니다.");
 						}
 					}else{
 						Window.alert("폴더를 선택해주세요.");
@@ -187,12 +205,21 @@ public class MainPage extends Composite {
 			public void execute() {
 				if(selectItemData != null){
 					if(selectItemData.getType() == 0){
-						if(selectItemData.getItemNum() != homeNum){
-							if(Window.confirm("삭제 하시겠습니까?")){
-								serviceImpl.deleteFolder(selectItemData.getItemNum());
+						if(selectItemData.getItemNum() != homeNum && selectItemData.getParentNum() !=homeNum){
+							if(selectItemData.getCompanyNum() == userDto.getCompanyNum() || userDto.getAdmin() == 1){
+								if(Window.confirm("삭제 하시겠습니까?")){
+									serviceImpl.deleteFolder(selectItemData.getItemNum());
+								}
+							}else{
+								if(selectItemData.getCompanyNum() == 0 && selectItemData.getParentNum() == homeNum){
+									createFolder = serviceImpl.createFolderBox(getSelectNode().getItemNum(),getSelectNode().getCompanyNum());
+									createFolder.center();
+								}else{
+									Window.alert("타 회사는 이용 할 수 없습니다.");
+								}
 							}
 						}else{
-							Window.alert("HOME폴더는 사용할수없습니다.");
+							Window.alert("삭제 할 수 없습니다.");
 						}
 						}else{
 							Window.alert("폴더를 선택해주세요.");
@@ -221,35 +248,68 @@ public class MainPage extends Composite {
 		menuBar_3.addItem("파일 등록", new ScheduledCommand() {
 			@Override
 			public void execute() {
-				int check = selectItemData.getType();
-				if (selectItemData.getItemNum() != homeNum) {
-						if (check == 0) {
-							DialogBox FileDialog = serviceImpl.fileUpload(selectItemData.getItemNum(),selectItemData.getCompanyNum());
-							FileDialog.center();
-						} else {
-							Window.alert("파일입니다.");
+				if(selectItemData != null){
+					if(selectItemData.getType() == 0){
+						if(selectItemData.getItemNum() != homeNum){
+							if(selectItemData.getCompanyNum() == userDto.getCompanyNum() || userDto.getAdmin() == 1){
+								DialogBox FileDialog = serviceImpl.fileUpload(selectItemData.getItemNum(),selectItemData.getCompanyNum());
+								FileDialog.center();
+							}else{
+								if(selectItemData.getCompanyNum() == 0 && selectItemData.getParentNum() == homeNum){
+									DialogBox FileDialog = serviceImpl.fileUpload(selectItemData.getItemNum(),selectItemData.getCompanyNum());
+									FileDialog.center();
+								}else{
+									Window.alert("타 회사는 이용 할 수 없습니다.");
+								}
+							}
+						}else{
+							Window.alert("HOME폴더는 사용 할 수 없습니다.");
 						}
-				} else {
-					Window.alert("HOME폴더는 사용할수없습니다.");
+					}else{
+						Window.alert("폴더를 선택해주세요.");
+					}
+				}else{
+					Window.alert("폴더를 선택해주세요.");
 				}
+//				int check = selectItemData.getType();
+//				if (selectItemData.getItemNum() != homeNum) {
+//						if (check == 0) {
+//							DialogBox FileDialog = serviceImpl.fileUpload(selectItemData.getItemNum(),selectItemData.getCompanyNum());
+//							FileDialog.center();
+//						} else {
+//							Window.alert("파일입니다.");
+//						}
+//				} else {
+//					Window.alert("HOME폴더는 사용할수없습니다.");
+//				}
 			}
 		});
 		
 		
-		menuBar_3.addItem("파일 다운로드", new ScheduledCommand() {
+		menuBar_3.addItem("다운로드", new ScheduledCommand() {
 			@Override
 			public void execute() {
-				int check = selectItemData.getType();
-				if (selectItemData.getItemNum() != homeNum) {
-						if (check == 1) {
-							DialogBox FileDialog = serviceImpl.filedownload(selectItemData.getItemNum(),selectItemData.getName());
+				if(selectItemData != null){
+					if(selectItemData.getType() == 1){
+							DialogBox FileDialog = serviceImpl.fileUpload(selectItemData.getItemNum(),selectItemData.getCompanyNum());
 							FileDialog.center();
-						} else {
-							Window.alert("파일입니다.");
-						}
-				} else {
-					Window.alert("HOME폴더는 사용할수없습니다.");
+					}else{
+						Window.alert("파일을 선택해주세요.");
+					}
+				}else{
+					Window.alert("파일을 선택해주세요.");
 				}
+//				int check = selectItemData.getType();
+//				if (selectItemData.getItemNum() != homeNum) {
+//						if (check == 1) {
+//							DialogBox FileDialog = serviceImpl.filedownload(selectItemData.getItemNum(),selectItemData.getName());
+//							FileDialog.center();
+//						} else {
+//							Window.alert("파일입니다.");
+//						}
+//				} else {
+//					Window.alert("HOME폴더는 사용할수없습니다.");
+//				}
 			}
 		});
 		menuBar.addItem(fileMenu);
