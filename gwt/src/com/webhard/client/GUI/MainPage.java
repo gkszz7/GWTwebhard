@@ -99,7 +99,9 @@ public class MainPage extends Composite {
 		this.serviceImpl.allFiles();
 //		setupHistory();
 		
-		CellTable<Object> cellTable = new CellTable<Object>();	
+		CellTable<Object> cellTable = new CellTable<Object>();
+		cellTable.setAutoHeaderRefreshDisabled(true);
+		cellTable.setAutoFooterRefreshDisabled(true);
 		cellTable.setStyleName("cellTableWidget");
 		horizontalSplitPanel.setRightWidget(cellTable);
 		cellTable.setSize("767px", "254px");
