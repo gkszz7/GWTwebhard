@@ -388,13 +388,28 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	    
 	    upload.setName("uploadFormElement");
 	    panel.add(upload);
-
-	    // Add a 'submit' button.
-	    panel.add(new Button("Submit", new ClickHandler() {
-	      public void onClick(ClickEvent event) {
-	        form.submit();
-	      }
-	    }));
+	    
+	    AbsolutePanel absolutePanel = new AbsolutePanel();
+	    panel.add(absolutePanel);
+	    
+	        // Add a 'submit' button.
+	        Button button = new Button("Submit", new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	            form.submit();
+	          }
+	        });
+	        absolutePanel.add(button);
+	        
+	        Button btnNewButton = new Button("New button");
+	        btnNewButton.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					FileDialog.hide();
+				}
+			});
+	        btnNewButton.setText("취소");
+	        absolutePanel.add(btnNewButton);
 
 	    // Add an event handler to the form.
 	    form.addSubmitHandler(new FormPanel.SubmitHandler() {	     
@@ -452,12 +467,19 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	    // Create a panel to hold all of the form widgets.
 	    VerticalPanel panel = new VerticalPanel();
 	    form.setWidget(panel);
+	    panel.setWidth("273px");
 		   
 	    TextBox cnum = new TextBox();
 	    cnum.setName("title1");
 	    String Item = Integer.toString(itemnum);
 	    cnum.setText(Item);
 	    cnum.setVisible(false);
+	    
+	    Label label = new Label("파일 경로");
+	    panel.add(label);
+	    panel.add(cnum);
+	    cnum.setWidth("231px");
+	    
 	    panel.add(cnum);
 	    
 	    downloadDialog.setWidget(form); 
@@ -469,14 +491,29 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	    inum.setName("title");
 	    inum.setText(comnum);
 	    panel.add(inum);
-
-
-	    // Add a 'submit' button.
-	    panel.add(new Button("다운로드", new ClickHandler() {
-	      public void onClick(ClickEvent event) {
-	        form.submit();
-	      }
-	    }));
+	    
+	    AbsolutePanel absolutePanel = new AbsolutePanel();
+	    panel.add(absolutePanel);
+	    
+	    
+	        // Add a 'submit' button.
+	        Button button = new Button("다운로드", new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	            form.submit();
+	          }
+	        });
+	        absolutePanel.add(button);
+	        
+	        Button btnNewButton = new Button("New button");
+	        btnNewButton.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					downloadDialog.hide();
+				}
+			});
+	        btnNewButton.setText("취소");
+	        absolutePanel.add(btnNewButton, 78, 0);	       
 
 	    // Add an event handler to the form.
 	    form.addSubmitHandler(new FormPanel.SubmitHandler() {	     
