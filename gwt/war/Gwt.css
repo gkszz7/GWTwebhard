@@ -42,8 +42,8 @@
 
 .gwt-MenuItem {
 	color: Black;
-	padding: 3px;
-	font-size: 20px;
+	padding: 7px;
+	font-size: 17px;
 	font-weight: bold;
 	vertical-align: middle;
 	line-height: inherit;
@@ -55,7 +55,6 @@
 	white-space: normal;
 	word-spacing: 1px;
 	cursor: pointer;
-	padding:7px;
 }
 .gwt-MenuBar {
 	border: 1px solid black;

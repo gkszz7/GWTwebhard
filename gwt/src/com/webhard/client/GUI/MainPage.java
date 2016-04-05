@@ -550,38 +550,6 @@ public class MainPage extends Composite {
 			}
 		});
 		/************************************************************/
-		
-//		History.newItem("A");
-//	    History.newItem("B");
-//	    History.newItem("C");
-//	    RootPanel.get().add(new Button("back", new ClickHandler()
-//	    {
-//
-//	        @Override
-//	        public void onClick(
-//	            ClickEvent event)
-//	        {
-//	            System.out.println("After back click token is " + History.getToken());
-//	            
-//	           // History.back();
-//	            RootPanel.get().clear();
-//	            LoginServiceClientImpl login = new LoginServiceClientImpl(GWT.getModuleBaseURL()+ History.getToken());
-//	    		
-//	    		RootPanel.get().add(login.getLoginUser());
-//	            
-//	        }
-//	    }));
-//	    History.addValueChangeHandler(new ValueChangeHandler<String>()
-//	    {
-//
-//	        @Override
-//	        public void onValueChange(ValueChangeEvent<String> event){
-//	            AllImplClass impl = new AllImplClass();
-//	            impl.allImpl(History.getToken(), history.getCompanyList(), history.getUserListByEntry()
-//	            		, history.getTree(), history.getCompanyNameByMain(), history.getHomeNumByMain(), history.getUser(),history);
-//	        	
-//	        }
-//	    });
 
 	}
 
