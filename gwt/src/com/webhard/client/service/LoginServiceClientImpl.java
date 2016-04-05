@@ -55,7 +55,7 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 					Window.alert("로그인 성공");
 							
 					if(userDto.getAccess() == 0){
-						Window.alert("인증대기자 입니다.");
+						Window.alert("인증 대기자 입니다.");
 					}
 					RootPanel.get().clear();
 					
@@ -65,10 +65,10 @@ public class LoginServiceClientImpl implements LoginServiceClientInt{
 					RootPanel.get().add(main.getMainPage());
 					
 				}else if(Integer.parseInt((String)result.get("check")) == 0){
-					Window.alert("비밀번호 실패");
+					Window.alert("비밀번호가 틀립니다.");
 					
 				}else{
-					Window.alert("존재하지않은 아이디");
+					Window.alert("존재하지 않는 아이디입니다.");
 				}
 			}
 			

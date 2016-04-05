@@ -46,10 +46,8 @@ public class AccessListServiceClientImpl implements AccessListServiceClientInt{
 			@Override
 			public void onFailure(Throwable caught) {
 				Window.alert("error");
-				
 			}
 		});
-		
 	}
 	@Override
 	public void searchUserBycompany(String company) {

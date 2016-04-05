@@ -123,7 +123,7 @@ public class UserList extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 					if(selected == null){
-						Window.alert("회사를 선택해 주세요.");
+						Window.alert("사용자를 선택해 주세요.");
 					}else{
 						editDialog.center();
 					}

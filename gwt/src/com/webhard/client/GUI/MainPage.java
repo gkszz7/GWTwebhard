@@ -300,7 +300,8 @@ public class MainPage extends Composite {
 			public void execute() {
 				if(selectItemData != null){
 					if(selectItemData.getType() == 1){
-							DialogBox FileDialog = serviceImpl.fileUpload(selectItemData.getItemNum(),selectItemData.getCompanyNum());
+							String compNum=Integer.toString(selectItemData.getCompanyNum());
+							DialogBox FileDialog = serviceImpl.filedownload(selectItemData.getItemNum(),compNum);
 							FileDialog.center();
 					}else{
 						Window.alert("파일을 선택해주세요.");

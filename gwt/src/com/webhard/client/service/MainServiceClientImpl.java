@@ -311,7 +311,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	    panel.add(absolutePanel);
 	    
 	        // Add a 'submit' button.
-	        Button button = new Button("Submit", new ClickHandler() {
+	        Button button = new Button("확인", new ClickHandler() {
 	          public void onClick(ClickEvent event) {
 	            form.submit();
 	          }
@@ -390,7 +390,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	public DialogBox filedownload(int itemnum, String comnum){
 		
 		final DialogBox downloadDialog = new DialogBox();
-		
+		downloadDialog.setAnimationEnabled(true);
 		final FormPanel form = new FormPanel();
 	    form.setAction(GWT.getModuleBaseURL()+"filedownload");
 
@@ -401,8 +401,8 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 
 	    // Create a panel to hold all of the form widgets.
 	    VerticalPanel panel = new VerticalPanel();
+	    panel.setSize("200px", "200px");
 	    form.setWidget(panel);
-		   
 	    TextBox cnum = new TextBox();
 	    cnum.setName("title1");
 	    String Item = Integer.toString(itemnum);
@@ -424,6 +424,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	    inum.setEnabled(false);
 	    inum.setName("title");
 	    inum.setText(comnum);
+	    inum.setVisible(false);
 	    panel.add(inum);
 	    
 	    AbsolutePanel absolutePanel = new AbsolutePanel();
