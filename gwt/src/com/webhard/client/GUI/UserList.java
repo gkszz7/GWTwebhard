@@ -114,7 +114,7 @@ public class UserList extends Composite{
 		
 		
 		absolutePanel_1.add(cellTable_1, 0, 0);
-		cellTable_1.setSize("860px", "338px");
+		cellTable_1.setWidth("100%");
 		
 		updateBtn = new Button("New button");
 		updateBtn.setText("수정");
@@ -262,7 +262,7 @@ public class UserList extends Composite{
 
 			cellTable_1 = new CellTable<UserDto>();
 			cellTable_1.setSkipRowHoverCheck(true);
-			cellTable_1.setSize("661px", "221px");
+			cellTable_1.setWidth("100%");
 
 			if (UserList != null) {
 

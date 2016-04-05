@@ -87,7 +87,7 @@ public class MainPage extends Composite {
 		initWidget(this.absolutePanel);
 		absolutePanel.setSize("1121px", "760px");
 		horizontalSplitPanel = new HorizontalSplitPanel();
-		horizontalSplitPanel.setStyleName("gwt-horizontalSplitPanel");
+		horizontalSplitPanel.setStyleName("gwt-horizontalSplitPanel .hsplitter");
 		horizontalSplitPanel.setSplitPosition("30%");
 		this.absolutePanel.add(horizontalSplitPanel, 0, 51);
 		horizontalSplitPanel.setSize("1131px", "631px");
@@ -97,14 +97,7 @@ public class MainPage extends Composite {
 		this.serviceImpl.AccessList();
 		this.tree = getTree;
 		this.serviceImpl.allFiles();
-//		setupHistory();
-		
-		CellTable<Object> cellTable = new CellTable<Object>();
-		cellTable.setAutoHeaderRefreshDisabled(true);
-		cellTable.setAutoFooterRefreshDisabled(true);
-		cellTable.setStyleName("cellTableWidget");
-		horizontalSplitPanel.setRightWidget(cellTable);
-		cellTable.setSize("767px", "254px");
+
 		horizontalSplitPanel.setLeftWidget(tree);
 		tree.setSize("313px", "628px");
 		
@@ -614,7 +607,7 @@ public class MainPage extends Composite {
 		cellTable = new CellTable<ItemDto>();
 		this.cellTable = table;
 		horizontalSplitPanel.setRightWidget(cellTable);
-		cellTable.setSize("767px", "100%");
+		cellTable.setWidth("100%");
 		final SingleSelectionModel<ItemDto> selectionModel = new SingleSelectionModel<ItemDto>();
 		cellTable.setSelectionModel(selectionModel);
 		selectionModel.addSelectionChangeHandler(new Handler() {

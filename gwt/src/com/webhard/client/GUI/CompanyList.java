@@ -39,20 +39,20 @@ public class CompanyList extends Composite {
 		History.newItem("company");
 		absolutePanel = new AbsolutePanel();
 		initWidget(this.absolutePanel);
-		absolutePanel.setStyleName("gwt-absolutePanel");
+		absolutePanel.setStyleName("gwt-absolutePanel-new");
 		this.serviceImpl = compImpl;
 		
 		companyTable(companys);
 		absolutePanel.add(cellTable, 0, 159);
-		absolutePanel.setSize("685px", "503px");
+		absolutePanel.setSize("806px", "533px");
 		Label label = new Label("회사 목록");
 		label.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		absolutePanel.add(label, 243, 10);
+		absolutePanel.add(label, 295, 10);
 		label.setSize("173px", "29px");
 
 		Button button = new Button("New button");
 		button.setText("검색");
-		absolutePanel.add(button, 511, 99);
+		absolutePanel.add(button, 652, 99);
 		button.setSize("85px", "31px");
 		button.addClickHandler(new ClickHandler() {
 			
@@ -76,7 +76,7 @@ public class CompanyList extends Composite {
 		});
 
 		searchText = new TextBox();
-		absolutePanel.add(searchText, 335, 65);
+		absolutePanel.add(searchText, 476, 65);
 		searchText.setSize("257px", "14px");
 
 		listBox = new ListBox();
@@ -85,13 +85,13 @@ public class CompanyList extends Composite {
 		listBox.addItem("전화번호");
 		listBox.addItem("주소");
 		listBox.setDirectionEstimator(true);
-		absolutePanel.add(listBox, 251, 65);
+		absolutePanel.add(listBox, 392, 65);
 		listBox.setSize("78px", "31px");
 		
 
 		final Button button_1 = new Button("New button");
 		button_1.setText("수정");
-		absolutePanel.add(button_1, 335, 446);
+		absolutePanel.add(button_1, 419, 470);
 		button_1.setSize("85px", "29px");
 		button_1.addClickHandler(new ClickHandler() {
 
@@ -107,7 +107,7 @@ public class CompanyList extends Composite {
 
 		Button button_2 = new Button("New button");
 		button_2.setText("삭제");
-		absolutePanel.add(button_2, 453, 446);
+		absolutePanel.add(button_2, 537, 470);
 		button_2.setSize("85px", "29px");
 		
 		button_2.addClickHandler(new ClickHandler() {
@@ -126,7 +126,7 @@ public class CompanyList extends Composite {
 		});
 		Button button_3 = new Button("New button");
 		button_3.setText("HOME");
-		absolutePanel.add(button_3, 572, 446);
+		absolutePanel.add(button_3, 656, 470);
 		button_3.setSize("85px", "29px");
 		button_3.addClickHandler(new ClickHandler() {
 			
@@ -139,107 +139,107 @@ public class CompanyList extends Composite {
 
 		/********** 회사 수정 다이얼로그 **************/
 
-		editDialog = new DialogBox();
-		editDialog.setAnimationEnabled(true);
-		AbsolutePanel aPanel = new AbsolutePanel();
-		aPanel.setStyleName("gwt-absolutePanel");
-		editDialog.setWidget(aPanel);
-		aPanel.setSize("429px", "430px");
-
-		Label nameLabel = new Label("이름");
-		nameLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		nameLabel.setDirectionEstimator(true);
-		nameLabel.setStyleName("gwt-label");
-		aPanel.add(nameLabel, 58, 86);
-		nameLabel.setSize("65px", "28px");
-
-		nameText = new TextBox();
-		aPanel.add(nameText, 57, 120);
-		nameText.setSize("284px", "27px");
-
-		Button createBtn = new Button("New button");
-		createBtn.setText("수정");
-		aPanel.add(createBtn, 159, 370);
-		createBtn.setSize("85px", "29px");
-		
-		Button cancelBtn = new Button("New button");
-		cancelBtn.setText("취소");
-		aPanel.add(cancelBtn, 260, 370);
-		cancelBtn.setSize("85px", "29px");
-
-		Label phoneLb = new Label("전화번호");
-		phoneLb.setStyleName("gwt-label");
-		phoneLb.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		phoneLb.setDirectionEstimator(true);
-		aPanel.add(phoneLb, 58, 174);
-		phoneLb.setSize("65px", "28px");
-
-		Label adLabel = new Label("주소");
-		adLabel.setStyleName("gwt-label");
-		adLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		adLabel.setDirectionEstimator(true);
-		aPanel.add(adLabel, 58, 258);
-		adLabel.setSize("65px", "28px");
-
-		phoneText = new TextBox();
-		aPanel.add(phoneText, 57, 208);
-		phoneText.setSize("284px", "27px");
-
-		addrText = new TextBox();
-		aPanel.add(addrText, 57, 292);
-		addrText.setSize("284px", "27px");
-
-		Label label1 = new Label("(-는 제외)");
-		aPanel.add(label1, 351, 212);
-
-		Button checkBtn = new Button("New button");
-		checkBtn.setText("중복");
-		aPanel.add(checkBtn, 356, 120);
-		checkBtn.setSize("63px", "31px");
-		checkBtn.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				if (nameText.getText().length() > 0) {
-					serviceImpl.compNameCheck(nameText.getText());
-				} else {
-					Window.alert("아이디를 입력해 주세요.");
-				}
-			}
-		});
-		
-		createBtn.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				boolean check = false;
-				for(CompanyDto company : companys){
-					if(nameText.getText().equals(company.getCompanyName())){
-						check = true;
-					}
-				}
-				
-				if (nameText.getText().length() == 0) {
-					Window.alert("회사명을 입력해 주세요.");
-				} else if (check) {
-					Window.alert("이미 등록 된 회사 입니다.");
-				} else if (phoneText.getText().length() == 0) {
-					Window.alert("전화번호를 입력해 주세요.");
-				} else if (addrText.getText().length() == 0) {
-					Window.alert("주소를 입력해 주세요.");
-				} else {
-					serviceImpl.updateCompany(selected.getCompanyName(), nameText.getText(), phoneText.getText(), addrText.getText());
-				}
-			}
-		});
-		
-		cancelBtn.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				editDialog.hide();
-				button_1.setEnabled(true);
-				button_1.setFocus(true);
-			}
-		});
+//		editDialog = new DialogBox();
+//		editDialog.setAnimationEnabled(true);
+//		AbsolutePanel aPanel = new AbsolutePanel();
+//		aPanel.setStyleName("gwt-absolutePanel");
+//		editDialog.setWidget(aPanel);
+//		aPanel.setSize("429px", "430px");
+//
+//		Label nameLabel = new Label("이름");
+//		nameLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+//		nameLabel.setDirectionEstimator(true);
+//		nameLabel.setStyleName("gwt-label");
+//		aPanel.add(nameLabel, 58, 86);
+//		nameLabel.setSize("65px", "28px");
+//
+//		nameText = new TextBox();
+//		aPanel.add(nameText, 57, 120);
+//		nameText.setSize("284px", "27px");
+//
+//		Button createBtn = new Button("New button");
+//		createBtn.setText("수정");
+//		aPanel.add(createBtn, 159, 370);
+//		createBtn.setSize("85px", "29px");
+//		
+//		Button cancelBtn = new Button("New button");
+//		cancelBtn.setText("취소");
+//		aPanel.add(cancelBtn, 260, 370);
+//		cancelBtn.setSize("85px", "29px");
+//
+//		Label phoneLb = new Label("전화번호");
+//		phoneLb.setStyleName("gwt-label");
+//		phoneLb.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+//		phoneLb.setDirectionEstimator(true);
+//		aPanel.add(phoneLb, 58, 174);
+//		phoneLb.setSize("65px", "28px");
+//
+//		Label adLabel = new Label("주소");
+//		adLabel.setStyleName("gwt-label");
+//		adLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+//		adLabel.setDirectionEstimator(true);
+//		aPanel.add(adLabel, 58, 258);
+//		adLabel.setSize("65px", "28px");
+//
+//		phoneText = new TextBox();
+//		aPanel.add(phoneText, 57, 208);
+//		phoneText.setSize("284px", "27px");
+//
+//		addrText = new TextBox();
+//		aPanel.add(addrText, 57, 292);
+//		addrText.setSize("284px", "27px");
+//
+//		Label label1 = new Label("(-는 제외)");
+//		aPanel.add(label1, 351, 212);
+//
+//		Button checkBtn = new Button("New button");
+//		checkBtn.setText("중복");
+//		aPanel.add(checkBtn, 356, 120);
+//		checkBtn.setSize("63px", "31px");
+//		checkBtn.addClickHandler(new ClickHandler() {
+//
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				if (nameText.getText().length() > 0) {
+//					serviceImpl.compNameCheck(nameText.getText());
+//				} else {
+//					Window.alert("아이디를 입력해 주세요.");
+//				}
+//			}
+//		});
+//		
+//		createBtn.addClickHandler(new ClickHandler() {
+//
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				boolean check = false;
+//				for(CompanyDto company : companys){
+//					if(nameText.getText().equals(company.getCompanyName())){
+//						check = true;
+//					}
+//				}
+//				
+//				if (nameText.getText().length() == 0) {
+//					Window.alert("회사명을 입력해 주세요.");
+//				} else if (check) {
+//					Window.alert("이미 등록 된 회사 입니다.");
+//				} else if (phoneText.getText().length() == 0) {
+//					Window.alert("전화번호를 입력해 주세요.");
+//				} else if (addrText.getText().length() == 0) {
+//					Window.alert("주소를 입력해 주세요.");
+//				} else {
+//					serviceImpl.updateCompany(selected.getCompanyName(), nameText.getText(), phoneText.getText(), addrText.getText());
+//				}
+//			}
+//		});
+//		
+//		cancelBtn.addClickHandler(new ClickHandler() {
+//			public void onClick(ClickEvent event) {
+//				editDialog.hide();
+//				button_1.setEnabled(true);
+//				button_1.setFocus(true);
+//			}
+//		});
 		/************************************************/
 		
 	}
@@ -248,7 +248,7 @@ public class CompanyList extends Composite {
 		
 		cellTable = new CellTable<CompanyDto>();
 		cellTable.setSkipRowHoverCheck(true);
-		cellTable.setSize("661px", "221px");
+		cellTable.setWidth("100%");
 		 if(companys != null){
 		companylistByCom(companys);
 		 }

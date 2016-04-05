@@ -400,8 +400,8 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	    form.setMethod(FormPanel.METHOD_POST);
 
 	    // Create a panel to hold all of the form widgets.
-	    VerticalPanel panel = new VerticalPanel();
-	    panel.setSize("200px", "200px");
+	    AbsolutePanel panel = new AbsolutePanel();
+	    panel.setSize("200px", "180px");
 	    form.setWidget(panel);
 	    TextBox cnum = new TextBox();
 	    cnum.setName("title1");
@@ -409,8 +409,8 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	    cnum.setText(Item);
 	    cnum.setVisible(false);
 	    
-	    Label label = new Label("파일 경로");
-	    panel.add(label);
+	    Label label = new Label("다운로드 하시겠습니까?");
+	    panel.add(label,10,30);
 	    panel.add(cnum);
 	    cnum.setWidth("231px");
 	    
@@ -427,8 +427,8 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	    inum.setVisible(false);
 	    panel.add(inum);
 	    
-	    AbsolutePanel absolutePanel = new AbsolutePanel();
-	    panel.add(absolutePanel);
+//	    AbsolutePanel absolutePanel = new AbsolutePanel();
+//	    panel.add(absolutePanel);
 	    
 	    
 	        // Add a 'submit' button.
@@ -437,7 +437,8 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	            form.submit();
 	          }
 	        });
-	        absolutePanel.add(button);
+	        button.setSize("70px", "30px");
+	        panel.add(button,10,130);
 	        
 	        Button btnNewButton = new Button("New button");
 	        btnNewButton.addClickHandler(new ClickHandler() {
@@ -448,7 +449,8 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 				}
 			});
 	        btnNewButton.setText("취소");
-	        absolutePanel.add(btnNewButton, 78, 0);	       
+	        btnNewButton.setSize("70px", "30px");
+	        panel.add(btnNewButton, 110, 130);	       
 
 	    // Add an event handler to the form.
 	    form.addSubmitHandler(new FormPanel.SubmitHandler() {	     
@@ -657,7 +659,7 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 		
 		cellTable = new CellTable<ItemDto>();
 		cellTable.setSkipRowHoverCheck(true);
-		cellTable.setSize("661px", "221px");
+		cellTable.setWidth("100%");;
 		if(items != null){
 			 companylistByCom(items);
 		}

@@ -95,7 +95,7 @@ public class AccessList extends Composite{
 		
 		
 		absolutePanel_1.add(cellTable_1, 0, 0);
-		cellTable_1.setSize("860px", "338px");
+		cellTable_1.setWidth("100%");
 		
 		Button btnNewButton_3 = new Button("New button");
 		btnNewButton_3.setText("인증");
@@ -143,7 +143,7 @@ public class AccessList extends Composite{
 
 			cellTable_1 = new CellTable<UserDto>();
 			cellTable_1.setSkipRowHoverCheck(true);
-			cellTable_1.setSize("661px", "221px");
+			cellTable_1.setWidth("100%");
 
 			if (AccessList != null) {
 
