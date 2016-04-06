@@ -99,6 +99,7 @@ font-stretch: normal;
 }
 .gwt-horizontalSplitPanel .hsplitter {
 	background-color: darkgrey;
+	cursor: e-resize;
 }
 .gwt-TreeItem-selected{
 	background-color: grey;

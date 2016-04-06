@@ -131,7 +131,6 @@ public class CompanyServiceImpl extends RemoteServiceServlet implements CompanyS
 		int compNum = userDao.selectcompany(userDto.getUserId());
 		companyName = userDao.selectcompanyname(compNum);
 		String homeFolderNum = Integer.toString(homeNum);
-		
 		map.put("companyName", companyName);
 	    map.put("homeFolderNum", homeFolderNum);
 		return map;
@@ -144,5 +143,64 @@ public class CompanyServiceImpl extends RemoteServiceServlet implements CompanyS
 	    
 	    userDto = (UserDto)session.getAttribute("user");
 		return userDto;
+	}
+	@Override
+	public ItemDto getHomeFolder() {
+		FolderDao dao = new FolderDao();
+		ItemDto homeFolder = dao.selectHomeFolder();
+		setTree(homeFolder);
+		return homeFolder;
+	}
+	public void setTree(ItemDto cycle) {
+
+		FolderDao folDao = new FolderDao();
+		FolderDto fDto;
+		FolderDto homeFolder = folDao.selectHomeFolder();
+		ItemDto home = new ItemDto();
+
+		List<ItemDto> childNodes = new ArrayList<ItemDto>();
+		List<ItemDto> grandChildNodes = new ArrayList<ItemDto>();
+
+		if (cycle != null) {
+			home = cycle;
+		}
+
+		childNodes = folDao.selectChildByParentNum(home.getItemNum());
+
+		for (int i = 0; i < childNodes.size(); i++) {
+			ItemDto childNode = childNodes.get(i);
+			fDto = folDao.printFolderbyNum(childNode.getItemNum());
+			if (fDto.getFolderType() == 0) {
+				grandChildNodes = folDao.selectChildByParentNum(childNode
+						.getItemNum());
+
+				if (grandChildNodes.size() != 0) {
+					for (int j = 0; j < grandChildNodes.size(); j++) {
+						ItemDto grandChildNode = grandChildNodes.get(j);
+						home.setChild(childNode);
+						setTree(childNode);
+						break;
+					}
+
+				} else {
+					if (home.getItemNum() == homeFolder.getItemNum() || folDao.itemNumByParentNum(childNode.getItemNum()).size() == 0) {
+						home.setChild(childNode);
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < childNodes.size(); i++) {
+			ItemDto childNode = childNodes.get(i);
+			fDto = folDao.printFolderbyNum(childNode.getItemNum());
+			if (fDto.getFolderType() != 0) {
+				if (home.getItemNum() == homeFolder.getItemNum()) {
+					home.setChild(childNode);
+					setTree(childNode);
+				}
+			}
+		}
+		// tree = new JTree(home);
+
 	}
 }

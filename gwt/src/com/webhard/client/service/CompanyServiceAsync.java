@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 
 /**
@@ -19,4 +20,5 @@ public interface CompanyServiceAsync {
 	void searchCompByPhone(String phone, AsyncCallback<List<CompanyDto>> callback);
 	void goMain(AsyncCallback<HashMap<String, Object>> callback);
 	void getUser(AsyncCallback<UserDto> callback);
+	void getHomeFolder(AsyncCallback<ItemDto> callback);
 }

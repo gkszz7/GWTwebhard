@@ -252,6 +252,7 @@ public class UserList extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				if(Window.confirm("홈으로 이동하시겠습니까?"))
 				userListServiceClientImpl.goMain();
 			}
 		});

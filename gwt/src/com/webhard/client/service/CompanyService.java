@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.webhard.client.model.CompanyDto;
+import com.webhard.client.model.ItemDto;
 import com.webhard.client.model.UserDto;
 
 
@@ -22,4 +23,5 @@ public interface CompanyService extends RemoteService {
 	List<CompanyDto> searchCompByPhone(String phone);
 	HashMap<String, Object> goMain() throws IllegalArgumentException;
 	UserDto getUser();
+	ItemDto getHomeFolder();
 }

@@ -209,7 +209,9 @@ public class MainPage extends Composite {
 								}
 							}else{
 								if(selectItemData.getCompanyNum() == 0){
-									serviceImpl.deleteFolder(selectItemData.getItemNum());
+									if(Window.confirm("삭제 하시겠습니까?")){
+										serviceImpl.deleteFolder(selectItemData.getItemNum());
+									}
 								}else{
 									Window.alert("타 회사는 이용 할 수 없습니다.");
 								}
@@ -278,7 +280,7 @@ public class MainPage extends Composite {
 						if (check == 1) {
 							if (Window.confirm("삭제 하시겠습니까?")) {
 								serviceImpl.deletefile(selectItemData.getItemNum());		
-						}				
+							}				
 						} else {
 							Window.alert("폴더입니다.");
 						}

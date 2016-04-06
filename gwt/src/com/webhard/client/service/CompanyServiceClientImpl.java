@@ -158,30 +158,38 @@ public class CompanyServiceClientImpl implements CompanyServiceClientInt{
 					
 					@Override
 					public void onSuccess(HashMap<String, Object> result) {
-						String compName = (String)result.get("companyName");
-						int homeFolderNum = Integer.parseInt((String)result.get("homeFolderNum"));
-						UserDto userDto = (UserDto)result.get("userDto");
-						
-						RootPanel.get().clear();
-						
-						MainServiceClientImpl main = 
-								new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree,compName,homeFolderNum, user);
-						
-						RootPanel.get().add(main.getMainPage());
-						
+						final String compName = (String)result.get("companyName");
+						final int homeFolderNum = Integer.parseInt((String)result.get("homeFolderNum"));
+						companyAsync.getHomeFolder(new AsyncCallback<ItemDto>() {
+							@Override
+							public void onSuccess(ItemDto home) {
+								tree = new Tree();
+								TreeItem homeItem = new TreeItem();
+								homeItem.setText(home.getName());
+								homeItem.setUserObject(home);
+								getTree(homeItem);
+								homeItem.setHTML(imageItemHTML(images.treeOpen(), homeItem.getText()));
+								
+								RootPanel.get().clear();
+
+								MainServiceClientImpl main = 
+										new MainServiceClientImpl(GWT.getModuleBaseURL()+"Main", tree, compName, homeFolderNum, user);
+
+								RootPanel.get().add(main.getMainPage());
+							}
+							@Override
+							public void onFailure(Throwable caught) {
+							}
+						});
 					}
 					
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						
 					}
 				});
 			}
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 	}

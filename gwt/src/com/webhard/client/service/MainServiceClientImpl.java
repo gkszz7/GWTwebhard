@@ -143,7 +143,6 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 
 			@Override
 			public void onSuccess(List<UserDto> result) {
-				// TODO Auto-generated method stub
 				main.selectAccess(result);
 			}
 			
@@ -434,7 +433,8 @@ public class MainServiceClientImpl implements MainServiceClientInt {
 	        // Add a 'submit' button.
 	        Button button = new Button("다운로드", new ClickHandler() {
 	          public void onClick(ClickEvent event) {
-	            form.submit();
+	        	  downloadDialog.hide();
+	        	  form.submit();
 	          }
 	        });
 	        button.setSize("70px", "30px");
