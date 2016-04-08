@@ -1,0 +1,14 @@
+1. 개발 보완
+	회사에 소속된 사용자가 있을 경우 회사 삭제 불가 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+	
+	다운로드 시 파일이름 깨지는거 고치기
+
+2.GWT 개발 환경 셋업 매뉴얼 작성 ( GWT 설치법 문서화)	xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+3.웹 적용 - tomcat 등 필요 여부 확인 (2대 이상의 컴퓨터로 서로 접속 가능 할 지 확인)
+
+4.서비스 메소드 추가 시 필요한 것( service, async , impl 등 GWT 사용 흐름 문서화)xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+5.윈도우빌더나 GWT Designer 작업 방법		xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+6.아키텍쳐 ( GWT의 사용 흐름을 그림과 글로 문서화 (Client 및 Server 들이 어떤 흐름으로 주고 받는 지 등))
