@@ -144,6 +144,7 @@ public class UserList extends Composite{
 		
 		Button deleteBtn = new Button("New button");
 		deleteBtn.addClickHandler(new ClickHandler() {
+			
 			public void onClick(ClickEvent event) {
 				if(selected == null){
 					Window.alert("사용자를 선택해 주세요.");
