@@ -209,7 +209,7 @@ public class UserDao implements Serializable{
         
         try {
 			con=connection.conn();
-			String sql="select u.userid, u.username, u.userphone, u.useraddr,c.companyName "
+			String sql="select u.userid, u.username, u.userphone, u.useraddr,c.companyName,u.companyNum "
 					+ "from users u,(select companyNum, companyName from company) c "
 					+ "where c.companyNum=u.companyNum and u.admin=0";
 			ps = con.prepareStatement(sql);
@@ -222,7 +222,7 @@ public class UserDao implements Serializable{
 				user.setUserPhone(rs.getString(3));
 				user.setUserAddr(rs.getString(4));
 				user.setCompanyName(rs.getString(5));
-				
+				user.setCompanyNum(rs.getInt(6));
 				users.add(user);
 				
 			}

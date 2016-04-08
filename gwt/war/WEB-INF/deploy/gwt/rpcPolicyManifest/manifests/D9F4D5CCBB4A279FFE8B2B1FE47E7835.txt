@@ -1,2 +1,0 @@
-serviceClass: com.webhard.client.service.CompanyService
-path: D49942CAAADC081D169C158D93E0FC2C.gwt.rpc

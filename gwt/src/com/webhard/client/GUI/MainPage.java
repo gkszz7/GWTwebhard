@@ -89,8 +89,8 @@ public class MainPage extends Composite {
 		horizontalSplitPanel = new HorizontalSplitPanel();
 		horizontalSplitPanel.setStyleName("gwt-horizontalSplitPanel .hsplitter");
 		horizontalSplitPanel.setSplitPosition("30%");
-		this.absolutePanel.add(horizontalSplitPanel, 0, 51);
-		horizontalSplitPanel.setSize("1131px", "631px");
+		this.absolutePanel.add(horizontalSplitPanel, 10, 51);
+		horizontalSplitPanel.setSize("1101px", "631px");
 		this.serviceImpl = mainServiceClientImpl;
 		this.serviceImpl.UserList();
 		this.serviceImpl.compList();

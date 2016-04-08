@@ -1,2 +1,8 @@
 # Module gwt
 # RPC service class, partial path of RPC policy file
+com.webhard.client.service.MainService, 2CCA09BF7AAFF854D697A2D0888C0822.gwt.rpc
+com.webhard.client.service.EntryService, 9E1B374A936CAB24D4B4F6F0915E2B18.gwt.rpc
+com.webhard.client.service.AccessListService, 538C1428E3D62F4BB02C03186FBFD7E1.gwt.rpc
+com.webhard.client.service.UserListService, 8B12CEDB6D5F0859DBF7A280AD301B54.gwt.rpc
+com.webhard.client.service.LoginService, 2EE86D068335996560AFB12EF6C514C2.gwt.rpc
+com.webhard.client.service.CompanyService, 326ECB0E1A1CD57C5A06732FB4E3F143.gwt.rpc

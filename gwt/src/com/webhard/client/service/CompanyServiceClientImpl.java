@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
+import com.sun.java.swing.plaf.windows.resources.windows;
 import com.webhard.client.GUI.CompanyList;
 import com.webhard.client.model.CompanyDto;
 import com.webhard.client.model.FileDto;
@@ -94,11 +95,15 @@ public class CompanyServiceClientImpl implements CompanyServiceClientInt{
 			}
 			@Override
 			public void onSuccess(List<CompanyDto> result) {
-				Window.alert("삭제되었습니다.");
-				
-				RootPanel.get().clear();
-				CompanyServiceClientImpl compImpl = new CompanyServiceClientImpl(GWT.getModuleBaseURL()+"company", result,tree,files);
-				RootPanel.get().add(compImpl.getCompanyList());
+				if(result == null){
+					Window.alert("가입 된 사용자로 인해 삭제 할 수 없습니다.");
+				}else{
+					Window.alert("삭제되었습니다.");
+					
+					RootPanel.get().clear();
+					CompanyServiceClientImpl compImpl = new CompanyServiceClientImpl(GWT.getModuleBaseURL()+"company", result,tree,files);
+					RootPanel.get().add(compImpl.getCompanyList());
+				}
 			}
 		});
 	}

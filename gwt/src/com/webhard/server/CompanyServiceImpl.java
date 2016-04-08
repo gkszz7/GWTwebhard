@@ -59,17 +59,30 @@ public class CompanyServiceImpl extends RemoteServiceServlet implements CompanyS
 		CompanyDao cDao = new CompanyDao();
 		FolderDao fDao = new FolderDao();
 		ItemDto fDto = new ItemDto();
+		UserDao userDao = new UserDao();
+		List<UserDto> users = userDao.selectAllUser();
 		
 		int compNum = cDao.selectCompanyNum(name);
-		fDto = fDao.printCompFolderbyCompanyNum(compNum);
+		int check = -1;
+		for(UserDto user : users){
+			if(user.getCompanyNum() == compNum){
+				check = compNum;
+			}
+		}
+		if(check == -1){
+			fDto = fDao.printCompFolderbyCompanyNum(compNum);
+			
+			selectNum = fDto.getItemNum();
+			deleteFolder(selectNum);
+			cDao.deleteCompany(name);
+			
+			companys = cDao.selectCompany();
+			
+			return companys;
+		}else{
+			return null;
+		}
 		
-		selectNum = fDto.getItemNum();
-		deleteFolder(selectNum);
-		cDao.deleteCompany(name);
-		
-		companys = cDao.selectCompany();
-		
-		return companys;
 	}
 	@Override
 	public List<CompanyDto> searchCompByName(String name) {

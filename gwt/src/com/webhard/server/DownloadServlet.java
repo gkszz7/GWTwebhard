@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -40,7 +41,6 @@ public class DownloadServlet extends HttpServlet{
 			if (item.isFormField()) { // 폼데이터인 경우 (파일이 아닌경우)
 				if (item.getFieldName().equals("title1")) {
 					itemnum = Integer.parseInt(item.getString());
-					System.out.println(itemnum);
 				}
 			}
 		}
@@ -66,16 +66,13 @@ public class DownloadServlet extends HttpServlet{
 		resp.setContentType("application/unknown");
 
 		//다운로드 창에 표시될 파일 이름 설정
-		byte[] unicodeFileName=file.getName().getBytes("utf-8");	//파일이름을 utf-8형식으로
-		String asciiFileName=new String(unicodeFileName,"iso-8859-1");	//아스키로 다시 인코딩
-		String name = file.getFileURL();
-		resp.setHeader("content-Disposition", "Attachment;filename=\""+file.getName()+"\"");
+		String docName = URLEncoder.encode(file.getName(),"UTF-8").replaceAll("\\+", "%20");
+		resp.setHeader("content-Disposition", "Attachment;filename=\""+docName+"\"");
 		
 		//3-2. 2의 파일의 내용을 응답 스트림에 쓰기
 		String path = req.getServletContext().getRealPath("/WEB-INF/file");
 		
 		File file2 = new File(path+"\\"+file.getName());
-		System.out.println(file2);
 		OutputStream ostream = resp.getOutputStream();
 		InputStream istream = new FileInputStream(file2);
 		

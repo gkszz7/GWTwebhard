@@ -1,2 +1,0 @@
-serviceClass: com.webhard.client.service.UserListService
-path: DC3B1024443198A509BF7F8350EC24E5.gwt.rpc
